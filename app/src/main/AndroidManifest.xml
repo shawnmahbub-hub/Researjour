@@ -9,7 +9,9 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome_Screen"></activity>
+        <activity android:name=".Registration"></activity>
+        <activity android:name=".Login" />
+        <activity android:name=".Welcome_Screen" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
