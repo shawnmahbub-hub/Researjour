@@ -4,7 +4,7 @@
     >
 
     <solid
-        android:color="#E2284E"/>
+        android:color="#e7e7e7"/>
 
     <size
         android:width="10dp"

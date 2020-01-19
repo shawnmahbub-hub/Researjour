@@ -1,9 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Login">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/researjour_logo_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/researjour_logo"
+        android:layout_width="191.19dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="109dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="app_logo" />
+
+    <EditText
+        android:id="@+id/emai_editText_id"
+        android:layout_width="363dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/researjour_logo_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:hint="email"
+        android:textColorHint="#40000000"
+        android:paddingStart="16dp"
+        android:background="@drawable/edit_text_bg"/>
+
+    <EditText
+        android:id="@+id/password_editText_id"
+        android:layout_width="363dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/emai_editText_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:hint="password"
+        android:textColorHint="#40000000"
+        android:paddingStart="16dp"
+        android:background="@drawable/edit_text_bg"/>
+
+    <TextView
+        android:id="@+id/forgot_pass_id"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_below="@+id/password_editText_id"
+        android:text="Forgot Password?"
+        android:layout_marginTop="18dp"
+        android:textColor="#333"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:fontFamily="@font/googlesans_regular"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/login_button_id"
+        android:layout_width="182dp"
+        android:layout_height="50dp"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:layout_below="@+id/password_editText_id"
+        android:layout_marginTop="54dp"
+        android:background="@drawable/btn_background"
+        android:fontFamily="@font/googlesans_medium"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/sign_up_text_id"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_below="@id/login_button_id"
+        android:layout_alignEnd="@+id/login_button_id"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="23dp"
+        android:layout_toRightOf="@+id/new_user_text_id"
+        android:clickable="true"
+        android:fontFamily="@font/googlesans_regular"
+        android:lineHeight="20sp"
+        android:text="Sign Up"
+        android:textAlignment="center"
+        android:textColor="#E2284E"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/new_user_text_id"
+        android:layout_width="78dp"
+        android:layout_height="24dp"
+        android:layout_below="@+id/login_button_id"
+        android:layout_alignStart="@+id/login_button_id"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="137dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/googlesans_regular"
+        android:lineHeight="20sp"
+        android:text="New User?"
+        android:textAlignment="center"
+        android:textColor="#333"
+        android:textSize="16sp" />
+
+</RelativeLayout>

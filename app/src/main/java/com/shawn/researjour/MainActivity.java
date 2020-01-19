@@ -9,8 +9,6 @@ import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int SPLASH_DISPLAY_LENGTH = 5000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +25,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
                 MainActivity.this.finish();
             }
-        },SPLASH_DISPLAY_LENGTH);
+        },6000);
     }
 }

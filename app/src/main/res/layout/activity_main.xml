@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     tools:context=".MainActivity">
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/app_logo_gif_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="368dp"
+        android:layout_height="717dp"
         android:layout_centerInParent="true"
         android:src="@drawable/app_logo" />
 
