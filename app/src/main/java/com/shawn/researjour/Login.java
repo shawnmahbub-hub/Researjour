@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ public class Login extends AppCompatActivity {
     EditText email, password;
     TextView forgot_pass, sign_up;
     Button login;
+    ImageButton back_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +31,19 @@ public class Login extends AppCompatActivity {
         login=findViewById(R.id.login_button_id);
         email=findViewById(R.id.emai_editText_id);
         password=findViewById(R.id.password_editText_id);
+        back_button=findViewById(R.id.back_btn);
 
         /*login text watcher for empty edit text field*/
         email.addTextChangedListener(loginTextWatcher);
         password.addTextChangedListener(loginTextWatcher);
+
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(Login.this, Welcome_Screen.class);
+                startActivity(intent);
+            }
+        });
 
         forgot_pass.setOnClickListener(new View.OnClickListener() {
             @Override
