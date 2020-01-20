@@ -8,6 +8,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Login">
 
+
+    //image view for displaying the app logo
     <ImageView
         android:id="@+id/researjour_logo_id"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,6 +27,7 @@
         android:layout_marginEnd="24dp"
         android:contentDescription="app_logo" />
 
+    //email edit text field
     <EditText
         android:id="@+id/emai_editText_id"
         android:layout_width="363dp"
@@ -37,6 +40,7 @@
         android:paddingStart="16dp"
         android:background="@drawable/edit_text_bg"/>
 
+    //password edit text field
     <EditText
         android:id="@+id/password_editText_id"
         android:layout_width="363dp"
@@ -49,6 +53,7 @@
         android:paddingStart="16dp"
         android:background="@drawable/edit_text_bg"/>
 
+    //forgot password text view
     <TextView
         android:id="@+id/forgot_pass_id"
         android:layout_width="wrap_content"
@@ -62,6 +67,7 @@
         android:fontFamily="@font/googlesans_regular"
         android:clickable="true"/>
 
+    //login button
     <Button
         android:id="@+id/login_button_id"
         android:layout_width="182dp"
@@ -70,12 +76,13 @@
         android:textAllCaps="false"
         android:layout_below="@+id/password_editText_id"
         android:layout_marginTop="54dp"
-        android:background="@drawable/btn_background"
+        android:background="@drawable/btn_bg"
         android:fontFamily="@font/googlesans_medium"
         android:layout_centerHorizontal="true"
         android:textColor="#fff"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:enabled="false"
         />
 
     <TextView
@@ -96,6 +103,7 @@
         android:textColor="#E2284E"
         android:textSize="16sp" />
 
+    //text view for sign up
     <TextView
         android:id="@+id/new_user_text_id"
         android:layout_width="78dp"
