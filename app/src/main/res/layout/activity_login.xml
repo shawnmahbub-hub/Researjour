@@ -79,7 +79,7 @@
         android:layout_below="@+id/password_editText_id"
         android:text="Forgot Password?"
         android:layout_marginTop="18dp"
-        android:textColor="#333"
+        android:textColor="#9B4350"
         android:textSize="16sp"
         android:textAlignment="center"
         android:fontFamily="@font/googlesans_regular"

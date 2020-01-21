@@ -10,31 +10,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class Forgot_pass_main extends AppCompatActivity {
+public class Retype_new_password extends AppCompatActivity {
 
-    Button next;
-    EditText email;
+    Button finish;
+    EditText newPass, confirmPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_pass_main);
+        setContentView(R.layout.activity_retype_new_password);
 
-        next=findViewById(R.id.next_btn_id);
-        email=findViewById(R.id.emai_editText_id);
+        finish=findViewById(R.id.finish_btn_id);
+        newPass=findViewById(R.id.new_pass_id);
+        confirmPass=findViewById(R.id.confirmPassword_editText_id);
 
-        next.setOnClickListener(new View.OnClickListener() {
+        finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Forgot_pass_main.this, VerifyCode.class);
+                Intent intent=new Intent(Retype_new_password.this, Login.class);
                 startActivity(intent);
             }
         });
 
         /*login text watcher for empty edit text field*/
-        email.addTextChangedListener(loginTextWatcher);
-
-
+        newPass.addTextChangedListener(loginTextWatcher);
+        confirmPass.addTextChangedListener(loginTextWatcher);
     }
 
     /*method for login text watcher*/
@@ -46,10 +46,11 @@ public class Forgot_pass_main extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String userNameInput=email.getText().toString().trim();
+            String userNameInput=newPass.getText().toString().trim();
+            String passwordInput=confirmPass.getText().toString().trim();
 
             //setting the button enabled if the edit text field is not empty
-            next.setEnabled(!userNameInput.isEmpty());
+            finish.setEnabled(!userNameInput.isEmpty() && !passwordInput.isEmpty());
         }
 
         @Override

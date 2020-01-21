@@ -8,7 +8,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme2">
-        <activity android:name=".Terms"></activity>
+        <activity android:name=".Retype_new_password"></activity>
+        <activity android:name=".VerifyCode" />
+        <activity android:name=".Terms" />
         <activity android:name=".Feed" />
         <activity android:name=".Forgot_pass_main" />
         <activity android:name=".Registration" />

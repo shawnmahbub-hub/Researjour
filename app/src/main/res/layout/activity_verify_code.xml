@@ -8,7 +8,7 @@
     android:paddingStart="30dp"
     android:paddingEnd="30dp"
     android:paddingTop="34dp"
-    tools:context=".Forgot_pass_main">
+    tools:context=".VerifyCode">
 
     <TextView
         android:id="@+id/textView"
@@ -22,7 +22,7 @@
         android:layout_marginEnd="30dp"
         android:gravity="center_vertical"
         android:lineHeight="33sp"
-        android:text="Forgot Password"
+        android:text="Verify"
         android:textColor="@color/colorAccent2"
         android:textSize="26dp"
         android:fontFamily="@font/googlesans_regular"
@@ -33,7 +33,7 @@
         android:id="@+id/illustration_1_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/illustration_1"
+        android:src="@drawable/illustration_2"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textView"
         android:layout_marginTop="48dp"
@@ -51,7 +51,7 @@
         android:layout_marginEnd="0dp"
         android:fontFamily="@font/googlesans_medium"
         android:lineHeight="23sp"
-        android:text="Please enter your registered email ID"
+        android:text="Please enter the verification code"
         android:textAlignment="center"
         android:textColor="#333"
         android:textSize="18sp" />
@@ -68,14 +68,14 @@
         android:layout_marginEnd="-84dp"
         android:fontFamily="@font/googlesans_regular"
         android:lineHeight="21sp"
-        android:text="We’ll send a verification code to your registered email ID"
+        android:text="Enter the verfication code that we sent in your registered email address"
         android:textAlignment="center"
         android:textColor="#b4b4b4"
         android:textSize="16sp" />
 
 
     <EditText
-        android:id="@+id/emai_editText_id"
+        android:id="@+id/verify_editText_id"
         android:layout_width="381dp"
         android:layout_height="46dp"
         android:layout_below="@+id/desc_id"
@@ -86,8 +86,8 @@
         android:layout_marginEnd="0dp"
         android:background="@drawable/edit_text_bg"
         android:ems="10"
-        android:hint="email"
-        android:inputType="textEmailAddress"
+        android:hint="verfication code"
+        android:inputType="numberPassword"
         android:paddingStart="16sp"
         tools:layout_editor_absoluteX="98dp"
         tools:layout_editor_absoluteY="451dp" />
@@ -96,7 +96,7 @@
         android:id="@+id/next_btn_id"
         android:layout_width="182dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/emai_editText_id"
+        android:layout_below="@+id/verify_editText_id"
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:text="Next"
@@ -105,7 +105,6 @@
         android:textColor="#fff"
         android:fontFamily="@font/googlesans_medium"
         android:textSize="20sp"
-        android:enabled="false"
         />
 
 

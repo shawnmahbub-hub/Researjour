@@ -10,30 +10,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class Forgot_pass_main extends AppCompatActivity {
+public class VerifyCode extends AppCompatActivity {
 
     Button next;
-    EditText email;
+    EditText verify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_pass_main);
+        setContentView(R.layout.activity_verify_code);
 
         next=findViewById(R.id.next_btn_id);
-        email=findViewById(R.id.emai_editText_id);
+        verify=findViewById(R.id.verify_editText_id);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Forgot_pass_main.this, VerifyCode.class);
+                Intent intent=new Intent(VerifyCode.this, Retype_new_password.class);
                 startActivity(intent);
             }
         });
 
         /*login text watcher for empty edit text field*/
-        email.addTextChangedListener(loginTextWatcher);
-
+        verify.addTextChangedListener(loginTextWatcher);
 
     }
 
@@ -46,7 +45,7 @@ public class Forgot_pass_main extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String userNameInput=email.getText().toString().trim();
+            String userNameInput=verify.getText().toString().trim();
 
             //setting the button enabled if the edit text field is not empty
             next.setEnabled(!userNameInput.isEmpty());
