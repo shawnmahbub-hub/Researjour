@@ -105,6 +105,7 @@
         android:textColor="#fff"
         android:fontFamily="@font/googlesans_medium"
         android:textSize="20sp"
+        android:enabled="false"
         />
 
 
