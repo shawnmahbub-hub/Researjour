@@ -2,4 +2,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true" android:drawable="@drawable/btn_background"/>
     <item android:state_enabled="false" android:drawable="@drawable/disabled_button"/>
+    <item
+        android:state_pressed="true"
+        android:state_focused="false">
+        <shape
+            android:innerRadiusRatio="4"
+            android:shape="rectangle" >
+            <solid android:color="@color/btn_pressed"/>
+            <padding
+                android:bottom="10dp"
+                android:left="10dp"
+                android:right="10dp"
+                android:top="10dp" />
+        </shape></item>
 </selector>

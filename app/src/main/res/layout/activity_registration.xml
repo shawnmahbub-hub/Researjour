@@ -77,7 +77,8 @@
         android:hint="email"
         android:textColorHint="#40000000"
         android:paddingStart="16dp"
-        android:background="@drawable/edit_text_bg"/>
+        android:background="@drawable/edit_text_bg"
+        android:inputType="textEmailAddress"/>
 
     //password edit text field
     <EditText
@@ -90,7 +91,8 @@
         android:hint="password"
         android:textColorHint="#40000000"
         android:paddingStart="16dp"
-        android:background="@drawable/edit_text_bg"/>
+        android:background="@drawable/edit_text_bg"
+        android:inputType="textPassword"/>
 
     //password edit text field
     <EditText
@@ -103,7 +105,8 @@
         android:hint="confirm password"
         android:textColorHint="#40000000"
         android:paddingStart="16dp"
-        android:background="@drawable/edit_text_bg"/>
+        android:background="@drawable/edit_text_bg"
+        android:inputType="textPassword"/>
 
     <CheckBox
         android:id="@+id/checkbox_id"
@@ -137,6 +140,7 @@
         android:textColor="@color/colorAccent2"
         android:text=" Terms &amp; Conditions"
         android:fontFamily="@font/googlesans_regular"
+        android:clickable="true"
         />
 
     //login button

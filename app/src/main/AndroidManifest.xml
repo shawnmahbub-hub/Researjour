@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme2">
-        <activity android:name=".Feed"></activity>
+        <activity android:name=".Terms"></activity>
+        <activity android:name=".Feed" />
         <activity android:name=".Forgot_pass_main" />
         <activity android:name=".Registration" />
         <activity android:name=".Login" />
