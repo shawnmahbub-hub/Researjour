@@ -1,6 +1,7 @@
 package com.shawn.researjour;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,6 +59,14 @@ public class Registration extends AppCompatActivity {
         confirmPassword=findViewById(R.id.confirmPassword_editText_id);
         registration=findViewById(R.id.reg_button_id);
         checkBox=findViewById(R.id.checkbox_id);
+
+        registration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Registration.this, IntroActivity.class);
+                startActivity(intent);
+            }
+        });
 
         terms.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,4 +7,8 @@
         android:fontStyle="normal"
         android:font="@font/googlesans_medium" />
 
+    <font
+        android:fontStyle="normal"
+        android:font="@font/anton_regular" />
+
 </font-family>
