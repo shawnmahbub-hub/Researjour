@@ -89,7 +89,7 @@ public class IntroActivity extends AppCompatActivity {
 
                 }
 
-                if (position == mList.size()-1) { // when we rech to the last screen
+                if (position == mList.size()-1) { // when we reach to the last screen
 
                     // TODO : show the GETSTARTED Button and hide the indicator and the next button
 
@@ -191,7 +191,7 @@ public class IntroActivity extends AppCompatActivity {
         btnNext.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);
         tvSkip.setVisibility(View.INVISIBLE);
-        tabIndicator.setVisibility(View.INVISIBLE);
+        tabIndicator.setVisibility(View.VISIBLE);
         // TODO : ADD an animation the getstarted button
         // setup animation
         btnGetStarted.setAnimation(btnAnim);
