@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="40dp"
     android:paddingRight="40dp"
-    android:background="#fff"
+    android:background="@drawable/bg_illustration"
     tools:context=".Welcome_Screen">
 
 

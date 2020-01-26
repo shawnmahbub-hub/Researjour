@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:paddingStart="24dp"
     android:paddingEnd="24dp"
+    android:background="@drawable/bg_illustration"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Login">
 
