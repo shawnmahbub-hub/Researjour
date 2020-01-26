@@ -19,9 +19,7 @@
         android:layout_marginTop="24dp"
         android:background="#00FFFFFF"
         android:src="@drawable/ic_arrow_back"
-        android:contentDescription="TODO" />
-    
-    
+        android:contentDescription="back navigation" />
 
     //image view for displaying the app logo
     <ImageView
@@ -63,15 +61,16 @@
         android:layout_width="172dp"
         android:layout_height="46dp"
         android:layout_below="@id/researjour_logo_id"
-        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
         android:layout_marginTop="54dp"
         android:layout_toEndOf="@+id/firstName_editText_id"
         android:layout_toRightOf="@id/firstName_editText_id"
         android:background="@drawable/edit_text_bg"
         android:hint="@string/last_name"
         android:paddingStart="16dp"
-        android:textColorHint="#40000000"
-        android:inputType="textPersonName"/>
+        android:textColorHint="#40000000" 
+        android:inputType="textPersonName"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/emai_editText_id"
@@ -95,11 +94,12 @@
         android:layout_below="@id/emai_editText_id"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:hint="password"
+        android:hint="@string/password"
         android:textColorHint="#40000000"
         android:paddingStart="16dp"
         android:background="@drawable/edit_text_bg"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:autofillHints="" />
 
     //password edit text field
     <EditText
@@ -109,7 +109,7 @@
         android:layout_below="@id/password_editText_id"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:hint="confirm password"
+        android:hint="@string/confirm_password"
         android:textColorHint="#40000000"
         android:paddingStart="16dp"
         android:background="@drawable/edit_text_bg"
@@ -131,11 +131,11 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_gravity="center_vertical"
-        android:layout_toRightOf="@+id/checkbox_id"
+        android:layout_toEndOf="@+id/checkbox_id"
         android:layout_below="@id/confirmPassword_editText_id"
         android:fontFamily="@font/googlesans_regular"
         android:layout_marginTop="16dp"
-        android:text="Agree to" />
+        android:text="@string/agree_to" />
 
     <TextView
         android:id="@+id/Terms_id"
@@ -146,17 +146,17 @@
         android:layout_below="@id/confirmPassword_editText_id"
         android:layout_marginTop="16dp"
         android:textColor="@color/colorAccent2"
-        android:text=" Terms &amp; Conditions"
+        android:text="@string/terms_amp_conditions"
         android:fontFamily="@font/googlesans_regular"
         android:clickable="true"
-        />
+        android:focusable="true" />
 
     //login button
     <Button
         android:id="@+id/reg_button_id"
         android:layout_width="182dp"
         android:layout_height="50dp"
-        android:text="Registration"
+        android:text="@string/registration"
         android:textAllCaps="false"
         android:layout_below="@+id/confirmPassword_editText_id"
         android:layout_marginTop="56dp"
@@ -177,7 +177,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/googlesans_regular"
-        android:text="or Register with"
+        android:text="@string/or_register_with"
         android:textColor="#333"
         android:textSize="18sp" />
 
@@ -190,7 +190,8 @@
         android:layout_marginStart="141dp"
         android:layout_marginTop="15dp"
         android:background="#00FFFFFF"
-        android:src="@drawable/google_icon" />
+        android:src="@drawable/google_icon"
+        android:contentDescription="google icon" />
 
     <ImageButton
         android:id="@+id/phoneIcon_id"
@@ -205,7 +206,8 @@
         android:layout_toEndOf="@+id/fbIcon_id"
         android:layout_toRightOf="@id/fbIcon_id"
         android:background="#00FFFFFF"
-        android:src="@drawable/phone_icon" />
+        android:src="@drawable/phone_icon"
+        android:contentDescription="phone icon" />
 
     <ImageButton
         android:id="@+id/fbIcon_id"
@@ -218,7 +220,8 @@
         android:layout_toEndOf="@+id/googleIcon_id"
         android:layout_toRightOf="@+id/googleIcon_id"
         android:background="#00FFFFFF"
-        android:src="@drawable/facebook_icon" />
+        android:src="@drawable/facebook_icon"
+        android:contentDescription="facebook icon" />
 
     //text view for sign up
 
@@ -238,7 +241,7 @@
         android:clickable="true"
         android:fontFamily="@font/googlesans_regular"
         android:lineHeight="20sp"
-        android:text="Login"
+        android:text="@string/login"
         android:textAlignment="textStart"
         android:textColor="#E2284E"
         android:textSize="16sp"
@@ -256,7 +259,7 @@
         android:layout_marginEnd="184dp"
         android:fontFamily="@font/googlesans_regular"
         android:lineHeight="20sp"
-        android:text="Existing User?"
+        android:text="@string/existing_user"
         android:textAlignment="center"
         android:textColor="#333"
         android:textSize="16sp" />

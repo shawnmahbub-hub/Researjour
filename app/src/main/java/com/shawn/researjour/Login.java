@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,6 +67,23 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String emailInput = email.getText().toString().trim();
+                String passwordInput=password.getText().toString().trim();
+
+                if(emailInput.isEmpty()){
+                    email.setError("Email can't be empty");
+                    email.requestFocus();
+                    return;
+                }else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()){
+                    email.setError("Invalid Email");
+                    email.requestFocus();
+                    return;
+
+                } else if (passwordInput.isEmpty()){
+                    password.setError("Password can't be empty");
+                    password.requestFocus();
+                    return;
+                }
                 Intent intent=new Intent(Login.this, Feed.class);
                 startActivity(intent);
                 Toast.makeText(Login.this, "Feed Activity", Toast.LENGTH_SHORT).show();

@@ -20,7 +20,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="24dp"
         android:background="#00FFFFFF"
-        android:src="@drawable/vector" />
+        android:src="@drawable/ic_arrow_back" />
 
 
     //image view for displaying the app logo

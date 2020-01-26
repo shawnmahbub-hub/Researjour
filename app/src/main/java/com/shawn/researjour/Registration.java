@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -57,12 +58,55 @@ public class Registration extends AppCompatActivity {
         terms=findViewById(R.id.Terms_id);
         password=findViewById(R.id.password_editText_id);
         confirmPassword=findViewById(R.id.confirmPassword_editText_id);
-        registration=findViewById(R.id.reg_button_id);
+
         checkBox=findViewById(R.id.checkbox_id);
+
+        registration=findViewById(R.id.reg_button_id);
 
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String emailInput = email.getText().toString().trim();
+                String passwordInput=password.getText().toString().trim();
+                String firstNameInput=firstName.getText().toString().trim();
+                String lastNameInput=lastName.getText().toString().trim();
+                String confirmPassInput=confirmPassword.getText().toString().trim();
+
+                if(emailInput.isEmpty()){
+                    email.setError("Email field can't be empty");
+                    email.requestFocus();
+                    return;
+                }else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()){
+                    email.setError("Invalid Email");
+                    email.requestFocus();
+                    return;
+
+                } else if (passwordInput.isEmpty()){
+                    password.setError("Password can't be empty");
+                    password.requestFocus();
+                    return;
+                }else if (confirmPassInput.isEmpty()){
+                    confirmPassword.setError("Confirm Password is empty");
+                    confirmPassword.requestFocus();
+                    return;
+                }else if (firstNameInput.isEmpty()){
+                    firstName.setError("No First Name");
+                    firstName.requestFocus();
+                    return;
+                }else if (lastNameInput.isEmpty()){
+                    lastName.setError("No Last Name");
+                    lastName.requestFocus();
+                    return;
+                }if (passwordInput.length()<6){
+                    password.setError("Password should be 6-12 characters long");
+                    password.requestFocus();
+                    return;
+                }if (!passwordInput.equals(confirmPassInput)){
+                    confirmPassword.setError("Password don't match");
+                    confirmPassword.requestFocus();
+                    return;
+                }
                 Intent intent=new Intent(Registration.this, IntroActivity.class);
                 startActivity(intent);
             }
@@ -99,8 +143,4 @@ public class Registration extends AppCompatActivity {
         });
 
     }
-
-
-
-
 }

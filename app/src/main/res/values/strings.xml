@@ -17,6 +17,19 @@ Sell, rent or sub-license material from Researjour
 Reproduce, duplicate or copy material from Researjour
 Redistribute content from Researjour
 This Agreement shall begin on the date here of.</string>
+    <string name="app_logo">app_logo</string>
+    <string name="last_name">last name</string>
+    <string name="first_name">first name</string>
+    <string name="email">email</string>
+    <string name="existing_user">Existing User?</string>
+    <string name="login">Login</string>
+    <string name="or_register_with">or Register with</string>
+    <string name="registration">Registration</string>
+    <string name="agree_to">Agree to</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="password">password</string>
+    <string name="terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
+
 
 
 </resources>

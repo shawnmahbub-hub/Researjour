@@ -111,6 +111,11 @@ public class IntroActivity extends AppCompatActivity {
 
                     loadLastScreen();
 
+                }else {
+                    btnNext.setVisibility(View.VISIBLE);
+                    btnGetStarted.setVisibility(View.INVISIBLE);
+                    tvSkip.setVisibility(View.VISIBLE);
+                    btnNext.setAnimation(btnAnim);
                 }
 
 
