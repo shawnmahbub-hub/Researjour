@@ -73,26 +73,31 @@
         android:textColorHint="#40000000"
         android:inputType="textPersonName"/>
 
+    //password edit text field
+
     <EditText
-        android:id="@+id/emai_editText_id"
+        android:id="@+id/reg_email_editText_id"
         android:layout_width="363dp"
         android:layout_height="46dp"
         android:layout_below="@id/firstName_editText_id"
-        android:layout_centerHorizontal="true"
+        android:layout_alignStart="@+id/firstName_editText_id"
+        android:layout_alignEnd="@+id/lastName_editText_id"
+        android:layout_marginStart="-2dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/email"
-        android:textColorHint="#40000000"
-        android:paddingStart="16dp"
+        android:layout_marginEnd="0dp"
+        android:autofillHints=""
         android:background="@drawable/edit_text_bg"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:autofillHints="" />
+        android:paddingStart="16dp"
+        android:textColorHint="#40000000" />
 
     //password edit text field
     <EditText
         android:id="@+id/password_editText_id"
         android:layout_width="363dp"
         android:layout_height="46dp"
-        android:layout_below="@id/emai_editText_id"
+        android:layout_below="@id/reg_email_editText_id"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:hint="password"
