@@ -34,7 +34,7 @@ public class Registration extends AppCompatActivity {
     inside the registration activity
      */
     ImageButton back_button,google,fb,phone;
-    EditText firstName, lastName, reg_email, password, confirmPassword;
+    EditText reg_email, password, confirmPassword;
     Button registration;
     TextView login,terms;
     CheckBox checkBox;
@@ -73,8 +73,6 @@ public class Registration extends AppCompatActivity {
             }
         });
 
-        firstName=findViewById(R.id.firstName_editText_id);
-        lastName=findViewById(R.id.lastName_editText_id);
         reg_email=findViewById(R.id.reg_email_editText_id);
         terms=findViewById(R.id.Terms_id);
         password=findViewById(R.id.password_editText_id);
@@ -90,8 +88,6 @@ public class Registration extends AppCompatActivity {
 
                 String emailInput = reg_email.getText().toString().trim();
                 String passwordInput=password.getText().toString().trim();
-                String firstNameInput=firstName.getText().toString().trim();
-                String lastNameInput=lastName.getText().toString().trim();
                 String confirmPassInput=confirmPassword.getText().toString().trim();
                 //FirebaseUser currentUser=mAuth.getCurrentUser();
 
@@ -111,14 +107,6 @@ public class Registration extends AppCompatActivity {
                 }else if (confirmPassInput.isEmpty()){
                     confirmPassword.setError("Confirm Password is empty");
                     confirmPassword.requestFocus();
-                    return;
-                }else if (firstNameInput.isEmpty()){
-                    firstName.setError("No First Name");
-                    firstName.requestFocus();
-                    return;
-                }else if (lastNameInput.isEmpty()){
-                    lastName.setError("No Last Name");
-                    lastName.requestFocus();
                     return;
                 }else if (passwordInput.length()<6){
                     password.setError("Password should be 6-12 characters long");
@@ -172,14 +160,11 @@ public class Registration extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String reg_emailInput=reg_email.getText().toString().trim();
                 String passwordInput=password.getText().toString().trim();
-                String firstNameInput=firstName.getText().toString().trim();
-                String lastNameInput=lastName.getText().toString().trim();
                 String confirmPassInput=confirmPassword.getText().toString().trim();
 
                 if (isChecked){
                     flag = true;
-                    registration.setEnabled(!reg_emailInput.isEmpty() && !passwordInput.isEmpty() && !firstNameInput.isEmpty()
-                            && !lastNameInput.isEmpty() && !confirmPassInput.isEmpty() && flag);
+                    registration.setEnabled(!reg_emailInput.isEmpty() && !passwordInput.isEmpty() && !confirmPassInput.isEmpty() && flag);
                 }else {
                     registration.setEnabled(false);
                     flag = false;

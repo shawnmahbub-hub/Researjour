@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_illustration"
+    tools:context=".ProfileSetup">
+
+    <TextView
+        android:id="@+id/header_text_id"
+        android:layout_width="175dp"
+        android:layout_height="34dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:fontFamily="@font/googlesans_regular"
+        android:lineHeight="33sp"
+        android:text="Profile Setup"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent2"
+        android:textSize="26sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@drawable/profile_image"
+        android:layout_below="@+id/header_text_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_picker"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="253dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="219dp"
+        android:layout_toRightOf="@+id/profile_image"
+        android:src="@drawable/upload_photo"
+        />
+
+    <EditText
+        android:id="@+id/full_name_id"
+        android:layout_width="363dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/profile_image"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="24dp"
+        android:autofillHints=""
+        android:background="@drawable/edit_text_bg"
+        android:hint="full name"
+        android:fontFamily="@font/googlesans_regular"
+        android:inputType="textEmailAddress"
+        android:paddingStart="16dp"
+        android:textColorHint="#40000000" />
+
+    //password edit text field
+    <EditText
+        android:id="@+id/universityText_id"
+        android:layout_width="363dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/full_name_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:hint="university"
+        android:textColorHint="#40000000"
+        android:paddingStart="16dp"
+        android:fontFamily="@font/googlesans_regular"
+        android:background="@drawable/edit_text_bg"
+        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+        android:paddingEnd="16dp"
+        android:inputType="textPassword"/>
+
+    //password edit text field
+    <EditText
+        android:id="@+id/roleText_id"
+        android:layout_width="363dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/universityText_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:hint="role"
+        android:fontFamily="@font/googlesans_regular"
+        android:textColorHint="#40000000"
+        android:paddingStart="16dp"
+        android:background="@drawable/edit_text_bg"
+        android:inputType="textPassword"
+        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+        android:paddingEnd="16dp"
+        android:autofillHints="" />
+
+    //first name edit text field
+    <EditText
+        android:id="@+id/firstName_editText_id"
+        android:layout_width="172dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/roleText_id"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edit_text_bg"
+        android:hint="gender"
+        android:fontFamily="@font/googlesans_regular"
+        android:paddingStart="16dp"
+        android:textColorHint="#40000000"
+        android:inputType="textPersonName"
+        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+        android:paddingEnd="16dp"
+        android:autofillHints="" />
+
+    //last name edit text field
+    <EditText
+        android:id="@+id/lastName_editText_id"
+        android:layout_width="172dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/roleText_id"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/firstName_editText_id"
+        android:layout_toRightOf="@id/firstName_editText_id"
+        android:background="@drawable/edit_text_bg"
+        android:hint="date of birth"
+        android:fontFamily="@font/googlesans_regular"
+        android:paddingStart="16dp"
+        android:textColorHint="#40000000"
+        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+        android:paddingEnd="16dp"
+        android:inputType="textPersonName"/>
+
+    <Button
+        android:id="@+id/next_button_id"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@+id/firstName_editText_id"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="216dp"
+        android:layout_marginEnd="0dp"
+        android:background="@color/colorAccent2"
+        android:fontFamily="@font/googlesans_medium"
+        android:text="Next"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="20sp" />
+
+</RelativeLayout>

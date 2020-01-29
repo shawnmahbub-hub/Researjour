@@ -9,17 +9,18 @@
 
 
     //back button
+
     <ImageButton
         android:id="@+id/back_btn"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:layout_alignStart="@+id/emai_editText_id"
+        android:layout_alignStart="@+id/researjour_logo_id"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="24dp"
         android:background="#00FFFFFF"
-        android:src="@drawable/ic_arrow_back"
-        android:contentDescription="TODO" />
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_arrow_back" />
 
 
 
@@ -32,6 +33,7 @@
         app:srcCompat="@drawable/researjour_logo"
         android:layout_width="191.19dp"
         android:layout_height="70dp"
+        android:foregroundGravity="center"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -41,37 +43,7 @@
         android:layout_marginEnd="24dp"
         android:contentDescription="@string/app_logo" />
 
-    //first name edit text field
-    <EditText
-        android:id="@+id/firstName_editText_id"
-        android:layout_width="172dp"
-        android:layout_height="46dp"
-        android:layout_below="@id/researjour_logo_id"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="54dp"
-        android:background="@drawable/edit_text_bg"
-        android:hint="@string/first_name"
-        android:paddingStart="16dp"
-        android:textColorHint="#40000000"
-        android:inputType="textPersonName"
-        android:autofillHints="" />
 
-    //last name edit text field
-    <EditText
-        android:id="@+id/lastName_editText_id"
-        android:layout_width="172dp"
-        android:layout_height="46dp"
-        android:layout_below="@id/researjour_logo_id"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="54dp"
-        android:layout_toEndOf="@+id/firstName_editText_id"
-        android:layout_toRightOf="@id/firstName_editText_id"
-        android:background="@drawable/edit_text_bg"
-        android:hint="@string/last_name"
-        android:paddingStart="16dp"
-        android:textColorHint="#40000000"
-        android:inputType="textPersonName"/>
 
     //password edit text field
 
@@ -79,11 +51,11 @@
         android:id="@+id/reg_email_editText_id"
         android:layout_width="363dp"
         android:layout_height="46dp"
-        android:layout_below="@id/firstName_editText_id"
-        android:layout_alignStart="@+id/firstName_editText_id"
-        android:layout_alignEnd="@+id/lastName_editText_id"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="16dp"
+        android:layout_below="@id/researjour_logo_id"
+        android:layout_alignStart="@+id/researjour_logo_id"
+        android:layout_alignEnd="@+id/researjour_logo_id"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="105dp"
         android:layout_marginEnd="0dp"
         android:autofillHints=""
         android:background="@drawable/edit_text_bg"
