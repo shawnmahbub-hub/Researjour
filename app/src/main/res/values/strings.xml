@@ -29,6 +29,30 @@ This Agreement shall begin on the date here of.</string>
     <string name="confirm_password">confirm password</string>
     <string name="password">password</string>
     <string name="terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="categoryDesc">You can only choose one category at a time based on your research field</string>
+
+    //gender spinner items
+    <string-array name="gender_spinnerItems">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    //role spinner items
+    <string-array name="role_spinnerItems">
+        <item>Undergraduate Student</item>
+        <item>Master Student</item>
+        <item>PhD Student</item>
+        <item>Professor/Lecturer</item>
+        <item>Commercial Scientist</item>
+        <item>Researcher</item>
+        <item>Medical Professional/Doctor</item>
+        <item>Librarian</item>
+        <item>Laboratory Director/Faculty</item>
+        <item>Senior Scientist</item>
+        <item>Research Director</item>
+        <item>Just interested</item>
+        <item>Other</item>
+    </string-array>
 
 
 </resources>

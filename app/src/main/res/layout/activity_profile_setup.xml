@@ -10,11 +10,11 @@
     <TextView
         android:id="@+id/header_text_id"
         android:layout_width="175dp"
-        android:layout_height="34dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp"
-        android:fontFamily="@font/googlesans_regular"
+        android:fontFamily="@font/anton_regular"
         android:lineHeight="33sp"
         android:text="Profile Setup"
         android:textAlignment="center"
@@ -23,8 +23,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/profile_image"
         android:layout_below="@+id/header_text_id"
         android:layout_centerHorizontal="true"
@@ -33,16 +33,15 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_picker"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="253dp"
+        android:layout_marginStart="240dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="219dp"
+        android:layout_marginTop="228dp"
         android:layout_toRightOf="@+id/profile_image"
-        android:src="@drawable/upload_photo"
-        />
+        android:src="@drawable/upload_photo" />
 
     <EditText
         android:id="@+id/full_name_id"
@@ -56,13 +55,31 @@
         android:layout_marginEnd="24dp"
         android:autofillHints=""
         android:background="@drawable/edit_text_bg"
-        android:hint="full name"
+        android:drawableLeft="@drawable/ic_name"
+        android:hint=" full name"
         android:fontFamily="@font/googlesans_regular"
         android:inputType="textEmailAddress"
         android:paddingStart="16dp"
         android:textColorHint="#40000000" />
 
-    //password edit text field
+    <AutoCompleteTextView
+        android:id="@+id/universityText_id"
+        android:layout_width="363dp"
+        android:layout_height="46dp"
+        android:layout_below="@+id/full_name_id"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/edit_text_bg"
+        android:layout_marginTop="16dp"
+        android:hint=" university"
+        android:fontFamily="@font/googlesans_regular"
+        android:paddingStart="16dp"
+        android:drawableStart="@drawable/ic_university"
+        android:textSize="16sp"
+        android:textColor="#333"
+        android:paddingEnd="16dp"
+        />
+
+    <!--//password edit text field
     <EditText
         android:id="@+id/universityText_id"
         android:layout_width="363dp"
@@ -77,55 +94,59 @@
         android:background="@drawable/edit_text_bg"
         android:drawableEnd="@drawable/ic_keyboard_arrow_down"
         android:paddingEnd="16dp"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"/>-->
 
     //password edit text field
-    <EditText
-        android:id="@+id/roleText_id"
+    <Spinner
+        style="@style/SpinnerTheme"
+        android:id="@+id/roleSpinner_id"
         android:layout_width="363dp"
         android:layout_height="46dp"
         android:layout_below="@id/universityText_id"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:hint="role"
-        android:fontFamily="@font/googlesans_regular"
-        android:textColorHint="#40000000"
-        android:paddingStart="16dp"
-        android:background="@drawable/edit_text_bg"
-        android:inputType="textPassword"
-        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
-        android:paddingEnd="16dp"
-        android:autofillHints="" />
+        android:entries="@array/role_spinnerItems"
+        />
 
-    //first name edit text field
-    <EditText
-        android:id="@+id/firstName_editText_id"
+    //gender spinner
+    <Spinner
+        style="@style/SpinnerTheme"
+        android:id="@+id/gender_spinner"
+        android:layout_width="172dp"
+        android:layout_height="46dp"
+        android:entries="@array/gender_spinnerItems"
+        android:layout_below="@+id/roleSpinner_id"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp" />
+
+
+    <!--<EditText
+        android:id="@+id/genderText_id"
         android:layout_width="172dp"
         android:layout_height="46dp"
         android:layout_below="@id/roleText_id"
         android:layout_alignParentStart="true"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:background="@drawable/edit_text_bg"
-        android:hint="gender"
-        android:fontFamily="@font/googlesans_regular"
-        android:paddingStart="16dp"
-        android:textColorHint="#40000000"
-        android:inputType="textPersonName"
+        android:contentDescription="gender_selection"
         android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+        android:fontFamily="@font/googlesans_regular"
+        android:hint="gender"
+        android:inputType="textPersonName"
+        android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:autofillHints="" />
+        android:textColorHint="#40000000" />-->
 
-    //last name edit text field
     <EditText
-        android:id="@+id/lastName_editText_id"
+        android:id="@+id/dobText_id"
         android:layout_width="172dp"
         android:layout_height="46dp"
-        android:layout_below="@id/roleText_id"
+        android:layout_below="@id/roleSpinner_id"
         android:layout_marginLeft="17dp"
         android:layout_marginTop="16dp"
-        android:layout_toEndOf="@+id/firstName_editText_id"
-        android:layout_toRightOf="@id/firstName_editText_id"
+        android:layout_toEndOf="@+id/gender_spinner"
         android:background="@drawable/edit_text_bg"
         android:hint="date of birth"
         android:fontFamily="@font/googlesans_regular"
@@ -133,20 +154,21 @@
         android:textColorHint="#40000000"
         android:drawableEnd="@drawable/ic_keyboard_arrow_down"
         android:paddingEnd="16dp"
-        android:inputType="textPersonName"/>
+        android:inputType="none"
+        android:editable="false"/>
 
     <Button
-        android:id="@+id/next_button_id"
+        android:id="@+id/profile_next_button_id"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_below="@+id/firstName_editText_id"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="216dp"
         android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
         android:background="@color/colorAccent2"
+        android:contentDescription="next button for category selection"
         android:fontFamily="@font/googlesans_medium"
         android:text="Next"
         android:textAlignment="center"

@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class Registration extends AppCompatActivity {
     /*declaring variables for the components
     inside the registration activity
      */
+    ImageView passMatched;
     ImageButton back_button,google,fb,phone;
     EditText reg_email, password, confirmPassword;
     Button registration;
@@ -77,10 +79,14 @@ public class Registration extends AppCompatActivity {
         terms=findViewById(R.id.Terms_id);
         password=findViewById(R.id.password_editText_id);
         confirmPassword=findViewById(R.id.confirmPassword_editText_id);
+        passMatched=findViewById(R.id.passMatchedIcon_id);
+        password.addTextChangedListener(loginTextWatcher);
+        confirmPassword.addTextChangedListener(loginTextWatcher);
 
         checkBox=findViewById(R.id.checkbox_id);
 
         registration=findViewById(R.id.reg_button_id);
+
 
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +153,8 @@ public class Registration extends AppCompatActivity {
             }
         });
 
+
+
         terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,6 +182,37 @@ public class Registration extends AppCompatActivity {
         });
 
     }
+
+    /*method for login text watcher*/
+    private TextWatcher loginTextWatcher=new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            String passwordInput=password.getText().toString().trim();
+            String confirmPassInput=confirmPassword.getText().toString().trim();
+
+            if (passwordInput.equals(confirmPassInput)){
+                passMatched.setVisibility(View.VISIBLE);
+                Toast.makeText(Registration.this, "Password Matched", Toast.LENGTH_SHORT).show();
+            }else {
+                //setting the button enabled if the edit text field is not empty
+                login.setEnabled(!confirmPassInput.isEmpty() && !passwordInput.isEmpty());
+            }
+
+
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     private void SendUserToViewPagerActivity() {
 

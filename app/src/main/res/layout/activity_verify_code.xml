@@ -25,7 +25,7 @@
         android:text="Verify"
         android:textColor="@color/colorAccent2"
         android:textSize="26dp"
-        android:fontFamily="@font/googlesans_regular"
+        android:fontFamily="@font/anton_regular"
         tools:layout_editor_absoluteX="40dp"
         tools:layout_editor_absoluteY="40dp" />
 
@@ -85,8 +85,9 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="0dp"
         android:background="@drawable/edit_text_bg"
+        android:drawableStart="@drawable/ic_verify"
         android:ems="10"
-        android:hint="verfication code"
+        android:hint=" verification code"
         android:inputType="numberPassword"
         android:paddingStart="16sp"
         tools:layout_editor_absoluteX="98dp"
