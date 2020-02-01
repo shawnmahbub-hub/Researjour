@@ -1,9 +1,5 @@
 package com.shawn.researjour;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -25,16 +21,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Registration extends AppCompatActivity {
 
     /*declaring variables for the components
     inside the registration activity
      */
-    ImageView passMatched;
+    ImageView passMatched,passNotMatched;
     ImageButton back_button,google,fb,phone;
     EditText reg_email, password, confirmPassword;
     Button registration;
@@ -80,6 +76,7 @@ public class Registration extends AppCompatActivity {
         password=findViewById(R.id.password_editText_id);
         confirmPassword=findViewById(R.id.confirmPassword_editText_id);
         passMatched=findViewById(R.id.passMatchedIcon_id);
+        passNotMatched=findViewById(R.id.passNotMatchedIcon_id);
         password.addTextChangedListener(loginTextWatcher);
         confirmPassword.addTextChangedListener(loginTextWatcher);
 
@@ -198,10 +195,12 @@ public class Registration extends AppCompatActivity {
 
             if (passwordInput.equals(confirmPassInput)){
                 passMatched.setVisibility(View.VISIBLE);
-                Toast.makeText(Registration.this, "Password Matched", Toast.LENGTH_SHORT).show();
-            }else {
-                //setting the button enabled if the edit text field is not empty
-                login.setEnabled(!confirmPassInput.isEmpty() && !passwordInput.isEmpty());
+                passNotMatched.setVisibility(View.INVISIBLE);
+            }else if (!passwordInput.equals(confirmPassInput)){
+
+                passMatched.setVisibility(View.INVISIBLE);
+                passNotMatched.setVisibility(View.VISIBLE);
+
             }
 
 

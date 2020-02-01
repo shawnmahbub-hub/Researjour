@@ -54,15 +54,16 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
         android:autofillHints=""
+        android:drawablePadding="8dp"
         android:background="@drawable/edit_text_bg"
         android:drawableLeft="@drawable/ic_name"
-        android:hint=" full name"
+        android:hint="full name"
         android:fontFamily="@font/googlesans_regular"
         android:inputType="textEmailAddress"
         android:paddingStart="16dp"
         android:textColorHint="#40000000" />
 
-    <AutoCompleteTextView
+    <EditText
         android:id="@+id/universityText_id"
         android:layout_width="363dp"
         android:layout_height="46dp"
@@ -70,31 +71,16 @@
         android:layout_marginStart="24dp"
         android:background="@drawable/edit_text_bg"
         android:layout_marginTop="16dp"
-        android:hint=" university"
+        android:hint="university"
         android:fontFamily="@font/googlesans_regular"
         android:paddingStart="16dp"
         android:drawableStart="@drawable/ic_university"
+        android:drawablePadding="8dp"
         android:textSize="16sp"
         android:textColor="#333"
         android:paddingEnd="16dp"
         />
 
-    <!--//password edit text field
-    <EditText
-        android:id="@+id/universityText_id"
-        android:layout_width="363dp"
-        android:layout_height="46dp"
-        android:layout_below="@id/full_name_id"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:hint="university"
-        android:textColorHint="#40000000"
-        android:paddingStart="16dp"
-        android:fontFamily="@font/googlesans_regular"
-        android:background="@drawable/edit_text_bg"
-        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
-        android:paddingEnd="16dp"
-        android:inputType="textPassword"/>-->
 
     //password edit text field
     <Spinner
@@ -120,25 +106,6 @@
         android:layout_marginStart="24dp" />
 
 
-    <!--<EditText
-        android:id="@+id/genderText_id"
-        android:layout_width="172dp"
-        android:layout_height="46dp"
-        android:layout_below="@id/roleText_id"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:autofillHints=""
-        android:background="@drawable/edit_text_bg"
-        android:contentDescription="gender_selection"
-        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
-        android:fontFamily="@font/googlesans_regular"
-        android:hint="gender"
-        android:inputType="textPersonName"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textColorHint="#40000000" />-->
-
     <EditText
         android:id="@+id/dobText_id"
         android:layout_width="172dp"
@@ -152,10 +119,8 @@
         android:fontFamily="@font/googlesans_regular"
         android:paddingStart="16dp"
         android:textColorHint="#40000000"
-        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
         android:paddingEnd="16dp"
-        android:inputType="none"
-        android:editable="false"/>
+        />
 
     <Button
         android:id="@+id/profile_next_button_id"
@@ -167,7 +132,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
-        android:background="@color/colorAccent2"
+        android:background="@drawable/btn_bg"
         android:contentDescription="next button for category selection"
         android:fontFamily="@font/googlesans_medium"
         android:text="Next"

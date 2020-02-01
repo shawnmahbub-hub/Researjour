@@ -54,5 +54,17 @@ This Agreement shall begin on the date here of.</string>
         <item>Other</item>
     </string-array>
 
+    //role spinner items
+    <string-array name="category_items">
+        <item>Medical &amp; Health Science</item>
+        <item>Life Sciences &amp; Biology</item>
+        <item>Material Science</item>
+        <item>Computer Science</item>
+        <item>Social Science</item>
+        <item>Geography</item>
+        <item>Physics &amp; Mathematics</item>
+        <item>Business Management</item>
+    </string-array>
+
 
 </resources>

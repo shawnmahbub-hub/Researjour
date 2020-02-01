@@ -36,8 +36,11 @@
         android:textColor="#333"
         android:textSize="16sp" />
 
-    <!--<GridView
+    <GridView
         android:id="@+id/categoryItem_id"
+        android:numColumns="2"
+        android:verticalSpacing="24dp"
+        android:horizontalSpacing="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/descText_id"
@@ -45,7 +48,7 @@
         android:layout_alignEnd="@+id/descText_id"
         android:layout_marginStart="0dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="0dp" />-->
+        android:layout_marginEnd="0dp" />
 
     <Button
         android:id="@+id/cat_next_button_id"
