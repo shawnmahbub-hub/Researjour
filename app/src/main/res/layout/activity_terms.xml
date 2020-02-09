@@ -9,7 +9,7 @@
     android:paddingEnd="24dp"
     android:paddingBottom="24dp"
     android:orientation="vertical"
-    tools:context=".Terms">
+    tools:context=".Activity.Terms">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -8,7 +8,7 @@
     android:paddingStart="30dp"
     android:paddingEnd="30dp"
     android:paddingTop="34dp"
-    tools:context=".Forgot_pass_main">
+    tools:context=".Activity.Forgot_pass_main">
 
     <TextView
         android:id="@+id/textView"
@@ -19,8 +19,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="34dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="0dp"
         android:gravity="center_vertical"
+        android:textAlignment="center"
         android:lineHeight="33sp"
         android:text="Forgot Password"
         android:textColor="@color/colorAccent2"
@@ -86,10 +87,11 @@
         android:layout_marginEnd="0dp"
         android:background="@drawable/edit_text_bg"
         android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="8dp"
         android:ems="10"
-        android:hint=" email"
+        android:hint="email"
         android:inputType="textEmailAddress"
-        android:paddingStart="16sp"
+        android:paddingStart="12dp"
         tools:layout_editor_absoluteX="98dp"
         tools:layout_editor_absoluteY="451dp" />
 

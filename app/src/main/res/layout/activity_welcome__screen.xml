@@ -7,7 +7,7 @@
     android:paddingLeft="40dp"
     android:paddingRight="40dp"
     android:background="@drawable/bg_illustration"
-    tools:context=".Welcome_Screen">
+    tools:context=".Activity.Welcome_Screen">
 
 
     <ImageView

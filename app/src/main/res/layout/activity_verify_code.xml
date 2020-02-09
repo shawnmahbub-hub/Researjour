@@ -8,7 +8,7 @@
     android:paddingStart="30dp"
     android:paddingEnd="30dp"
     android:paddingTop="34dp"
-    tools:context=".VerifyCode">
+    tools:context=".Activity.VerifyCode">
 
     <TextView
         android:id="@+id/textView"
@@ -17,9 +17,10 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:textAlignment="center"
         android:layout_marginStart="0dp"
         android:layout_marginTop="34dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="0dp"
         android:gravity="center_vertical"
         android:lineHeight="33sp"
         android:text="Verify"
@@ -86,10 +87,11 @@
         android:layout_marginEnd="0dp"
         android:background="@drawable/edit_text_bg"
         android:drawableStart="@drawable/ic_verify"
+        android:drawablePadding="8dp"
         android:ems="10"
-        android:hint=" verification code"
+        android:hint="verification code"
         android:inputType="numberPassword"
-        android:paddingStart="16sp"
+        android:paddingStart="12dp"
         tools:layout_editor_absoluteX="98dp"
         tools:layout_editor_absoluteY="451dp" />
 

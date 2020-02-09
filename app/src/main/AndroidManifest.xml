@@ -12,33 +12,40 @@
         android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme2">
-        <activity android:name=".ProfileSetup">
+        android:theme="@style/AppTheme">
+        <activity android:name=".Activity.AddNewPost"
+            android:theme="@style/AppTheme2"
+            ></activity>
+        <activity
+            android:name=".Activity.Home"
+            android:screenOrientation="locked"
+            android:theme="@style/HomeTheme">
+
+
         </activity>
+        <activity android:name=".Activity.SubjectChoice" />
+        <activity android:name=".Activity.ProfileSetup" />
         <activity
-            android:name=".CategorySelection"
+            android:name=".Activity.CategorySelection"
             android:screenOrientation="locked" />
         <activity
-            android:name=".IntroActivity"
+            android:name=".Activity.IntroActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".Retype_new_password"
+            android:name=".Activity.Retype_new_password"
             android:screenOrientation="locked" />
         <activity
-            android:name=".VerifyCode"
+            android:name=".Activity.VerifyCode"
             android:screenOrientation="locked" />
         <activity
-            android:name=".Terms"
+            android:name=".Activity.Terms"
             android:screenOrientation="locked" />
         <activity
-            android:name=".Feed"
+            android:name=".Activity.Forgot_pass_main"
             android:screenOrientation="locked" />
         <activity
-            android:name=".Forgot_pass_main"
-            android:screenOrientation="locked" />
-        <activity
-            android:name=".Registration"
-            android:screenOrientation="locked" >
+            android:name=".Activity.Registration"
+            android:screenOrientation="locked">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,13 +54,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Login"
+            android:name=".Activity.Login"
             android:screenOrientation="locked" />
         <activity
-            android:name=".Welcome_Screen"
+            android:name=".Activity.Welcome_Screen"
             android:screenOrientation="locked" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:screenOrientation="locked"
             android:theme="@style/AppTheme"></activity>
         <activity
