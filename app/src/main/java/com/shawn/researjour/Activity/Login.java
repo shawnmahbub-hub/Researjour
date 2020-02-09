@@ -6,10 +6,12 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +27,12 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Login extends AppCompatActivity {
 
     EditText email, password;
+    ImageView loginPassVisibility;
     TextView forgot_pass, sign_up;
     Button login;
     ProgressDialog loadingBar;
     FirebaseAuth mAuth;
+    private boolean isShowPassword;
     //DatabaseReference userReference;
 
     @Override
@@ -42,6 +46,22 @@ public class Login extends AppCompatActivity {
         login=findViewById(R.id.login_button_id);
         email=findViewById(R.id.email_editText_id);
         password=findViewById(R.id.password_editText_id);
+
+        loginPassVisibility=findViewById(R.id.login_passVisibility_id);
+        loginPassVisibility.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isShowPassword) {
+                    password.setTransformationMethod(new PasswordTransformationMethod());
+                    loginPassVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_show_password));
+                    isShowPassword = false;
+                }else{
+                    password.setTransformationMethod(null);
+                    loginPassVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off));
+                    isShowPassword = true;
+                }
+            }
+        });
 
         mAuth=FirebaseAuth.getInstance();
         //userReference= FirebaseDatabase.getInstance().getReference();
@@ -146,6 +166,12 @@ public class Login extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String userNameInput=email.getText().toString().trim();
             String passwordInput=password.getText().toString().trim();
+
+            if (!passwordInput.isEmpty()){
+                loginPassVisibility.setVisibility(View.VISIBLE);
+            }else if (passwordInput.isEmpty()){
+                loginPassVisibility .setVisibility(View.GONE);
+            }
 
             //setting the button enabled if the edit text field is not empty
             login.setEnabled(!userNameInput.isEmpty() && !passwordInput.isEmpty());
