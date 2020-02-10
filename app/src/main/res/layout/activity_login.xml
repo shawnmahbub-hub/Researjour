@@ -55,15 +55,6 @@
             android:text="Explore the Researjour world globally"
             android:textColor="#fff"
             android:textSize="16sp" />
-
-        <ImageView
-            android:id="@+id/arrow_down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_keyboard_arrow_down_white" />
     </RelativeLayout>
 
 
@@ -108,7 +99,7 @@
         android:paddingEnd="16dp"
         />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/login_passVisibility_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,7 +109,7 @@
         android:visibility="gone"
         android:layout_alignEnd="@+id/password_editText_id"
         android:layout_marginRight="16dp"
-        android:clickable="true"
+        android:background="#00FFFFFF"
         />
 
     //forgot password text view

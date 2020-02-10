@@ -6,14 +6,135 @@
     android:fitsSystemWindows="true"
     tools:context=".Activity.Home">
 
-
+    //toolbar
     <include
         android:id="@+id/addNewPostPageToolbar"
         layout="@layout/app_bar_layout"
         >
-
     </include>
 
+    <TextView
+    android:id="@+id/researchTitleText_id"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/addNewPostPageToolbar"
+    android:layout_alignStart="@+id/postTitleText_id"
+    android:layout_alignEnd="@+id/postTitleText_id"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="290dp"
+    android:fontFamily="@font/googlesans_regular"
+    android:text="Research Title"
+    android:textColor="#333"
+    android:textSize="14sp" />
+
+    //title edit text
+    <EditText
+        android:id="@+id/postTitleText_id"
+        android:layout_width="363dp"
+        android:layout_height="46dp"
+        android:layout_below="@+id/researchTitleText_id"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints=""
+        android:background="@drawable/edit_text"
+        android:drawablePadding="8dp"
+        android:hint="Enter Title..."
+        android:fontFamily="@font/googlesans_regular"
+        android:inputType="textMultiLine"
+        android:paddingStart="12dp"
+        android:textColorHint="#25000000" />
+
+    <TextView
+        android:id="@+id/abstractionText_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/postTitleText_id"
+        android:layout_alignStart="@+id/postTitleText_id"
+        android:layout_alignEnd="@+id/postTitleText_id"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="290dp"
+        android:fontFamily="@font/googlesans_regular"
+        android:text="Abstraction"
+        android:textColor="#333"
+        android:textSize="14sp" />
+
+    //abstraction edit text
+    <EditText
+        android:id="@+id/postabstractionText_id"
+        android:layout_width="363dp"
+        android:layout_height="160dp"
+        android:layout_below="@+id/abstractionText_id"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="start"
+        android:paddingTop="8dp"
+        android:background="@drawable/edit_text"
+        android:hint="Enter Text..."
+        android:fontFamily="@font/googlesans_regular"
+        android:inputType="textMultiLine"
+        android:paddingStart="12dp"
+        android:textColorHint="#25000000" />
+
+    <TextView
+        android:id="@+id/addPostImageText_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/postabstractionText_id"
+        android:layout_alignStart="@+id/postTitleText_id"
+        android:layout_alignEnd="@+id/postTitleText_id"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/googlesans_regular"
+        android:text="Add Research Image"
+        android:textColor="#333"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/showImageArea_id"
+        android:layout_width="363dp"
+        android:layout_height="240dp"
+        android:layout_alignStart="@+id/postabstractionText_id"
+        android:layout_alignEnd="@+id/postabstractionText_id"
+        android:layout_below="@+id/addPostImageText_id"
+        android:background="@drawable/blank_photo_bg"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        android:clickable="true"
+        />
+
+    <ImageButton
+        android:id="@+id/addPostImage_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/showImageArea_id"
+        android:layout_alignEnd="@+id/showImageArea_id"
+        android:layout_alignBottom="@+id/showImageArea_id"
+        android:layout_marginStart="319dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_add_circle_black_24dp" />
+
+    <Button
+        android:id="@+id/post_button_id"
+        android:layout_width="182dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/showImageArea_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/btn_bg"
+        android:enabled="true"
+        android:fontFamily="@font/googlesans_medium"
+        android:text="Post"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

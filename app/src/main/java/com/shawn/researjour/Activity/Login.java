@@ -11,7 +11,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Login extends AppCompatActivity {
 
     EditText email, password;
-    ImageView loginPassVisibility;
+    ImageButton loginPassVisibility;
     TextView forgot_pass, sign_up;
     Button login;
     ProgressDialog loadingBar;

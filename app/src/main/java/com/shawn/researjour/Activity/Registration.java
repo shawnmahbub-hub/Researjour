@@ -36,8 +36,8 @@ public class Registration extends AppCompatActivity {
     /*declaring variables for the components
     inside the registration activity
      */
-    ImageView passMatched,passNotMatched,passVisibility;
-    ImageButton google,fb,phone;
+    ImageView passMatched,passNotMatched;
+    ImageButton google,fb,phone, passVisibility;
     EditText reg_email, password, confirmPassword;
     Button registration;
     TextView login,terms;
