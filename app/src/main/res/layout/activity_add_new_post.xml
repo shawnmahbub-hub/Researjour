@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="#fff"
     tools:context=".Activity.Home">
 
     //toolbar
@@ -13,15 +14,54 @@
         >
     </include>
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/postProfileImage_id"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/addNewPostPageToolbar"
+        android:layout_alignStart="@+id/researchTitleText_id"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/profile_image" />
+
+    <TextView
+        android:id="@+id/postProfileName_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addNewPostPageToolbar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_alignTop="@+id/postProfileImage_id"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@+id/postProfileImage_id"
+        android:layout_toRightOf="@+id/postProfileImage_id"
+        android:fontFamily="@font/googlesans_medium"
+        android:text="User Name"
+        android:textColor="#333"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/postTimeText_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/postProfileName_id"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@+id/postProfileImage_id"
+        android:layout_toRightOf="@+id/postProfileImage_id"
+        android:fontFamily="@font/googlesans_regular"
+        android:text="00:00"
+        android:textColor="#a7a7a7"
+        android:textSize="14sp" />
+
     <TextView
     android:id="@+id/researchTitleText_id"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/addNewPostPageToolbar"
+    android:layout_below="@+id/postProfileImage_id"
     android:layout_alignStart="@+id/postTitleText_id"
     android:layout_alignEnd="@+id/postTitleText_id"
     android:layout_marginTop="16dp"
-    android:layout_marginEnd="290dp"
     android:fontFamily="@font/googlesans_regular"
     android:text="Research Title"
     android:textColor="#333"
@@ -53,9 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/postTitleText_id"
         android:layout_alignStart="@+id/postTitleText_id"
-        android:layout_alignEnd="@+id/postTitleText_id"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="290dp"
         android:fontFamily="@font/googlesans_regular"
         android:text="Abstraction"
         android:textColor="#333"
@@ -98,43 +136,81 @@
         android:id="@+id/showImageArea_id"
         android:layout_width="363dp"
         android:layout_height="240dp"
+        android:layout_below="@+id/addPostImageText_id"
         android:layout_alignStart="@+id/postabstractionText_id"
         android:layout_alignEnd="@+id/postabstractionText_id"
-        android:layout_below="@+id/addPostImageText_id"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="0dp"
         android:background="@drawable/blank_photo_bg"
-        android:layout_marginTop="8dp"
-        android:scaleType="fitXY"
         android:clickable="true"
         />
 
-    <ImageButton
-        android:id="@+id/addPostImage_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/showImageArea_id"
-        android:layout_alignEnd="@+id/showImageArea_id"
-        android:layout_alignBottom="@+id/showImageArea_id"
-        android:layout_marginStart="319dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="#00FFFFFF"
-        android:src="@drawable/ic_add_circle_black_24dp" />
 
-    <Button
-        android:id="@+id/post_button_id"
-        android:layout_width="182dp"
+    <RelativeLayout
+        android:id="@+id/bottom_layout_id"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/showImageArea_id"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/btn_bg"
-        android:enabled="true"
-        android:fontFamily="@font/googlesans_medium"
-        android:text="Post"
-        android:textAllCaps="false"
-        android:textColor="#fff"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="#FFE9E9"
+        >
+
+        <ImageButton
+            android:id="@+id/addPostImage_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:background="#00FFFFFF"
+            android:src="@drawable/ic_image"
+            android:layout_centerVertical="true"
+            />
+
+        <ImageButton
+            android:id="@+id/addPostVideo_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/addPostImage_id"
+            android:background="#00FFFFFF"
+            android:src="@drawable/ic_video"
+            android:layout_centerVertical="true"
+
+            />
+
+        <ImageButton
+            android:id="@+id/addPostFile_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/addPostVideo_id"
+            android:background="#00FFFFFF"
+            android:src="@drawable/ic_attach_file"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/post_button_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="187dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@+id/addPostFile_id"
+            android:paddingEnd="8dp"
+            android:text="Post"
+            android:textSize="18sp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/colorAccent2"
+            android:fontFamily="@font/googlesans_medium"
+            android:clickable="true"/>
+    </RelativeLayout>
+
+
+
 
 
 </RelativeLayout>

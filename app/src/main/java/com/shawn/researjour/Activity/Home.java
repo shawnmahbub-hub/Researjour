@@ -37,7 +37,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private AppBarConfiguration mAppBarConfiguration;
 
     private CircleImageView NavProfileImage;
-    private TextView NavProfileUserName;
+    private TextView NavProfileUserName,NavUserUniversityName;
     private ImageButton addPostButton;
 
     private String currentUserID;
@@ -77,6 +77,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         View headerView = navigationView.getHeaderView(0);
         NavProfileImage = (CircleImageView) headerView.findViewById(R.id.nav_user_photo);
         NavProfileUserName = (TextView) headerView.findViewById(R.id.nav_user_full_name);
+        NavUserUniversityName=(TextView)headerView.findViewById(R.id.nav_user_university);
         navigationView.setNavigationItemSelectedListener(this);
 
         UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
@@ -95,6 +96,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         String image = dataSnapshot.child("profileimage").getValue().toString();
                         Picasso.with(Home.this).load(image).placeholder(R.drawable.profile_image).into(NavProfileImage);
                     }
+                    if (dataSnapshot.hasChild("university")){
+                    String universityName = dataSnapshot.child("university").getValue().toString();
+                    NavUserUniversityName.setText(universityName);
+                }
                     else
                     {
                         Toast.makeText(Home.this, "Profile name do not exists...", Toast.LENGTH_SHORT).show();

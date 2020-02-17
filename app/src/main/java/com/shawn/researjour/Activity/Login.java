@@ -9,6 +9,8 @@ import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -98,10 +100,15 @@ public class Login extends AppCompatActivity {
                 //FirebaseUser currentUser=mAuth.getCurrentUser();
 
                 if(emailInput.isEmpty()){
+
+                    Animation animShake = AnimationUtils.loadAnimation(Login.this, R.anim.shake);
+                    email.startAnimation(animShake);
                     email.setError("Email can't be empty");
                     email.requestFocus();
                     return;
                 }else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()){
+                    Animation animShake = AnimationUtils.loadAnimation(Login.this, R.anim.shake);
+                    email.startAnimation(animShake);
                     email.setError("Invalid Email");
                     email.requestFocus();
                     return;
@@ -118,6 +125,7 @@ public class Login extends AppCompatActivity {
                     loadingBar.setCanceledOnTouchOutside(true);
 
                     if (!isNetworkConnected()==true){
+                        
                         Toast.makeText(Login.this, "No Connection", Toast.LENGTH_SHORT).show();
                     }
 
@@ -130,6 +138,8 @@ public class Login extends AppCompatActivity {
                                 loadingBar.dismiss();
                             }else {
                                 String message=task.getException().getMessage();
+                                Animation animShake = AnimationUtils.loadAnimation(Login.this, R.anim.shake);
+                                password.startAnimation(animShake);
                                 Toast.makeText(Login.this, "Error: "+message, Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }

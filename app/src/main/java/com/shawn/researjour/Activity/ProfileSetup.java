@@ -85,6 +85,7 @@ public class ProfileSetup extends AppCompatActivity {
         dob_picker.addTextChangedListener(loginTextWatcher);
 
         dob_picker.setInputType(InputType.TYPE_NULL);
+        dob_picker.requestFocus();
 
         //calender instance for picking the date of birth
         Calendar mCalender=Calendar.getInstance();
@@ -161,11 +162,11 @@ public class ProfileSetup extends AppCompatActivity {
 
         if(requestCode==REQUESCODE && resultCode==RESULT_OK && data!=null)
         {
-            Uri ImageUri = data.getData();
+            Uri imageUri = data.getData();
 
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(4, 3)
+                    .setAspectRatio(1, 1)
                     .start(this);
         }
 
@@ -193,27 +194,25 @@ public class ProfileSetup extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         String downloadUrl = uri.toString();
-                                        //createNewPost(imageUrl);
                                         UsersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>()
                                         {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task)
-                                                    {
-                                                        if(task.isSuccessful())
-                                                        {
-                                                            Intent selfIntent = new Intent(ProfileSetup.this, ProfileSetup.class);
-                                                            startActivity(selfIntent);
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task)
+                                            {
+                                                if(task.isSuccessful())
+                                                {
+                                                    Intent selfIntent = new Intent(ProfileSetup.this, ProfileSetup.class);
+                                                    startActivity(selfIntent);
 
-                                                            Toast.makeText(ProfileSetup.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
-                                                            loadingBar.dismiss();
-                                                        }
-                                                        else
-                                                        {
-                                                            String message = task.getException().getMessage();
-                                                            Toast.makeText(ProfileSetup.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
-                                                            loadingBar.dismiss();
-                                                        }
-                                                    }
+                                                    Toast.makeText(ProfileSetup.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
+                                                    loadingBar.dismiss();
+                                                }
+                                                else {
+                                                    String message = task.getException().getMessage();
+                                                    Toast.makeText(ProfileSetup.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+                                                    loadingBar.dismiss();
+                                                }
+                                            }
 
                                         });
 

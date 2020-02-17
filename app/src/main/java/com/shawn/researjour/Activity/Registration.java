@@ -2,13 +2,17 @@ package com.shawn.researjour.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -45,7 +49,7 @@ public class Registration extends AppCompatActivity {
     boolean flag;
     ProgressDialog loadingBar;
 
-    //initiating firebaseauthencating for registering user
+    //initiating Firebase authentication for registering user
     FirebaseAuth mAuth;
 
     private static final String TAG = "GoogleActivity";
@@ -66,8 +70,29 @@ public class Registration extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Registration.this, Login.class);
-                startActivity(intent);
+                sendUserToLoginActivity();
+            }
+        });
+
+        login.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()){
+
+                    case MotionEvent.ACTION_DOWN:
+                    {
+                        TextView view=(TextView) v;
+                        view.setBackgroundColor(Color.TRANSPARENT);
+                        break;
+                    }case MotionEvent.ACTION_UP: case MotionEvent.ACTION_CANCEL:
+                    {
+                        TextView view=(TextView) v;
+                        view.setBackgroundColor(Color.WHITE);
+                        break;
+                    }
+                }
+                return false;
             }
         });
 
@@ -130,23 +155,33 @@ public class Registration extends AppCompatActivity {
                     reg_email.requestFocus();
                     return;
                 }else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()){
+                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+                    reg_email.startAnimation(animShake);
                     reg_email.setError("Invalid Email");
                     reg_email.requestFocus();
                     return;
 
                 } else if (passwordInput.isEmpty()){
+                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+                    password.startAnimation(animShake);
                     password.setError("Password can't be empty");
                     password.requestFocus();
                     return;
                 }else if (confirmPassInput.isEmpty()){
+                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+                    confirmPassword.startAnimation(animShake);
                     confirmPassword.setError("Confirm Password is empty");
                     confirmPassword.requestFocus();
                     return;
                 }else if (passwordInput.length()<6){
+                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+                    password.startAnimation(animShake);
                     password.setError("Password should be 6-12 characters long");
                     password.requestFocus();
                     return;
                 }else if (!passwordInput.equals(confirmPassInput)){
+                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+                    confirmPassword.startAnimation(animShake);
                     confirmPassword.setError("Password don't match");
                     confirmPassword.requestFocus();
                     return;
@@ -208,6 +243,13 @@ public class Registration extends AppCompatActivity {
                 flag = false;
             }
         });
+
+    }
+
+    private void sendUserToLoginActivity() {
+
+        Intent intent=new Intent(Registration.this, Login.class);
+        startActivity(intent);
 
     }
 
