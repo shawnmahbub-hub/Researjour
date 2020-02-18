@@ -1,4 +1,4 @@
-package com.shawn.researjour;
+package com.shawn.researjour.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.shawn.researjour.R;
+import com.shawn.researjour.Models.ScreenItem;
 
 import java.util.List;
 

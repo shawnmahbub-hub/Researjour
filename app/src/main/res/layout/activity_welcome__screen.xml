@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="40dp"
-    android:paddingRight="40dp"
+    android:paddingStart="40dp"
+    android:paddingEnd="40dp"
     android:background="@drawable/bg_illustration"
     tools:context=".Activity.Welcome_Screen">
 
-
+    //app logo
     <ImageView
         android:id="@+id/researjour_logo_id"
-        android:layout_width="191.19dp"
+        android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -20,18 +20,19 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="203dp"
         android:layout_marginEnd="40dp"
-        android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/researjour_logo" />
+        android:src="@drawable/app_icon" />
 
+    //welcome text
     <TextView
         android:id="@+id/Title_text_id"
-        android:layout_width="331dp"
+        android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_below="@id/researjour_logo_id"
-        android:layout_centerHorizontal="true"
+        android:layout_alignStart="@+id/login_button_id"
+        android:layout_alignEnd="@+id/login_button_id"
         android:layout_marginTop="40dp"
         android:fontFamily="@font/googlesans_medium"
         android:lineHeight="23sp"
@@ -41,6 +42,7 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    //description text
     <TextView
         android:id="@+id/sub_header_text_id"
         android:layout_width="366dp"
@@ -59,6 +61,7 @@
         android:textSize="16sp"
         android:typeface="sans" />
 
+    //login button
     <Button
         android:id="@+id/login_button_id"
         android:layout_width="331dp"
@@ -74,6 +77,7 @@
         android:textStyle="bold"
     />
 
+    //registration button
     <Button
         android:id="@+id/reg_button_id"
         android:layout_width="331dp"

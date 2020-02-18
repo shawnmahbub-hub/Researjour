@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.shawn.researjour.CustomAdapter;
+import com.shawn.researjour.Adapter.CustomAdapter;
 import com.shawn.researjour.R;
 
 import androidx.appcompat.app.AppCompatActivity;

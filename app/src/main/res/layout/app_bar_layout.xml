@@ -6,22 +6,6 @@
     android:background="@color/colorAccent2"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     android:fitsSystemWindows="true"
-
     >
-
-    <!--<Button
-        android:id="@+id/post_button_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginEnd="16dp"
-        android:background="@color/colorAccent2"
-        android:text="Post"
-        android:textColor="#fff"
-        android:textSize="16sp"
-        android:fontFamily="@font/googlesans_regular"
-        android:elevation="0dp"
-        />-->
-
 
 </androidx.appcompat.widget.Toolbar>

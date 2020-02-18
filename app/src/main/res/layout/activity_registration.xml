@@ -10,7 +10,7 @@
     android:focusableInTouchMode="true"
     >
 
-
+    //layout for top view
     <RelativeLayout
         android:id="@+id/topView_id"
         android:layout_width="wrap_content"
@@ -25,9 +25,6 @@
         android:orientation="vertical"
         android:paddingStart="24dp"
         android:paddingEnd="24dp">
-
-
-        //email edit text field
 
         <ImageView
             android:id="@+id/researjour_logo_id"
@@ -62,10 +59,7 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
-
-
-    //password edit text field
-
+    //email edit text
     <EditText
         android:id="@+id/reg_email_editText_id"
         android:layout_width="363dp"
@@ -87,7 +81,6 @@
         android:textColorHint="#25000000" />
 
     //password edit text field
-
     <EditText
         android:id="@+id/password_editText_id"
         android:layout_width="363dp"
@@ -107,6 +100,7 @@
         android:paddingStart="12dp"
         android:textColorHint="#40000000" />
 
+    //password toggle image button
     <ImageButton
         android:id="@+id/passVisibility_id"
         android:layout_width="wrap_content"
@@ -120,8 +114,7 @@
         android:background="#00FFFFFF"
         />
 
-    //password edit text field
-
+    //confirm password edit text field
     <EditText
         android:id="@+id/confirmPassword_editText_id"
         android:layout_width="363dp"
@@ -141,6 +134,7 @@
         android:paddingEnd="12dp"
         android:textColorHint="#40000000" />
 
+    //image view for password matched
     <ImageView
         android:id="@+id/passMatchedIcon_id"
         android:layout_width="wrap_content"
@@ -152,6 +146,7 @@
         android:visibility="gone"
         android:layout_marginRight="16dp"/>
 
+    //image view for password not matched
     <ImageView
         android:id="@+id/passNotMatchedIcon_id"
         android:layout_width="wrap_content"
@@ -163,6 +158,7 @@
         android:visibility="gone"
         android:layout_marginRight="16dp"/>
 
+    //checkbox
     <CheckBox
         android:id="@+id/checkbox_id"
         android:layout_width="wrap_content"
@@ -173,6 +169,7 @@
         android:layout_marginTop="10dp"
         android:checked="false" />
 
+    //agreeTo text view
     <TextView
         android:id="@+id/agreeTo_id"
         android:layout_width="wrap_content"
@@ -184,6 +181,7 @@
         android:layout_marginTop="16dp"
         android:text="Agree to" />
 
+    //text view for terms and conditions
     <TextView
         android:id="@+id/Terms_id"
         android:layout_width="wrap_content"
@@ -198,8 +196,7 @@
         android:clickable="true"
         />
 
-    //login button
-
+    //divider#1
     <View
     android:id="@+id/divider1"
     android:layout_width="109dp"
@@ -213,6 +210,7 @@
     android:layout_toLeftOf="@+id/reg_button_id"
     android:background="#e7e7e7" />
 
+    //divider#2
     <View
         android:id="@+id/divider2"
         android:layout_width="109dp"
@@ -226,6 +224,7 @@
         android:layout_toRightOf="@+id/reg_button_id"
         android:background="#e7e7e7" />
 
+    //login button
     <Button
         android:id="@+id/reg_button_id"
         android:layout_width="182dp"
@@ -243,6 +242,7 @@
         android:enabled="false"
         />
 
+    //register with text view
     <TextView
         android:id="@+id/register_with_id"
         android:layout_width="wrap_content"
@@ -255,6 +255,7 @@
         android:textColor="#333"
         android:textSize="18sp" />
 
+    //google sign up button
     <Button
         android:id="@+id/googleIcon_id"
         android:layout_width="128dp"
@@ -268,6 +269,7 @@
         android:paddingStart="34dp"
         />
 
+    //facebook sign up button
     <Button
         android:id="@+id/fbIcon_id"
         android:layout_width="128dp"
@@ -285,9 +287,7 @@
         android:textAllCaps="false"
         />
 
-
-    //text view for sign up
-
+    //text view for login
     <TextView
         android:id="@+id/logintext_id"
         android:layout_width="wrap_content"
@@ -308,6 +308,7 @@
         android:textColor="#E2284E"
         android:textSize="16sp" />
 
+    //existing user text view
     <TextView
         android:id="@+id/new_user_text_id"
         android:layout_width="wrap_content"

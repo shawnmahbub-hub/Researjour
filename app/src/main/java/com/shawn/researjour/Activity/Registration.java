@@ -2,14 +2,11 @@ package com.shawn.researjour.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,10 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,64 +30,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Registration extends AppCompatActivity {
 
-    /*declaring variables for the components
-    inside the registration activity
-     */
+    /*declaring variables for the components inside the registration activity*/
     ImageView passMatched,passNotMatched;
-    ImageButton google,fb,phone, passVisibility;
+    ImageButton google,fb,passVisibility;
     EditText reg_email, password, confirmPassword;
     Button registration;
     TextView login,terms;
     CheckBox checkBox;
     boolean flag;
     ProgressDialog loadingBar;
-
-    //initiating Firebase authentication for registering user
-    FirebaseAuth mAuth;
-
-    private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 9001;
-    private SignInButton signInButton;
-    private GoogleSignInClient mGoogleSignInClient;
     private boolean isShowPassword;
+
+    //firebase
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        //init fireBase
         mAuth=FirebaseAuth.getInstance();
+        //loading bar
         loadingBar=new ProgressDialog(this);
-
-        login=findViewById(R.id.logintext_id);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendUserToLoginActivity();
-            }
-        });
-
-        login.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                switch (event.getAction()){
-
-                    case MotionEvent.ACTION_DOWN:
-                    {
-                        TextView view=(TextView) v;
-                        view.setBackgroundColor(Color.TRANSPARENT);
-                        break;
-                    }case MotionEvent.ACTION_UP: case MotionEvent.ACTION_CANCEL:
-                    {
-                        TextView view=(TextView) v;
-                        view.setBackgroundColor(Color.WHITE);
-                        break;
-                    }
-                }
-                return false;
-            }
-        });
 
         reg_email=findViewById(R.id.reg_email_editText_id);
         terms=findViewById(R.id.Terms_id);
@@ -103,129 +61,47 @@ public class Registration extends AppCompatActivity {
         passMatched=findViewById(R.id.passMatchedIcon_id);
         passNotMatched=findViewById(R.id.passNotMatchedIcon_id);
         passVisibility=findViewById(R.id.passVisibility_id);
+        login=findViewById(R.id.logintext_id);
+        checkBox=findViewById(R.id.checkbox_id);
+        registration=findViewById(R.id.reg_button_id);
 
-        password.addTextChangedListener(loginTextWatcher);
+        //login intent
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserToLoginActivity();
+            }
+        });
 
+        //password toggle
         passVisibility.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isShowPassword) {
-                    password.setTransformationMethod(new PasswordTransformationMethod());
-                    passVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_show_password));
-                    isShowPassword = false;
-                }else{
-                    password.setTransformationMethod(null);
-                    passVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off));
-                    isShowPassword = true;
-                }
+                registrationPasswordToggle();
             }
         });
 
-
-        password.addTextChangedListener(loginTextWatcher);
-        confirmPassword.addTextChangedListener(loginTextWatcher);
-
-        checkBox=findViewById(R.id.checkbox_id);
-
-
-        // [START config_signin]
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        // [END config_signin]
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        registration=findViewById(R.id.reg_button_id);
-
-
+        //registration
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String emailInput = reg_email.getText().toString().trim();
-                String passwordInput=password.getText().toString().trim();
-                String confirmPassInput=confirmPassword.getText().toString().trim();
-                //FirebaseUser currentUser=mAuth.getCurrentUser();
-
-                if(emailInput.isEmpty()){
-                    reg_email.setError("Email field can't be empty");
-                    reg_email.requestFocus();
-                    return;
-                }else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()){
-                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
-                    reg_email.startAnimation(animShake);
-                    reg_email.setError("Invalid Email");
-                    reg_email.requestFocus();
-                    return;
-
-                } else if (passwordInput.isEmpty()){
-                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
-                    password.startAnimation(animShake);
-                    password.setError("Password can't be empty");
-                    password.requestFocus();
-                    return;
-                }else if (confirmPassInput.isEmpty()){
-                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
-                    confirmPassword.startAnimation(animShake);
-                    confirmPassword.setError("Confirm Password is empty");
-                    confirmPassword.requestFocus();
-                    return;
-                }else if (passwordInput.length()<6){
-                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
-                    password.startAnimation(animShake);
-                    password.setError("Password should be 6-12 characters long");
-                    password.requestFocus();
-                    return;
-                }else if (!passwordInput.equals(confirmPassInput)){
-                    Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
-                    confirmPassword.startAnimation(animShake);
-                    confirmPassword.setError("Password don't match");
-                    confirmPassword.requestFocus();
-                    return;
-                }else {
-                    //showing the progress loading bar
-                    loadingBar.setTitle("Creating New Account");
-                    loadingBar.setMessage("Wait for a moment while we are connecting with you");
-                    loadingBar.show();
-                    loadingBar.setCanceledOnTouchOutside(true);
-
-                    if (!isNetworkConnected()){
-                        Toast.makeText(Registration.this, "No Connection", Toast.LENGTH_SHORT).show();
-                    }
-
-                    mAuth.createUserWithEmailAndPassword(emailInput,passwordInput).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()){
-
-                                //calling the method
-                                SendUserToViewPagerActivity();
-                                Toast.makeText(Registration.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }else {
-                                String message=task.getException().getMessage();
-                                Toast.makeText(Registration.this, "Error: "+message, Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-                        }
-                    });
-                }
+                validateRegistrationInputs();
             }
         });
 
-
-
+        //terms intent
         terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Registration.this, Terms.class);
-                startActivity(intent);
+                sendUserToTermsActivity();
             }
         });
 
+        //calling the login text watcher method
+        password.addTextChangedListener(loginTextWatcher);
+        confirmPassword.addTextChangedListener(loginTextWatcher);
+
+        //registration button enabled after checkbox marked
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -243,14 +119,107 @@ public class Registration extends AppCompatActivity {
                 flag = false;
             }
         });
-
     }
 
-    private void sendUserToLoginActivity() {
+    //method for sending the user to terms and conditions activity
+    private void sendUserToTermsActivity() {
+        Intent intent=new Intent(Registration.this, Terms.class);
+        startActivity(intent);
+    }
 
+    //password toggle method
+    private void registrationPasswordToggle() {
+
+        if (isShowPassword) {
+            password.setTransformationMethod(new PasswordTransformationMethod());
+            passVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_show_password));
+            isShowPassword = false;
+        }else{
+            password.setTransformationMethod(null);
+            passVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off));
+            isShowPassword = true;
+        }
+    }
+
+    //registration inputs validation inputs
+    private void validateRegistrationInputs() {
+        String emailInput = reg_email.getText().toString().trim();
+        String passwordInput=password.getText().toString().trim();
+        String confirmPassInput=confirmPassword.getText().toString().trim();
+
+        if(emailInput.isEmpty()){
+            reg_email.setError("Email field can't be empty");
+            reg_email.requestFocus();
+            return;
+        }else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()){
+            //shake animation
+            Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+            reg_email.startAnimation(animShake);
+
+            reg_email.setError("Invalid Email");
+            reg_email.requestFocus();
+            return;
+
+        } else if (passwordInput.isEmpty()){
+            //shake animation
+            Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+            password.startAnimation(animShake);
+
+            password.setError("Password can't be empty");
+            password.requestFocus();
+            return;
+        }else if (confirmPassInput.isEmpty()){
+            //shake animation
+            Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+            confirmPassword.startAnimation(animShake);
+
+            confirmPassword.setError("Confirm Password is empty");
+            confirmPassword.requestFocus();
+            return;
+        }else if (passwordInput.length()<6){
+            //shake animation
+            Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+            password.startAnimation(animShake);
+
+            password.setError("Password should be 6-12 characters long");
+            password.requestFocus();
+            return;
+        }else if (!passwordInput.equals(confirmPassInput)){
+            Animation animShake = AnimationUtils.loadAnimation(Registration.this, R.anim.shake);
+            confirmPassword.startAnimation(animShake);
+            confirmPassword.setError("Password don't match");
+            confirmPassword.requestFocus();
+            return;
+        }else {
+            //showing the progress loading bar
+            loadingBar.setTitle("Creating New Account");
+            loadingBar.setMessage("Wait for a moment while we are connecting with you");
+            loadingBar.show();
+            loadingBar.setCanceledOnTouchOutside(true);
+
+            //create new user
+            mAuth.createUserWithEmailAndPassword(emailInput,passwordInput).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()){
+                        //calling the method
+                        SendUserToViewPagerActivity();
+                        Toast.makeText(Registration.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
+                    }else {
+                        String message=task.getException().getMessage();
+                        Toast.makeText(Registration.this, "Error: "+message, Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
+                    }
+                }
+            });
+        }
+    }
+
+    //method for sending the user to the login acitivity
+    private void sendUserToLoginActivity() {
         Intent intent=new Intent(Registration.this, Login.class);
         startActivity(intent);
-
     }
 
     /*method for login text watcher*/
@@ -292,6 +261,7 @@ public class Registration extends AppCompatActivity {
         }
     };
 
+    //method for sending the user to view pager activity after successful registration
     private void SendUserToViewPagerActivity() {
 
         Intent intent=new Intent(Registration.this, IntroActivity.class);
@@ -301,8 +271,4 @@ public class Registration extends AppCompatActivity {
 
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager connectivityManager=(ConnectivityManager) getSystemService(Registration.CONNECTIVITY_SERVICE);
-        return connectivityManager.getActiveNetworkInfo() !=null && connectivityManager.getActiveNetworkInfo().isConnected();
-    }
 }

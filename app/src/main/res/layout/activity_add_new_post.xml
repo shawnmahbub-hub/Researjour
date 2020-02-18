@@ -21,7 +21,7 @@
         android:layout_below="@+id/addNewPostPageToolbar"
         android:layout_alignStart="@+id/researchTitleText_id"
         android:layout_marginTop="16dp"
-        android:src="@drawable/profile_image" />
+        android:src="@drawable/user_profile" />
 
     <TextView
         android:id="@+id/postProfileName_id"

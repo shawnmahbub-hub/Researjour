@@ -59,12 +59,15 @@ public class AddNewPost extends AppCompatActivity {
     private ImageView showImageArea;
     private ImageButton addPostImage;
     private Uri imageURI=null;
+
     //Permissions constants
     private static final int CAMERA_REQUEST_CODE=100;
     private static final int STORAGE_REQUEST_CODE=200;
+
     //image pick constants
     private static final int IMAGE_PICK_CAMERA_CODE=300;
     private static final int IMAGE_PICK_GALLERY_CODE=400;
+
     //permission array
     String[] cameraPermissions;
     String[] storagePermissions;
@@ -72,6 +75,7 @@ public class AddNewPost extends AppCompatActivity {
     //get some info of the user
     String name,email,uid;
 
+    //loading bar
     private ProgressDialog loadingBar;
 
     //firebase part
@@ -96,8 +100,6 @@ public class AddNewPost extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
                 for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     name=""+dataSnapshot1.child("name").getValue();
                     email=""+dataSnapshot1.child("email").getValue();
@@ -123,14 +125,11 @@ public class AddNewPost extends AppCompatActivity {
         showImageArea=(ImageView)findViewById(R.id.showImageArea_id);
 
         String currentUserID = mAuth.getCurrentUser().getUid();
-        /*fetching the user profile image and user name
-                from firebase*/
+        /*fetching the user profile image and user name from fireBase*/
         UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-
-
                 if(dataSnapshot.exists())
                 {
                     if(dataSnapshot.hasChild("fullname"))
@@ -142,7 +141,7 @@ public class AddNewPost extends AppCompatActivity {
                     if(dataSnapshot.hasChild("profileimage"))
                     {
                         String image = dataSnapshot.child("profileimage").getValue().toString();
-                        Picasso.with(AddNewPost.this).load(image).placeholder(R.drawable.profile_image).into(postProfilePicture);
+                        Picasso.get().load(image).placeholder(R.drawable.profile_image).into(postProfilePicture);
                     }
                     if (dataSnapshot.hasChild("university")){
                         String universityName = dataSnapshot.child("university").getValue().toString();
@@ -169,40 +168,15 @@ public class AddNewPost extends AppCompatActivity {
             }
         });
 
-        //button for posting the new research information to the firebase
+        //button for posting the new research information to the fireBase
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //get data of research title and abstraction from edit text
-                String researchTitleInput=researchTitle.getText().toString().trim();
-                String abstractionInput=abstraction.getText().toString().trim();
-
-                if (TextUtils.isEmpty(researchTitleInput)){
-                    Animation animShake = AnimationUtils.loadAnimation(AddNewPost.this, R.anim.shake);
-                    researchTitle.startAnimation(animShake);
-                    Toast.makeText(AddNewPost.this, "Enter Title..", Toast.LENGTH_SHORT).show();
-                    return;
-                }else if (TextUtils.isEmpty(abstractionInput)){
-                    Animation animShake = AnimationUtils.loadAnimation(AddNewPost.this, R.anim.shake);
-                    abstraction.startAnimation(animShake);
-                    Toast.makeText(AddNewPost.this, "Write abstraction..", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (imageURI==null){
-                    //post status without image
-                    uploadData(researchTitleInput,abstractionInput,"noImage");
-
-                }else {
-                    //post with image
-                    uploadData(researchTitleInput,abstractionInput,String.valueOf(imageURI));
-                }
-
+                validatePostInputs();
             }
         });
 
-
+        //action bar
         newPostToolbar = findViewById(R.id.addNewPostPageToolbar);
         setSupportActionBar(newPostToolbar);
         setSupportActionBar(newPostToolbar);
@@ -212,6 +186,35 @@ public class AddNewPost extends AppCompatActivity {
 
     }
 
+    //validate post input method
+    private void validatePostInputs() {
+        //get data of research title and abstraction from edit text
+        String researchTitleInput=researchTitle.getText().toString().trim();
+        String abstractionInput=abstraction.getText().toString().trim();
+
+        if (TextUtils.isEmpty(researchTitleInput)){
+            Animation animShake = AnimationUtils.loadAnimation(AddNewPost.this, R.anim.shake);
+            researchTitle.startAnimation(animShake);
+            Toast.makeText(AddNewPost.this, "Enter Title..", Toast.LENGTH_SHORT).show();
+            return;
+        }else if (TextUtils.isEmpty(abstractionInput)){
+            Animation animShake = AnimationUtils.loadAnimation(AddNewPost.this, R.anim.shake);
+            abstraction.startAnimation(animShake);
+            Toast.makeText(AddNewPost.this, "Write abstraction..", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (imageURI==null){
+            //post status without image
+            uploadData(researchTitleInput,abstractionInput,"noImage");
+
+        }else {
+            //post with image
+            uploadData(researchTitleInput,abstractionInput,String.valueOf(imageURI));
+        }
+    }
+
+    //user status method
     private void checkUserStatus() {
 
         //get current user
@@ -228,6 +231,7 @@ public class AddNewPost extends AppCompatActivity {
         }
     }
 
+    //upload data to fireBase Method
     private void uploadData(final String researchTitleInput, final String abstractionInput, final String uri) {
 
         loadingBar.setTitle("Publishing Post..");
@@ -257,11 +261,13 @@ public class AddNewPost extends AppCompatActivity {
                         HashMap<Object,String> hashMap=new HashMap<>();
                         //put post info
                         hashMap.put("uid", uid);
+                        hashMap.put("uName",name);
+                        hashMap.put("uEmail",email);
                         hashMap.put("title", researchTitleInput);
                         hashMap.put("abstraction", abstractionInput);
                         hashMap.put("postimage", downloadUri);
                         hashMap.put("pTime",timeStamp);
-                        hashMap.put("uName",name);
+
 
                         //path to store post data
                         DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts");
@@ -403,12 +409,12 @@ public class AddNewPost extends AppCompatActivity {
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
     }
 
+    //4 Methods for camera and gallery storage permission
     private void requestStoragePermission(){
         //request runtime storage permission
         ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
     }
 
-    //4 Methods for camera and gallery storage permission
     private boolean checkStoragePermission(){
 
         //check if storage permission is enabled or not
@@ -436,8 +442,6 @@ public class AddNewPost extends AppCompatActivity {
                 .WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
         return result && result1 ;
     }
-
-
 
     //handle permission result
     @Override
@@ -519,7 +523,6 @@ public class AddNewPost extends AppCompatActivity {
 
     //intent for sending the user to the home activity when click the back button
     private void sendUserToHomeActivity()  {
-
         Intent intent=new Intent(this, Home.class);
         startActivity(intent);
     }

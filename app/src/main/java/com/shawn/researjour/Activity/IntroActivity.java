@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
-import com.shawn.researjour.IntroViewPagerAdapter;
+import com.shawn.researjour.Adapter.IntroViewPagerAdapter;
 import com.shawn.researjour.R;
-import com.shawn.researjour.ScreenItem;
+import com.shawn.researjour.Models.ScreenItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class IntroActivity extends AppCompatActivity {
         // fill list screen
 
         final List<ScreenItem> mList = new ArrayList<>();
-        mList.add(new ScreenItem("Research Community","Enter the verfication code that we sent in your mobile number",R.drawable.illustration_four));
+        mList.add(new ScreenItem("Research Community","Enter the verfication code that we sent in your mobile number",R.drawable.illustration_4));
         mList.add(new ScreenItem("Research Portfolio  ","Enter the verfication code that we sent in your mobile number",R.drawable.illustration_5));
         mList.add(new ScreenItem("Project Showcasing  ","Enter the verfication code that we sent in your mobile number",R.drawable.illustration_6));
 

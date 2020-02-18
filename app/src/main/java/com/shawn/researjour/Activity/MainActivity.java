@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
-
 import com.shawn.researjour.R;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +25,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
                 MainActivity.this.finish();
             }
-        },6000);
+        },5000);
     }
 }

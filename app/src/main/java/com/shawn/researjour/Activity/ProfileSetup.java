@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -46,18 +45,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileSetup extends AppCompatActivity {
 
-
-    CircleImageView profileImage;
-    EditText fullName,dob_picker,university;
-    Button next;
-
+    private CircleImageView profileImage;
+    private EditText fullName,dob_picker,university;
+    private Button nextBtn;
     private ProgressDialog loadingBar;
 
+    //fireBase
     private FirebaseAuth mAuth;
     private DatabaseReference UsersRef;
     private StorageReference UserProfileImageRef;
-
     private String currentUserID;
+
+    //constants for image pick
     private int PReqCode=1;
     private static final int REQUESCODE =1 ;
 
@@ -66,17 +65,18 @@ public class ProfileSetup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_setup);
 
+        //init fireBase
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
-
+        //finding id
         profileImage=findViewById(R.id.profile_image);
         fullName=findViewById(R.id.full_name_id);
         university=findViewById(R.id.universityText_id);
         dob_picker=findViewById(R.id.dobText_id);
-        next= findViewById(R.id.profile_next_button_id);
+        nextBtn= findViewById(R.id.profile_next_button_id);
         loadingBar = new ProgressDialog(this);
 
         /*login text watcher for empty edit text field*/
@@ -84,43 +84,17 @@ public class ProfileSetup extends AppCompatActivity {
         university.addTextChangedListener(loginTextWatcher);
         dob_picker.addTextChangedListener(loginTextWatcher);
 
-        dob_picker.setInputType(InputType.TYPE_NULL);
-        dob_picker.requestFocus();
-
-        //calender instance for picking the date of birth
-        Calendar mCalender=Calendar.getInstance();
-        final int year=mCalender.get(Calendar.YEAR);
-        final int month=mCalender.get(Calendar.MONTH);
-        final int day=mCalender.get(Calendar.DAY_OF_MONTH);
-
-        dob_picker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog datePickerDialog=new DatePickerDialog(ProfileSetup.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        month=month+1;
-                        String date=dayOfMonth+"/"+month+"/"+year;
-                        dob_picker.setText(date);
-                    }
-                },year,month,day);
-                datePickerDialog.show();
-
-            }
-        });
-
+        //calling check permission method
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (Build.VERSION.SDK_INT >= 22) {
-
+            if (Build.VERSION.SDK_INT >= 22) {
                     checkAndRequestForPermission();
-                }
-
+            }
             }
         });
 
+        //fetching user profile image from fireBase
         UsersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
@@ -130,7 +104,7 @@ public class ProfileSetup extends AppCompatActivity {
                     if (dataSnapshot.hasChild("profileimage"))
                     {
                         String image = dataSnapshot.child("profileimage").getValue().toString();
-                        Picasso.with(ProfileSetup.this).load(image).placeholder(R.drawable.profile_image).into(profileImage);
+                        Picasso.get().load(image).placeholder(R.drawable.profile_image).into(profileImage);
                     }
                     else
                     {
@@ -145,7 +119,16 @@ public class ProfileSetup extends AppCompatActivity {
             }
         });
 
-        next.setOnClickListener(new View.OnClickListener() {
+        //date picker
+        dob_picker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePicker();
+            }
+        });
+
+        //next button intent
+        nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -155,6 +138,26 @@ public class ProfileSetup extends AppCompatActivity {
 
     }
 
+    //data picker method
+    private void datePicker() {
+        //calender instance for picking the date of birth
+        Calendar mCalender=Calendar.getInstance();
+        final int year=mCalender.get(Calendar.YEAR);
+        final int month=mCalender.get(Calendar.MONTH);
+        final int day=mCalender.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog=new DatePickerDialog(ProfileSetup.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month=month+1;
+                String date=dayOfMonth+"/"+month+"/"+year;
+                dob_picker.setText(date);
+            }
+        },year,month,day);
+        datePickerDialog.show();
+    }
+
+    //on activity result method
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -162,8 +165,9 @@ public class ProfileSetup extends AppCompatActivity {
 
         if(requestCode==REQUESCODE && resultCode==RESULT_OK && data!=null)
         {
-            Uri imageUri = data.getData();
+            //Uri imageUri = data.getData();
 
+            //init crop image activity
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1, 1)
@@ -231,6 +235,7 @@ public class ProfileSetup extends AppCompatActivity {
         }
     }
 
+    //check permission method
     private void checkAndRequestForPermission() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -238,7 +243,6 @@ public class ProfileSetup extends AppCompatActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
                 Toast.makeText(this,"Please accept for required permission",Toast.LENGTH_SHORT).show();
-
             }
 
             else
@@ -254,6 +258,7 @@ public class ProfileSetup extends AppCompatActivity {
 
     }
 
+    //open gallery method
     private void openGallery() {
 
         //TODO: open gallery intent and wait for user to pick an image !
@@ -263,7 +268,7 @@ public class ProfileSetup extends AppCompatActivity {
         startActivityForResult(galleryIntent,REQUESCODE);
     }
 
-
+    //saving account info to fireBase
     private void SaveAccountSetupInformation() {
 
         String universtiyInput = university.getText().toString();
@@ -329,7 +334,7 @@ public class ProfileSetup extends AppCompatActivity {
             String dob_pickerInput=dob_picker.getText().toString().trim();
 
             //setting the button enabled if the edit text field is not empty
-            next.setEnabled(!fullNameInput.isEmpty() && !universityInput.isEmpty() && !dob_pickerInput.isEmpty());
+            nextBtn.setEnabled(!fullNameInput.isEmpty() && !universityInput.isEmpty() && !dob_pickerInput.isEmpty());
         }
 
         @Override
@@ -338,6 +343,7 @@ public class ProfileSetup extends AppCompatActivity {
         }
     };
 
+    //send user to category selection
     private void SendUserToCategorySelection()
     {
         Intent mainIntent = new Intent(ProfileSetup.this, CategorySelection.class);

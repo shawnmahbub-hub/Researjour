@@ -1,4 +1,4 @@
-package com.shawn.researjour;
+package com.shawn.researjour.Models;
 
 public class ScreenItem {
 
