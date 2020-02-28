@@ -66,7 +66,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         myHolder.pTitleTv.setText(pTitle);
         myHolder.pAbstractionTv.setText(pAbstraction);
 
-
         //set user profile picture
         try{
 

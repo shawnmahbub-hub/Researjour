@@ -12,4 +12,7 @@
     <color name="intro_title_color">#333333</color>
     <color name="intro_description_color">#656565</color>
 
+    <color name="MAIN_A">#030A1F</color>
+
+
 </resources>

@@ -20,10 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.shawn.researjour.R;
+
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -191,32 +197,60 @@ public class Registration extends AppCompatActivity {
             confirmPassword.requestFocus();
             return;
         }else {
-            //showing the progress loading bar
-            loadingBar.setTitle("Creating New Account");
-            loadingBar.setMessage("Wait for a moment while we are connecting with you");
-            loadingBar.show();
-            loadingBar.setCanceledOnTouchOutside(true);
-
-            //create new user
-            mAuth.createUserWithEmailAndPassword(emailInput,passwordInput).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()){
-                        //calling the method
-                        SendUserToViewPagerActivity();
-                        Toast.makeText(Registration.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                        loadingBar.dismiss();
-                    }else {
-                        String message=task.getException().getMessage();
-                        Toast.makeText(Registration.this, "Error: "+message, Toast.LENGTH_SHORT).show();
-                        loadingBar.dismiss();
-                    }
-                }
-            });
+            //registration method
+            registerUser(emailInput,passwordInput);
         }
     }
 
-    //method for sending the user to the login acitivity
+    //registration method
+    private void registerUser(String emailInput, String passwordInput) {
+        //showing the progress loading bar
+        loadingBar.setTitle("Creating New Account");
+        loadingBar.setMessage("Wait for a moment while we are connecting with you");
+        loadingBar.show();
+        loadingBar.setCanceledOnTouchOutside(true);
+
+        mAuth.createUserWithEmailAndPassword(emailInput,passwordInput).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    loadingBar.dismiss();
+                    FirebaseUser user=mAuth.getCurrentUser();
+                    //get user email and uid from auth
+                    String email=user.getEmail();
+                    String uid=user.getUid();
+                    //when user is registered store user info in fireBase realtime database too
+                    //using hashMap
+                    HashMap<Object, String>hashMap=new HashMap<>();
+                    //put info in hashMap
+                    hashMap.put("email",email);
+                    hashMap.put("uid",uid);
+                    //firebase database instance
+                    FirebaseDatabase database=FirebaseDatabase.getInstance();
+                    //database reference path
+                    DatabaseReference reference=database.getReference("Users");
+                    //put data within hashMap in database
+                    reference.child(uid).setValue(hashMap);
+
+                    Toast.makeText(Registration.this, "Registered Successfully..\n"+user.getEmail(), Toast.LENGTH_SHORT).show();
+                    SendUserToViewPagerActivity();
+                    finish();
+                }else {
+                    String message=task.getException().getMessage();
+                    Toast.makeText(Registration.this, "Error: "+message, Toast.LENGTH_SHORT).show();
+                    loadingBar.dismiss();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Registration.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                loadingBar.dismiss();
+            }
+        });
+    }
+
+    //method for sending the user to the login activity
     private void sendUserToLoginActivity() {
         Intent intent=new Intent(Registration.this, Login.class);
         startActivity(intent);
@@ -270,5 +304,4 @@ public class Registration extends AppCompatActivity {
 
 
     }
-
 }

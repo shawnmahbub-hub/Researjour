@@ -6,11 +6,11 @@ public class ModelClassPost {
     String uName,uid,uEmail,uDp,pTime,postimage,title,abstraction;
 
     public ModelClassPost() {
-
     }
 
-    public ModelClassPost(String uName, String uid, String uEmail, String pTime, String postimage, String title, String abstraction) {
+    public ModelClassPost(String uName, String uid, String uEmail,String uDp, String pTime, String postimage, String title, String abstraction) {
         this.uName = uName;
+        this.uDp=uDp;
         this.uid = uid;
         this.uEmail = uEmail;
         this.pTime = pTime;
@@ -44,11 +44,11 @@ public class ModelClassPost {
     }
 
     public String getuDp() {
-        return uEmail;
+        return uDp;
     }
 
-    public void setuDp(String uEmail) {
-        this.uEmail = uEmail;
+    public void setuDp(String uDp) {
+        this.uDp = uDp;
     }
 
     public String getpTime() {

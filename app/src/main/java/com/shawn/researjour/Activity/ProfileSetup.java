@@ -12,9 +12,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,10 +46,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileSetup extends AppCompatActivity {
+public class ProfileSetup extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private CircleImageView profileImage;
     private EditText fullName,dob_picker,university;
+    private Spinner gender,researcherRole;
     private Button nextBtn;
     private ProgressDialog loadingBar;
 
@@ -75,9 +79,24 @@ public class ProfileSetup extends AppCompatActivity {
         profileImage=findViewById(R.id.profile_image);
         fullName=findViewById(R.id.full_name_id);
         university=findViewById(R.id.universityText_id);
+        researcherRole=findViewById(R.id.roleSpinner_id);
+        gender=findViewById(R.id.gender_spinner);
         dob_picker=findViewById(R.id.dobText_id);
         nextBtn= findViewById(R.id.profile_next_button_id);
         loadingBar = new ProgressDialog(this);
+
+        //array adapter for spinner items
+        ArrayAdapter<CharSequence> researcherRoleAdapter = ArrayAdapter.createFromResource(this,
+                R.array.role_spinnerItems, android.R.layout.simple_spinner_item);
+        researcherRoleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        researcherRole.setAdapter(researcherRoleAdapter);
+        researcherRole.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
+                R.array.gender_spinnerItems, android.R.layout.simple_spinner_item);
+        researcherRoleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gender.setAdapter(genderAdapter);
+        gender.setOnItemSelectedListener(this);
 
         /*login text watcher for empty edit text field*/
         fullName.addTextChangedListener(loginTextWatcher);
@@ -233,6 +252,45 @@ public class ProfileSetup extends AppCompatActivity {
                 loadingBar.dismiss();
             }
         }
+    }
+
+    //spinner item selected listener
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String researcherRoleInput = parent.getItemAtPosition(position).toString();
+        String genderInput = parent.getItemAtPosition(position).toString();
+
+        HashMap userMap = new HashMap();
+        if(parent.getId() == R.id.roleSpinner_id)
+        {
+            userMap.put("researcherRole", researcherRoleInput);
+        }
+        else if(parent.getId() == R.id.gender_spinner)
+        {
+            userMap.put("gender", genderInput);
+        }
+
+        UsersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task)
+            {
+                if(task.isSuccessful())
+                {
+                }
+                else
+                {
+                    String message =  task.getException().getMessage();
+                    Toast.makeText(ProfileSetup.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+                    loadingBar.dismiss();
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     //check permission method

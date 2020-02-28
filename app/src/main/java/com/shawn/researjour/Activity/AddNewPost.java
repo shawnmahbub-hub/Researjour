@@ -73,7 +73,7 @@ public class AddNewPost extends AppCompatActivity {
     String[] storagePermissions;
 
     //get some info of the user
-    String name,email,uid;
+    String name,email,uid,dp;
 
     //loading bar
     private ProgressDialog loadingBar;
@@ -101,8 +101,9 @@ public class AddNewPost extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                    name=""+dataSnapshot1.child("name").getValue();
+                    name=""+dataSnapshot1.child("fullname").getValue();
                     email=""+dataSnapshot1.child("email").getValue();
+                    dp=""+dataSnapshot1.child("profileimage").getValue();
                 }
              }
 
@@ -141,7 +142,7 @@ public class AddNewPost extends AppCompatActivity {
                     if(dataSnapshot.hasChild("profileimage"))
                     {
                         String image = dataSnapshot.child("profileimage").getValue().toString();
-                        Picasso.get().load(image).placeholder(R.drawable.profile_image).into(postProfilePicture);
+                        Picasso.get().load(image).placeholder(R.drawable.user_profile).into(postProfilePicture);
                     }
                     if (dataSnapshot.hasChild("university")){
                         String universityName = dataSnapshot.child("university").getValue().toString();
@@ -179,9 +180,9 @@ public class AddNewPost extends AppCompatActivity {
         //action bar
         newPostToolbar = findViewById(R.id.addNewPostPageToolbar);
         setSupportActionBar(newPostToolbar);
-        setSupportActionBar(newPostToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("Add New Research");
 
     }
@@ -262,6 +263,7 @@ public class AddNewPost extends AppCompatActivity {
                         //put post info
                         hashMap.put("uid", uid);
                         hashMap.put("uName",name);
+                        hashMap.put("uDp",dp);
                         hashMap.put("uEmail",email);
                         hashMap.put("title", researchTitleInput);
                         hashMap.put("abstraction", abstractionInput);

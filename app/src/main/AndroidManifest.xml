@@ -14,7 +14,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.Home"></activity>
+        <activity android:name=".Activity.Home"
+            android:theme="@style/AppTheme2">
+
+        </activity>
         <activity
             android:name=".Activity.AddNewPost"
             android:theme="@style/AppTheme2" />
@@ -49,8 +52,7 @@
             android:screenOrientation="locked"></activity>
         <activity
             android:name=".Activity.MainActivity"
-            android:screenOrientation="locked"
-            android:theme="@style/AppTheme">
+            android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
