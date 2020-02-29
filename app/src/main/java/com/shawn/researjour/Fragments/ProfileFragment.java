@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -76,8 +75,6 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 firebaseAuth.signOut();
                 startActivity(new Intent(getActivity(), Login.class));
-                Snackbar snackbar=Snackbar.make(getActivity().findViewById(R.id.login_Activity),R.string.logout,Snackbar.LENGTH_SHORT);
-                snackbar.show();
             }
         });
 

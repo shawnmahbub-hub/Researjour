@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.shawn.researjour.R;
@@ -54,11 +56,11 @@ public class AddNewPost extends AppCompatActivity {
     //components part
     Toolbar newPostToolbar;
     private CircleImageView postProfilePicture;
-    private TextView postUserName, postTime,postButton;
+    private TextView postUserName, postTime,postButton,pdfName;
     private EditText researchTitle,abstraction;
     private ImageView showImageArea;
-    private ImageButton addPostImage;
-    private Uri imageURI=null;
+    private ImageButton addPostImage,addPdf,addVideo;
+    private Uri imageURI,pdfUri;
 
     //Permissions constants
     private static final int CAMERA_REQUEST_CODE=100;
@@ -75,12 +77,11 @@ public class AddNewPost extends AppCompatActivity {
     //get some info of the user
     String name,email,uid,dp;
 
-    //loading bar
-    private ProgressDialog loadingBar;
-
     //firebase part
     private DatabaseReference UsersRef;
     private FirebaseAuth mAuth;
+    private FirebaseStorage storage;
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,11 @@ public class AddNewPost extends AppCompatActivity {
 
         //firebase part
         mAuth= FirebaseAuth.getInstance();
+        storage=FirebaseStorage.getInstance();
+        database=FirebaseDatabase.getInstance();
+
         checkUserStatus();
+
         //get some info of current user to include in post
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
         Query query=UsersRef.orderByChild("email").equalTo(email);
@@ -113,8 +118,6 @@ public class AddNewPost extends AppCompatActivity {
             }
         });
 
-        loadingBar=new ProgressDialog(this);
-
         //finding the id of the widgets in the add post activity
         postProfilePicture=(CircleImageView)findViewById(R.id.postProfileImage_id);
         postUserName=(TextView)findViewById(R.id.postProfileName_id);
@@ -122,6 +125,9 @@ public class AddNewPost extends AppCompatActivity {
         researchTitle=(EditText) findViewById(R.id.postTitleText_id);
         abstraction=(EditText)findViewById(R.id.postabstractionText_id);
         addPostImage=(ImageButton)findViewById(R.id.addPostImage_id);
+        addPdf=(ImageButton)findViewById(R.id.addPdf_id);
+        pdfName=findViewById(R.id.pdfTextView_id);
+        addVideo=(ImageButton)findViewById(R.id.addPostVideo_id);
         postButton=(TextView) findViewById(R.id.post_button_id);
         showImageArea=(ImageView)findViewById(R.id.showImageArea_id);
 
@@ -165,7 +171,24 @@ public class AddNewPost extends AppCompatActivity {
         addPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addPostImage.setBackground(getResources().getDrawable(R.drawable.ontouch_bg));
                 showImagePickDialog();
+            }
+        });
+
+        //open file storage when user wanted to post pdf file
+        addPdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (ContextCompat.checkSelfPermission
+                        (AddNewPost.this,Manifest.permission.READ_EXTERNAL_STORAGE)
+                        ==PackageManager.PERMISSION_GRANTED)
+                {
+                    selectPdf();
+                }else {
+                    ActivityCompat.requestPermissions(AddNewPost.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
+                }
             }
         });
 
@@ -173,6 +196,7 @@ public class AddNewPost extends AppCompatActivity {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 validatePostInputs();
             }
         });
@@ -184,7 +208,14 @@ public class AddNewPost extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("Add New Research");
+    }
 
+    //method for selecting the pdf file from storage
+    private void selectPdf() {
+        Intent intent=new Intent();
+        intent.setType("application/pdf");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,86);
     }
 
     //validate post input method
@@ -210,9 +241,52 @@ public class AddNewPost extends AppCompatActivity {
             uploadData(researchTitleInput,abstractionInput,"noImage");
 
         }else {
+            //pdf file
+            if (pdfUri!=null){
+                uploadFile(pdfUri);
+            }else {
+                Toast.makeText(this, "Select a file..", Toast.LENGTH_SHORT).show();
+            }
             //post with image
             uploadData(researchTitleInput,abstractionInput,String.valueOf(imageURI));
         }
+    }
+
+    //pdf upload file
+    private void uploadFile(Uri pdfUri) {
+
+        final String pdftimeStamp=String.valueOf(System.currentTimeMillis());
+
+        final String fileName="pdf_"+pdftimeStamp;
+        StorageReference storageReference=storage.getReference();
+
+        storageReference.child("pdfUploads").child(fileName).putFile(pdfUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        String url=taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                        DatabaseReference databaseReference=database.getReference();
+
+                        databaseReference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Toast.makeText(AddNewPost.this, "your research pdf uploaded successfully", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(AddNewPost.this, "your research pdf not uploaded successfully", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AddNewPost.this, "your research pdf not uploaded successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     //user status method
@@ -234,11 +308,13 @@ public class AddNewPost extends AppCompatActivity {
 
     //upload data to fireBase Method
     private void uploadData(final String researchTitleInput, final String abstractionInput, final String uri) {
+        //progress dialog
+        final ProgressDialog progressDialog=new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Uploading Research Paper..");
+        progressDialog.setProgress(0);
+        progressDialog.show();
 
-        loadingBar.setTitle("Publishing Post..");
-        loadingBar.setMessage("Please wait, while we are publishing your new post...");
-        loadingBar.show();
-        loadingBar.setCanceledOnTouchOutside(true);
 
         //for post-image name, post-id, post-publish time
         final String timeStamp=String.valueOf(System.currentTimeMillis());
@@ -280,7 +356,6 @@ public class AddNewPost extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         //added in database
-                                        loadingBar.dismiss();
                                         Toast.makeText(AddNewPost.this, "Post Published", Toast.LENGTH_SHORT).show();
 
                                         //reset views
@@ -295,7 +370,6 @@ public class AddNewPost extends AppCompatActivity {
                                 }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                loadingBar.dismiss();
                                 Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -304,8 +378,14 @@ public class AddNewPost extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    loadingBar.dismiss();
                     Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                    //track the progress of our pdf upload
+                    int currentProgress=(int)(100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                    progressDialog.setProgress(currentProgress);
                 }
             });
 
@@ -330,7 +410,6 @@ public class AddNewPost extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             //added in database
-                            loadingBar.dismiss();
                             Toast.makeText(AddNewPost.this, "Post Published", Toast.LENGTH_SHORT).show();
                             //reset views
                             researchTitle.setText("");
@@ -344,7 +423,6 @@ public class AddNewPost extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    loadingBar.dismiss();
                     Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -450,6 +528,9 @@ public class AddNewPost extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        if (requestCode==9 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            selectPdf();
+        }
         /*this method is called when user press Allow
         * or Deny from permission request dialog and here
         * we will handle permission cases is allowed or denied*/
@@ -494,6 +575,12 @@ public class AddNewPost extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        //check whether user has selected a pdf file or not
+        if (requestCode==86 && resultCode==RESULT_OK && data!=null)
+        {
+            pdfUri=data.getData();
+            pdfName.setText("file: "+data.getData().getLastPathSegment());
+        }
 
         if (resultCode==RESULT_OK){
 

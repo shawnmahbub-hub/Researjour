@@ -135,7 +135,7 @@
     <ImageView
         android:id="@+id/showImageArea_id"
         android:layout_width="363dp"
-        android:layout_height="240dp"
+        android:layout_height="216dp"
         android:layout_below="@+id/addPostImageText_id"
         android:layout_alignStart="@+id/postabstractionText_id"
         android:layout_alignEnd="@+id/postabstractionText_id"
@@ -146,6 +146,61 @@
         android:clickable="true"
         />
 
+    //pdf image and text view
+
+    <ImageView
+        android:id="@+id/pdfIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/showImageArea_id"
+        android:layout_alignStart="@+id/showImageArea_id"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_pdf" />
+
+    <TextView
+        android:id="@+id/pdfTextView_id"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_below="@id/showImageArea_id"
+        android:layout_alignEnd="@+id/showImageArea_id"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/pdfIcon"
+        android:layout_toRightOf="@+id/pdfIcon"
+        android:text="null pdf selected to upload"
+        android:textSize="14sp"
+        android:textColor="#333"
+        android:fontFamily="@font/googlesans_regular"
+        android:gravity="center_vertical"
+        />
+
+    //video image and text view
+
+    <ImageView
+        android:id="@+id/videoIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/pdfIcon"
+        android:layout_below="@+id/pdfTextView_id"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_video" />
+
+    <TextView
+        android:id="@+id/videoTextView_id"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_below="@id/pdfTextView_id"
+        android:layout_alignEnd="@+id/showImageArea_id"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/pdfIcon"
+        android:layout_toRightOf="@+id/pdfIcon"
+        android:text="null video file for project showcasing"
+        android:textColor="#333"
+        android:textSize="14sp"
+        android:fontFamily="@font/googlesans_regular"
+        android:gravity="center_vertical"
+        />
 
     <RelativeLayout
         android:id="@+id/bottom_layout_id"
@@ -175,13 +230,13 @@
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@+id/addPostImage_id"
             android:background="#00FFFFFF"
-            android:src="@drawable/ic_video"
+            android:src="@drawable/ic_videocam"
             android:layout_centerVertical="true"
 
             />
 
         <ImageButton
-            android:id="@+id/addPostFile_id"
+            android:id="@+id/addPdf_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -199,7 +254,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="187dp"
             android:layout_marginEnd="16dp"
-            android:layout_toEndOf="@+id/addPostFile_id"
+            android:layout_toEndOf="@+id/addPdf_id"
             android:paddingEnd="8dp"
             android:text="Post"
             android:textSize="18sp"
