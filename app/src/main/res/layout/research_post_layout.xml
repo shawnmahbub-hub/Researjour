@@ -138,13 +138,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#fff"
-                android:text="Admire"
+                android:text="upvote"
                 android:textSize="16sp"
                 android:fontFamily="@font/googlesans_regular"
                 android:textAllCaps="false"
                 android:gravity="center"
                 android:paddingStart="16dp"
-                android:drawableStart="@drawable/ic_like"
+                android:drawableLeft="@drawable/like_outline"
                 />
 
             <Button
@@ -153,13 +153,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#fff"
-                android:text="Feedback"
+                android:text="comment"
                 android:textSize="16sp"
                 android:fontFamily="@font/googlesans_regular"
                 android:textAllCaps="false"
                 android:gravity="center"
                 android:paddingStart="16dp"
-                android:drawableStart="@drawable/ic_comment"
+                android:drawableLeft="@drawable/comment"
                 />
 
             <Button
@@ -168,13 +168,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#fff"
-                android:text="Bookmark"
-                android:textSize="16sp"
+                android:text="bookmark"
+                android:textSize="14sp"
                 android:fontFamily="@font/googlesans_regular"
                 android:textAllCaps="false"
                 android:gravity="center"
                 android:paddingStart="16dp"
-                android:drawableStart="@drawable/ic_bookmark_black"
+                android:drawableLeft="@drawable/ic_bookmark_outline"
                 />
 
 

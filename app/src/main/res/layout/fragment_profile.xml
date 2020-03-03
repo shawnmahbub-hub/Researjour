@@ -168,9 +168,6 @@
 
             </RelativeLayout>
 
-
-
-
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -268,7 +265,5 @@
             android:clickable="true"
             />
     </RelativeLayout>
-
-
 
 </RelativeLayout>

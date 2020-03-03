@@ -7,6 +7,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +42,7 @@ import com.google.firebase.storage.UploadTask;
 import com.shawn.researjour.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
@@ -77,6 +80,9 @@ public class AddNewPost extends AppCompatActivity {
     //get some info of the user
     String name,email,uid,dp;
 
+    //info of post ot be edited
+    String editTitle,editAbstraction,editImage;
+
     //firebase part
     private DatabaseReference UsersRef;
     private FirebaseAuth mAuth;
@@ -88,6 +94,19 @@ public class AddNewPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_post);
 
+        //finding the id of the widgets in the add post activity
+        postProfilePicture=(CircleImageView)findViewById(R.id.postProfileImage_id);
+        postUserName=(TextView)findViewById(R.id.postProfileName_id);
+        postTime=(TextView)findViewById(R.id.postTimeText_id);
+        researchTitle=(EditText) findViewById(R.id.postTitleText_id);
+        abstraction=(EditText)findViewById(R.id.postabstractionText_id);
+        addPostImage=(ImageButton)findViewById(R.id.addPostImage_id);
+        addPdf=(ImageButton)findViewById(R.id.addPdf_id);
+        pdfName=findViewById(R.id.pdfTextView_id);
+        addVideo=(ImageButton)findViewById(R.id.addPostVideo_id);
+        postButton=(TextView) findViewById(R.id.post_button_id);
+        showImageArea=(ImageView)findViewById(R.id.showImageArea_id);
+
         //init permissions arrays
         cameraPermissions=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -98,6 +117,34 @@ public class AddNewPost extends AppCompatActivity {
         database=FirebaseDatabase.getInstance();
 
         checkUserStatus();
+
+        //get data through intent from previous activities adapter
+        Intent intent=getIntent();
+        String isUpdateKey=""+intent.getStringExtra("key");
+        String editPostId=""+intent.getStringExtra("editPostId");
+        //validate if we came here to update post i.e. came fro PostAdapter
+        if (isUpdateKey.equals("editPost")){
+            //action bar
+            newPostToolbar = findViewById(R.id.addNewPostPageToolbar);
+            setSupportActionBar(newPostToolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+            getSupportActionBar().setTitle("Update Research Post");
+
+            postButton.setText("Update");
+            loadPostData(editPostId);
+        }else {
+            //add new post
+            //action bar
+            newPostToolbar = findViewById(R.id.addNewPostPageToolbar);
+            setSupportActionBar(newPostToolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+            getSupportActionBar().setTitle("Add New Research");
+            postButton.setText("Post");
+        }
 
         //get some info of current user to include in post
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
@@ -117,19 +164,6 @@ public class AddNewPost extends AppCompatActivity {
 
             }
         });
-
-        //finding the id of the widgets in the add post activity
-        postProfilePicture=(CircleImageView)findViewById(R.id.postProfileImage_id);
-        postUserName=(TextView)findViewById(R.id.postProfileName_id);
-        postTime=(TextView)findViewById(R.id.postTimeText_id);
-        researchTitle=(EditText) findViewById(R.id.postTitleText_id);
-        abstraction=(EditText)findViewById(R.id.postabstractionText_id);
-        addPostImage=(ImageButton)findViewById(R.id.addPostImage_id);
-        addPdf=(ImageButton)findViewById(R.id.addPdf_id);
-        pdfName=findViewById(R.id.pdfTextView_id);
-        addVideo=(ImageButton)findViewById(R.id.addPostVideo_id);
-        postButton=(TextView) findViewById(R.id.post_button_id);
-        showImageArea=(ImageView)findViewById(R.id.showImageArea_id);
 
         String currentUserID = mAuth.getCurrentUser().getUid();
         /*fetching the user profile image and user name from fireBase*/
@@ -196,18 +230,51 @@ public class AddNewPost extends AppCompatActivity {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 validatePostInputs();
             }
         });
 
-        //action bar
+        /*//action bar
         newPostToolbar = findViewById(R.id.addNewPostPageToolbar);
         setSupportActionBar(newPostToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-        getSupportActionBar().setTitle("Add New Research");
+        getSupportActionBar().setTitle("Add New Research");*/
+    }
+
+    private void loadPostData(String editPostId) {
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Posts");
+        //get details of post using id of post
+        Query fquery=reference.orderByChild("postid").equalTo(editPostId);
+        fquery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds:dataSnapshot.getChildren()){
+                    //get data
+                    editTitle=""+ds.child("title").getValue();
+                    editAbstraction=""+ds.child("abstraction").getValue();
+                    editImage=""+ds.child("postimage").getValue();
+
+                    //set data to views
+                    researchTitle.setText(editTitle);
+                    abstraction.setText(editAbstraction);
+                    //set image
+                    if (!editImage.equals("noImage")){
+                        try {
+                            Picasso.get().load(editImage).into(showImageArea);
+                        }catch (Exception e){
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //method for selecting the pdf file from storage
@@ -223,6 +290,9 @@ public class AddNewPost extends AppCompatActivity {
         //get data of research title and abstraction from edit text
         String researchTitleInput=researchTitle.getText().toString().trim();
         String abstractionInput=abstraction.getText().toString().trim();
+        Intent intent=getIntent();
+        String isUpdateKey=""+intent.getStringExtra("key");
+        String editPostId=""+intent.getStringExtra("editPostId");
 
         if (TextUtils.isEmpty(researchTitleInput)){
             Animation animShake = AnimationUtils.loadAnimation(AddNewPost.this, R.anim.shake);
@@ -235,8 +305,17 @@ public class AddNewPost extends AppCompatActivity {
             Toast.makeText(AddNewPost.this, "Write abstraction..", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (isUpdateKey.equals("editPost")){
+            beginUpdate(researchTitleInput,abstractionInput,editPostId);
+        }else {
+            //pdf file
+            if (pdfUri!=null){
+                uploadFile(pdfUri);
+            }
+            uploadData(researchTitleInput,abstractionInput);
+        }
 
-        if (imageURI==null){
+        /*if (imageURI==null){
             //post status without image
             uploadData(researchTitleInput,abstractionInput,"noImage");
 
@@ -244,12 +323,227 @@ public class AddNewPost extends AppCompatActivity {
             //pdf file
             if (pdfUri!=null){
                 uploadFile(pdfUri);
-            }else {
-                Toast.makeText(this, "Select a file..", Toast.LENGTH_SHORT).show();
             }
             //post with image
             uploadData(researchTitleInput,abstractionInput,String.valueOf(imageURI));
+        }*/
+    }
+
+    //beginning the update
+    private void beginUpdate(String researchTitleInput, String abstractionInput, String editPostId) {
+        if (!editImage.equals("noImage")){
+            //with Image
+            updateWasWithImage(researchTitleInput,abstractionInput,editPostId);
+        }else if (showImageArea.getDrawable() !=null){
+            //without image
+            updateWithNowImage(researchTitleInput,abstractionInput,editPostId);
+        }else {
+            //without image
+            updateWithoutImage(researchTitleInput,abstractionInput,editPostId);
         }
+    }
+
+    private void updateWithoutImage(String researchTitleInput, String abstractionInput, String editPostId) {
+        //progress dialog
+        final ProgressDialog progressDialog=new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Updating Research Paper..");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+
+        //uri is received upload post to firebase database
+        HashMap<String, Object> uphashMap=new HashMap<>();
+        //put post info
+        uphashMap.put("uid", uid);
+        uphashMap.put("uName",name);
+        uphashMap.put("uEmail",email);
+        uphashMap.put("uDp",dp);
+        uphashMap.put("title", researchTitleInput);
+        uphashMap.put("abstraction", abstractionInput);
+        uphashMap.put("postimage", "noImage");
+
+        //path to store post data
+        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Posts");
+        ref.child(editPostId).updateChildren(uphashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        progressDialog.dismiss();
+                        Toast.makeText(AddNewPost.this, "Research Post Updated..", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(AddNewPost.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateWithNowImage(final String researchTitleInput, final String abstractionInput, final String editPostId) {
+        //progress dialog
+        final ProgressDialog progressDialog=new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Updating Research Paper..");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+
+        String timeStamp=String.valueOf(System.currentTimeMillis());
+        String filePathAndName="Posts/"+"Post_"+timeStamp;
+
+        //get image from show image area
+        Bitmap bitmap=((BitmapDrawable)showImageArea.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+
+        //image compress
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+        byte[] data=baos.toByteArray();
+
+        StorageReference ref=FirebaseStorage.getInstance().getReference().child(filePathAndName);
+        ref.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isSuccessful());
+                String downloadUri=uriTask.getResult().toString();
+
+                if (uriTask.isSuccessful()){
+
+                    //uri is received upload post to firebase database
+                    HashMap<String, Object> uphashMap=new HashMap<>();
+                    //put post info
+                    uphashMap.put("uid", uid);
+                    uphashMap.put("uName",name);
+                    uphashMap.put("uEmail",email);
+                    uphashMap.put("uDp",dp);
+                    uphashMap.put("title", researchTitleInput);
+                    uphashMap.put("abstraction", abstractionInput);
+                    uphashMap.put("postimage", downloadUri);
+
+                    //path to store post data
+                    DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Posts");
+                    ref.child(editPostId).updateChildren(uphashMap)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(AddNewPost.this, "Research Post Updated..", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(AddNewPost.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                //track the progress of our pdf upload
+                int currentProgress=(int)(100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                progressDialog.setProgress(currentProgress);
+            }
+        });
+    }
+
+    private void updateWasWithImage(final String researchTitleInput, final String abstractionInput, final String editPostId) {
+        //progress dialog
+        final ProgressDialog progressDialog=new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Updating Research Paper..");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+
+        //post was with image, delete previous image first
+        StorageReference mPictureRef=FirebaseStorage.getInstance().getReferenceFromUrl(editImage);
+        mPictureRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //image deleted, upload new image
+                /*for post-image name, post-id, publish-time*/
+                String timeStamp=String.valueOf(System.currentTimeMillis());
+                String filePathAndName="Posts/"+"Post_"+timeStamp;
+
+                //get image from show image area
+                Bitmap bitmap=((BitmapDrawable)showImageArea.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos=new ByteArrayOutputStream();
+
+                //image compress
+                bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+                byte[] data=baos.toByteArray();
+
+                StorageReference ref=FirebaseStorage.getInstance().getReference().child(filePathAndName);
+                ref.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful());
+                        String downloadUri=uriTask.getResult().toString();
+
+                        if (uriTask.isSuccessful()){
+                            //uri is received upload post to firebase database
+                            HashMap<String, Object> uphashMap=new HashMap<>();
+                            //put post info
+                            uphashMap.put("uid", uid);
+                            uphashMap.put("uName",name);
+                            uphashMap.put("uEmail",email);
+                            uphashMap.put("uDp",dp);
+                            uphashMap.put("title", researchTitleInput);
+                            uphashMap.put("abstraction", abstractionInput);
+                            uphashMap.put("postimage", downloadUri);
+
+                            //path to store post data
+                            DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Posts");
+                            ref.child(editPostId).updateChildren(uphashMap)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(AddNewPost.this, "Research Post Updated..", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(AddNewPost.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                        //track the progress of our pdf upload
+                        int currentProgress=(int)(100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                        progressDialog.setProgress(currentProgress);
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        
     }
 
     //pdf upload file
@@ -307,7 +601,7 @@ public class AddNewPost extends AppCompatActivity {
     }
 
     //upload data to fireBase Method
-    private void uploadData(final String researchTitleInput, final String abstractionInput, final String uri) {
+    private void uploadData(final String researchTitleInput, final String abstractionInput) {
         //progress dialog
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -315,17 +609,24 @@ public class AddNewPost extends AppCompatActivity {
         progressDialog.setProgress(0);
         progressDialog.show();
 
-
         //for post-image name, post-id, post-publish time
         final String timeStamp=String.valueOf(System.currentTimeMillis());
 
         //setting a unique name for the post
         String filePathAndName="Posts/"+"Post_"+timeStamp;
 
-        if (!uri.equals("noImage")){
+        if (showImageArea.getDrawable()!=null){
+
+            //get image from show image area
+            Bitmap bitmap=((BitmapDrawable)showImageArea.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+
+            //image compress
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+            byte[] data=baos.toByteArray();
             //post with image
             StorageReference reference=FirebaseStorage.getInstance().getReference().child(filePathAndName);
-            reference.putFile(Uri.parse(uri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            reference.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -335,22 +636,22 @@ public class AddNewPost extends AppCompatActivity {
 
                     if (uriTask.isSuccessful()){
                         //uri is received upload post to firebase database
-                        HashMap<Object,String> hashMap=new HashMap<>();
+                        HashMap<String, Object> hashMap=new HashMap<>();
                         //put post info
                         hashMap.put("uid", uid);
                         hashMap.put("uName",name);
                         hashMap.put("uDp",dp);
+                        hashMap.put("postid",timeStamp);
                         hashMap.put("uEmail",email);
                         hashMap.put("title", researchTitleInput);
                         hashMap.put("abstraction", abstractionInput);
                         hashMap.put("postimage", downloadUri);
                         hashMap.put("pTime",timeStamp);
 
-
                         //path to store post data
                         DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts");
 
-                        //put data in this database referece
+                        //put data in this database reference
                         databaseReference.child(timeStamp).setValue(hashMap).
                                 addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -391,15 +692,18 @@ public class AddNewPost extends AppCompatActivity {
 
         }else {
             //post without image
-            ////uri is recieved upload post to firebase database
+            //uri is received upload post to firebase database
             HashMap<Object,String> hashMap=new HashMap<>();
             //put post info
             hashMap.put("uid", uid);
+            hashMap.put("uName",name);
+            hashMap.put("uDp",dp);
+            hashMap.put("postid",timeStamp);
+            hashMap.put("uEmail",email);
             hashMap.put("title", researchTitleInput);
             hashMap.put("abstraction", abstractionInput);
             hashMap.put("postimage", "noImage");
             hashMap.put("pTime",timeStamp);
-            hashMap.put("uName",name);
 
             //path to store post data
             DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts");

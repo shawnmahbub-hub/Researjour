@@ -124,7 +124,6 @@ public class Login extends AppCompatActivity {
             loadingBar.show();
             loadingBar.setCanceledOnTouchOutside(true);
 
-
             mAuth.signInWithEmailAndPassword(emailInput,passwordInput).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -134,10 +133,6 @@ public class Login extends AppCompatActivity {
                         loadingBar.dismiss();
                     }else {
                         String message=task.getException().getMessage();
-                        //shake animation
-                        Animation animShake = AnimationUtils.loadAnimation(Login.this, R.anim.shake);
-                        password.startAnimation(animShake);
-
                         Toast.makeText(Login.this, "Error: "+message, Toast.LENGTH_SHORT).show();
                         loadingBar.dismiss();
                     }
