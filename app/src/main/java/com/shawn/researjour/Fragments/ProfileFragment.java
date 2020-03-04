@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shawn.researjour.AboutUS;
 import com.shawn.researjour.Activity.Login;
 import com.shawn.researjour.R;
 import com.squareup.picasso.Picasso;
@@ -81,7 +82,7 @@ public class ProfileFragment extends Fragment {
         aboutApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //alert dialog of about app
+                sendUserToAboutUSActivity();
             }
         });
 
@@ -137,6 +138,10 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    private void sendUserToAboutUSActivity() {
+        Intent intent=new Intent(getActivity(), AboutUS.class);
+        startActivity(intent);
+    }
 
 
     @Override

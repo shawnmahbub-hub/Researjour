@@ -75,5 +75,8 @@ This Agreement shall begin on the date here of.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logout">Logout Successfully</string>
+    <string name="our_mission_desc">Researjour’s mission is to become the world’s leading discovery platform for scientists and researchers. We make it easy to stay up to date, so they can concentrate on moving their research forward.</string>
+    <string name="our_story_desc">Founded in 2020, we created Researcher to help academics stay afloat in a sea of literature. Keeping up to date with all new papers is a crucial part of any researcher\'s day to day life, but it\'s often difficult to find the time or energy. That\'s where we realised we could help.</string>
+    <string name="working_desc">Our team is passionate about helping scientists make their big breakthroughs faster. We\'re growing rapidly, so if you\'re interested in joining our small, dynamic team please get in touch.</string>
 
 </resources>
