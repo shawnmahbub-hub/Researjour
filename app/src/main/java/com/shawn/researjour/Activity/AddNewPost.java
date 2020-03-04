@@ -233,14 +233,6 @@ public class AddNewPost extends AppCompatActivity {
                 validatePostInputs();
             }
         });
-
-        /*//action bar
-        newPostToolbar = findViewById(R.id.addNewPostPageToolbar);
-        setSupportActionBar(newPostToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-        getSupportActionBar().setTitle("Add New Research");*/
     }
 
     private void loadPostData(String editPostId) {
@@ -314,19 +306,6 @@ public class AddNewPost extends AppCompatActivity {
             }
             uploadData(researchTitleInput,abstractionInput);
         }
-
-        /*if (imageURI==null){
-            //post status without image
-            uploadData(researchTitleInput,abstractionInput,"noImage");
-
-        }else {
-            //pdf file
-            if (pdfUri!=null){
-                uploadFile(pdfUri);
-            }
-            //post with image
-            uploadData(researchTitleInput,abstractionInput,String.valueOf(imageURI));
-        }*/
     }
 
     //beginning the update
@@ -633,6 +612,7 @@ public class AddNewPost extends AppCompatActivity {
                     Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
                     while (!uriTask.isSuccessful());
                     String downloadUri=uriTask.getResult().toString();
+                    String pLikes= String.valueOf(0);
 
                     if (uriTask.isSuccessful()){
                         //uri is received upload post to firebase database
@@ -642,6 +622,7 @@ public class AddNewPost extends AppCompatActivity {
                         hashMap.put("uName",name);
                         hashMap.put("uDp",dp);
                         hashMap.put("postid",timeStamp);
+                        hashMap.put("pLikes",pLikes);
                         hashMap.put("uEmail",email);
                         hashMap.put("title", researchTitleInput);
                         hashMap.put("abstraction", abstractionInput);
@@ -694,11 +675,13 @@ public class AddNewPost extends AppCompatActivity {
             //post without image
             //uri is received upload post to firebase database
             HashMap<Object,String> hashMap=new HashMap<>();
+            String pLikes= String.valueOf(0);
             //put post info
             hashMap.put("uid", uid);
             hashMap.put("uName",name);
             hashMap.put("uDp",dp);
             hashMap.put("postid",timeStamp);
+            hashMap.put("pLikes",pLikes);
             hashMap.put("uEmail",email);
             hashMap.put("title", researchTitleInput);
             hashMap.put("abstraction", abstractionInput);

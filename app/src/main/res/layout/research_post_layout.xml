@@ -144,7 +144,7 @@
                 android:textAllCaps="false"
                 android:gravity="center"
                 android:paddingStart="16dp"
-                android:drawableLeft="@drawable/like_outline"
+                android:drawableLeft="@drawable/like"
                 />
 
             <Button
@@ -174,7 +174,7 @@
                 android:textAllCaps="false"
                 android:gravity="center"
                 android:paddingStart="16dp"
-                android:drawableLeft="@drawable/ic_bookmark_outline"
+                android:drawableLeft="@drawable/bookmark"
                 />
 
 

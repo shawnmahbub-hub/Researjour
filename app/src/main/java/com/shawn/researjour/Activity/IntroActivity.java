@@ -1,7 +1,6 @@
 package com.shawn.researjour.Activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,8 +11,8 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.shawn.researjour.Adapter.IntroViewPagerAdapter;
-import com.shawn.researjour.R;
 import com.shawn.researjour.Models.ScreenItem;
+import com.shawn.researjour.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +40,12 @@ public class IntroActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        // when this activity is about to be launch we need to check if its openened before or not
-
-        if (restorePrefData()) {
-
+        // when this activity is about to be launch we need to check if its opened before or not
+        /*if (restorePrefData()) {
             Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class );
             startActivity(mainActivity);
             finish();
-
-
-        }
+        }*/
 
 
         // ini views
@@ -84,26 +79,19 @@ public class IntroActivity extends AppCompatActivity {
 
                 position = screenPager.getCurrentItem();
                 if (position < mList.size()) {
-
                     position++;
                     screenPager.setCurrentItem(position);
-
-
                 }
 
                 if (position == mList.size()-1) { // when we reach to the last screen
 
                     // TODO : show the GETSTARTED Button and hide the indicator and the next button
-
                     loadLastScreen();
-
-
                 }
             }
         });
 
-        // tablayout add change listener
-
+        // tab layout add change listener
 
         tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
@@ -119,8 +107,6 @@ public class IntroActivity extends AppCompatActivity {
                     tvSkip.setVisibility(View.VISIBLE);
                     btnNext.setAnimation(btnAnim);
                 }
-
-
             }
 
             @Override
@@ -134,32 +120,22 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
-
-
         // Get Started button click listener
-
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 //open main activity
-
                 Intent mainActivity = new Intent(getApplicationContext(), ProfileSetup.class);
                 startActivity(mainActivity);
                 // also we need to save a boolean value to storage so next time when the user run the app
                 // we could know that he is already checked the intro screen activity
                 // i'm going to use shared preferences to that process
-                savePrefsData();
+                /*savePrefsData();*/
                 finish();
-
-
-
             }
         });
 
         // skip button click listener
-
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,19 +143,13 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
-    private boolean restorePrefData() {
-
+    /*private boolean restorePrefData() {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
         Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend",false);
         return  isIntroActivityOpnendBefore;
-
-
-
     }
 
     private void savePrefsData() {
@@ -190,11 +160,10 @@ public class IntroActivity extends AppCompatActivity {
         editor.commit();
 
 
-    }
+    }*/
 
-    // show the GETSTARTED Button and hide the indicator and the next button
+    // show the GET STARTED Button and hide the indicator and the next button
     private void loadLastScreen() {
-
         btnNext.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);
         tvSkip.setVisibility(View.INVISIBLE);

@@ -122,7 +122,7 @@ public class Login extends AppCompatActivity {
             loadingBar.setTitle("Logging in");
             loadingBar.setMessage("wait for a moment, while you logged in");
             loadingBar.show();
-            loadingBar.setCanceledOnTouchOutside(true);
+            loadingBar.setCanceledOnTouchOutside(false);
 
             mAuth.signInWithEmailAndPassword(emailInput,passwordInput).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override

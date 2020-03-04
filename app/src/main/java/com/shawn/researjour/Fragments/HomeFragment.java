@@ -58,8 +58,6 @@ public class HomeFragment extends Fragment {
 
         //init post list
         loadPosts();
-
-
         return view;
     }
 

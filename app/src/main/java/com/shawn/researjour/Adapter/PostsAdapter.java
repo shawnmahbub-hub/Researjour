@@ -149,21 +149,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                  * increase value by 1, otherwise decrease value by 1*/
                 final int pLikes=Integer.parseInt(postList.get(i).getpLikes());
                 mProcessLike=true;
-                //get id of the post clicked
-                final String postId=postList.get(i).getPostid();
+                //get the id of the post clicked
+                final String postIde=postList.get(i).getPostid();
+
                 likesRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (mProcessLike){
-                            if (dataSnapshot.child(postId).hasChild(myUid)){
+                            if (dataSnapshot.child(postIde).hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                                 //already liked, so remove like
-                                postsRef.child(postId).child("pLikes").setValue(""+(pLikes-1));
-                                likesRef.child(postId).child(myUid).removeValue();
+                                postsRef.child(postIde).child("pLikes").setValue(""+(pLikes-1));
+                                likesRef.child(postIde).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
                                 mProcessLike=false;
                             }else {
                                 //not liked, like it
-                                postsRef.child(postId).child("pLikes").setValue(""+(pLikes+1));
-                                likesRef.child(postId).child(myUid).setValue("upvoted");
+                                postsRef.child(postIde).child("pLikes").setValue(""+(pLikes+1));
+                                likesRef.child(postIde).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("upvoted");
                                 mProcessLike=false;
                             }
                         }
@@ -188,14 +189,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         myHolder.bookmarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //will implement later
+                /*//will implement later
                 if (myHolder.bookmarkBtn.getTag().equals("bookmarkBtn")){
                     FirebaseDatabase.getInstance().getReference().child("Bookmarks")
                             .child(firebaseUser.getUid()).child(post.getPostid()).setValue(true);
                 }else {
                     FirebaseDatabase.getInstance().getReference().child("Bookmarks")
                             .child(firebaseUser.getUid()).child(post.getPostid()).removeValue();
-                }
+                }*/
 
             }
         });
@@ -252,8 +253,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         final ProgressDialog pd=new ProgressDialog(context);
         pd.setMessage("Deleting Post..");
         /*steps:
-        * 1.Delete Image using url
-        * 2.Delete from database using post id*/
+         * 1.Delete Image using url
+         * 2.Delete from database using post id*/
         StorageReference picRef= FirebaseStorage.getInstance().getReferenceFromUrl(pImage);
         picRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -315,25 +316,25 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         });
     }
 
-    private void setLikes(final MyHolder holder, final String postKey) {
+    private void setLikes(final MyHolder holder, final String postid) {
         likesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                /*if (dataSnapshot.child(postKey).hasChild(myUid)){
+                if (dataSnapshot.child(postid).hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                     //user liked this post
-                    *//*to indicate that the post is liked by this signed in user
-                    * change drawable left icon of like button
-                    * change text of like button from "upvote" to "upvoted"*//*
-                    holder.admireButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like,0,0,0);
+                    /*to indicate that the post is liked by this signed in user
+                 * change drawable left icon of like button
+                 * change text of like button from "upvote" to "upvoted"*/
+                    holder.admireButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.liked,0,0,0);
                     holder.admireButton.setText("upvoted");
-                }*//*else {
+                }else {
                     //user liked this post
-                    *//*to indicate that the post is liked by this signed in user
-                     * change drawable left icon of like button
-                     * change text of like button from "upvoted" to "upvote"*//*
-                    holder.admireButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like_outline,0,0,0);
+                    /*to indicate that the post is liked by this signed in user
+                 * change drawable left icon of like button
+                 * change text of like button from "upvoted" to "upvote"*/
+                    holder.admireButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like,0,0,0);
                     holder.admireButton.setText("upvote");
-                }*/
+                }
             }
 
             @Override
@@ -385,13 +386,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                /*if (dataSnapshot.child(postid).exists()){
-                    bookmarkBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bookmark,0,0,0);
+if (dataSnapshot.child(postid).exists()){
+                    bookmarkBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bookmarked,0,0,0);
                     bookmarkBtn.setText("bookmarked");
                 }else {
-                    bookmarkBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bookmark_outline,0,0,0);
+                    bookmarkBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bookmark,0,0,0);
                     bookmarkBtn.setText("bookmark");
-                }*/
+                }
+
             }
 
             @Override

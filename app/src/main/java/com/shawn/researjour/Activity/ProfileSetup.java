@@ -37,8 +37,10 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +55,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
     private Spinner gender,researcherRole;
     private Button nextBtn;
     private ProgressDialog loadingBar;
+    final Calendar myCalendar = Calendar.getInstance();
 
     //fireBase
     private FirebaseAuth mAuth;
@@ -62,8 +65,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
 
     //constants for image pick
     private int PReqCode=1;
-    private static final int REQUESCODE =1 ;
-
+    final static int Gallery_Pick = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,9 +109,9 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if (Build.VERSION.SDK_INT >= 22) {
+                if (Build.VERSION.SDK_INT >= 22) {
                     checkAndRequestForPermission();
-            }
+                }
             }
         });
 
@@ -138,11 +140,26 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        //date picker
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+
         dob_picker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                datePicker();
+                // TODO Auto-generated method stub
+                new DatePickerDialog(ProfileSetup.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -157,23 +174,10 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    //data picker method
-    private void datePicker() {
-        //calender instance for picking the date of birth
-        Calendar mCalender=Calendar.getInstance();
-        final int year=mCalender.get(Calendar.YEAR);
-        final int month=mCalender.get(Calendar.MONTH);
-        final int day=mCalender.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog=new DatePickerDialog(ProfileSetup.this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month=month+1;
-                String date=dayOfMonth+"/"+month+"/"+year;
-                dob_picker.setText(date);
-            }
-        },year,month,day);
-        datePickerDialog.show();
+    private void updateLabel() {
+            String myFormat = "MM/dd/yy"; //In which you need put here
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            dob_picker.setText(sdf.format(myCalendar.getTime()));
     }
 
     //on activity result method
@@ -182,9 +186,9 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==REQUESCODE && resultCode==RESULT_OK && data!=null)
+        if(requestCode==Gallery_Pick && resultCode==RESULT_OK && data!=null)
         {
-            //Uri imageUri = data.getData();
+            Uri imageUri = data.getData();
 
             //init crop image activity
             CropImage.activity()
@@ -227,7 +231,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
                                                     Intent selfIntent = new Intent(ProfileSetup.this, ProfileSetup.class);
                                                     startActivity(selfIntent);
 
-                                                    Toast.makeText(ProfileSetup.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(ProfileSetup.this, "Profile Image stored successfully...", Toast.LENGTH_SHORT).show();
                                                     loadingBar.dismiss();
                                                 }
                                                 else {
@@ -248,7 +252,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
 
             } else
             {
-                Toast.makeText(this, "Error Occured: Image can not be cropped. Try Again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Error: Image can not be cropped. Try Again.", Toast.LENGTH_SHORT).show();
                 loadingBar.dismiss();
             }
         }
@@ -310,10 +314,9 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
                         PReqCode);
             }
 
-        }
-        else
+        }else {
             openGallery();
-
+        }
     }
 
     //open gallery method
@@ -323,7 +326,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
 
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent,REQUESCODE);
+        startActivityForResult(galleryIntent,Gallery_Pick);
     }
 
     //saving account info to fireBase
@@ -411,4 +414,3 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
     }
 
 }
-

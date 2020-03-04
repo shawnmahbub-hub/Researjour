@@ -63,6 +63,8 @@
         android:layout_below="@+id/header_text_id"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="160dp"
+        app:civ_border_color="@color/colorAccent2"
+        app:civ_border_width="3dp"
         />
 
     //full name
@@ -142,7 +144,8 @@
         android:paddingStart="16dp"
         android:textColorHint="#40000000"
         android:paddingEnd="16dp"
-        android:inputType="date"
+        android:clickable="true"
+        android:focusable="false"
         />
 
     //next button
