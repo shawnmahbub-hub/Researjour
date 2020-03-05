@@ -407,7 +407,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
     //send user to category selection
     private void SendUserToCategorySelection()
     {
-        Intent mainIntent = new Intent(ProfileSetup.this, CategorySelection.class);
+        Intent mainIntent = new Intent(ProfileSetup.this, ChooseCategory.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
         finish();

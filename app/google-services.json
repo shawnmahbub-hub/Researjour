@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "136397024490-vfgip5etc27o9ai14l3bnemo1gfracgk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shawn.researjour",
+            "certificate_hash": "df16465d00311bfa9ddc5fd7dbbb782390646b70"
+          }
+        },
+        {
           "client_id": "136397024490-j69b6l19g111p2ubejgp7l78eadoeg14.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
