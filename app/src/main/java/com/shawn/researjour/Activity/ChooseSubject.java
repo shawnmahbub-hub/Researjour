@@ -1,14 +1,10 @@
 package com.shawn.researjour.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,12 +18,19 @@ import com.shawn.researjour.R;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class ChooseSubject extends AppCompatActivity {
 
     private RecyclerView recyclerViewSubjectChoice;
     private ArrayList<SubjectFetchModel> arrayListSubjectFetch;
     private ArrayList<String> arrayListPass;
     private SubjectFetchAdapter subjectFetchAdapter;
+    private ProgressDialog pd;
+
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReferenceSend;
 
@@ -60,8 +63,6 @@ public class ChooseSubject extends AppCompatActivity {
         buttonNextFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
 //                for (int i = 0; i<SubjectFetchAdapter.subjectModelArrayList.size(); i++){
 //                     arrayListPass = new ArrayList<>();

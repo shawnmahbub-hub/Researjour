@@ -3,18 +3,19 @@ package com.shawn.researjour.Models;
 public class ModelClassPost {
 
     //use same name as we given while uploading post
-    String uName,uid,uEmail,postid,pLikes,uDp,pTime,postimage,title,abstraction;
+    String uName,uid,uEmail,postid,pLikes,pComments,uDp,pTime,postimage,title,abstraction;
 
     public ModelClassPost() {
     }
 
-    public ModelClassPost(String uName, String uid, String uEmail,String postid,String pLikes,String uDp, String pTime, String postimage, String title, String abstraction) {
+    public ModelClassPost(String uName, String uid, String uEmail,String postid,String pLikes,String pComments,String uDp, String pTime, String postimage, String title, String abstraction) {
         this.uName = uName;
         this.uDp=uDp;
         this.uid = uid;
         this.uEmail = uEmail;
         this.postid=postid;
         this.pLikes=pLikes;
+        this.pComments=pComments;
         this.pTime = pTime;
         this.postimage = postimage;
         this.title = title;
@@ -59,6 +60,14 @@ public class ModelClassPost {
 
     public void setpLikes(String pLikes) {
         this.pLikes = pLikes;
+    }
+
+    public String getpComments() {
+        return pComments;
+    }
+
+    public void setpComments(String pComments) {
+        this.pComments = pComments;
     }
 
     public String getuDp() {

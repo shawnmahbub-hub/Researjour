@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.shawn.researjour.AboutUS;
+import com.shawn.researjour.Activity.AboutUS;
 import com.shawn.researjour.Activity.Login;
 import com.shawn.researjour.R;
 import com.squareup.picasso.Picasso;

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="4dp"
-    app:cardElevation="4dp"
+    app:cardElevation="2dp"
     app:contentPadding="8dp"
     app:cardUseCompatPadding="true"
     app:cardBackgroundColor="#fff"
@@ -101,23 +101,47 @@
             android:scaleType="centerCrop"
             />
 
-        <TextView
-            android:id="@+id/likeCounterText_id"
+        <LinearLayout
+            android:id="@+id/likeCommentTv_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_below="@+id/researchPostImage_id"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/googlesans_regular"
-            android:text="105 likes"
-            android:textColor="@color/colorAccent2"
-            android:textSize="14sp" />
+            >
+            <TextView
+                android:id="@+id/likeCounterText_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/postDetailResearchPostImage_id"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="105 likes"
+                android:textColor="@color/colorAccent2"
+                android:layout_weight="1"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/CommentCounterText_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/postDetailResearchPostImage_id"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="3 Feedbacks"
+                android:textAlignment="textEnd"
+                android:layout_weight="1"
+                android:textColor="@color/colorAccent2"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
         <View
             android:id="@+id/divider_id"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/likeCounterText_id"
+            android:layout_below="@id/likeCommentTv_id"
             android:background="#b7b7b7"
             android:layout_marginTop="8dp"
             />

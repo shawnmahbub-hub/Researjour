@@ -6,15 +6,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.shawn.researjour.Adapter.CategoryAdapter;
 import com.shawn.researjour.Models.CategoryModel;
 import com.shawn.researjour.R;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ChooseCategory extends AppCompatActivity {
 
@@ -48,8 +48,6 @@ public class ChooseCategory extends AppCompatActivity {
         categoryModels.add(new CategoryModel("Earth Sciences & Geography", R.drawable.geo, R.drawable.earth));
         categoryModels.add(new CategoryModel("Physics & Mathematics", R.drawable.math, R.drawable.phy));
         categoryModels.add(new CategoryModel("Business Management", R.drawable.manage, R.drawable.busi));
-
-
 
         categoryAdapter = new CategoryAdapter(this, categoryModels);
         categoryAdapter.setCategoryModel(categoryModels);

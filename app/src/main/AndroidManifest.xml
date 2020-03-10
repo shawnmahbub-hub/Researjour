@@ -14,6 +14,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activity.PostDetailActivity"
+            android:theme="@style/AppTheme2"
+            android:windowSoftInputMode="adjustResize"
+            ></activity>
+        <activity android:name=".Activity.AboutUS" />
         <activity android:name=".AboutUS"></activity>
         <activity android:name=".Activity.ChooseSubject" />
         <activity android:name=".Activity.ChooseCategory">
@@ -21,15 +26,15 @@
         </activity>
         <activity
             android:name=".Activity.Home"
-            android:theme="@style/AppTheme2"></activity>
+            android:theme="@style/AppTheme2" />
         <activity
             android:name=".Activity.AddNewPost"
-            android:theme="@style/AppTheme2" />
-        <activity android:name=".Activity.SubjectChoice" />
-        <activity android:name=".Activity.ProfileSetup" />
-        <activity
-            android:name=".Activity.CategorySelection"
-            android:screenOrientation="locked" />
+            android:theme="@style/AppTheme2"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity android:name=".Activity.ProfileSetup"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".Activity.IntroActivity"
             android:screenOrientation="locked" />
@@ -47,10 +52,15 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.Registration"
-            android:screenOrientation="locked" />
+            android:screenOrientation="locked"
+            android:windowSoftInputMode="adjustResize"
+
+            />
         <activity
             android:name=".Activity.Login"
-            android:screenOrientation="locked" />
+            android:screenOrientation="locked"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".Activity.Welcome_Screen"
             android:screenOrientation="locked" />

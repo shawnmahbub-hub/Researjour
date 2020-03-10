@@ -586,6 +586,7 @@ public class AddNewPost extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading Research Paper..");
         progressDialog.setProgress(0);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
         //for post-image name, post-id, post-publish time
@@ -613,6 +614,8 @@ public class AddNewPost extends AppCompatActivity {
                     while (!uriTask.isSuccessful());
                     String downloadUri=uriTask.getResult().toString();
                     String pLikes= String.valueOf(0);
+                    String pComments= String.valueOf(0);
+
 
                     if (uriTask.isSuccessful()){
                         //uri is received upload post to firebase database
@@ -623,6 +626,7 @@ public class AddNewPost extends AppCompatActivity {
                         hashMap.put("uDp",dp);
                         hashMap.put("postid",timeStamp);
                         hashMap.put("pLikes",pLikes);
+                        hashMap.put("pComments",pComments);
                         hashMap.put("uEmail",email);
                         hashMap.put("title", researchTitleInput);
                         hashMap.put("abstraction", abstractionInput);
@@ -781,7 +785,6 @@ public class AddNewPost extends AppCompatActivity {
         //request runtime storage permission
         ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
     }
-
     private boolean checkStoragePermission(){
 
         //check if storage permission is enabled or not
@@ -791,12 +794,10 @@ public class AddNewPost extends AppCompatActivity {
         .WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
         return result;
     }
-
     private void requestCameraPermission(){
         //request runtime storage permission
         ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
     }
-
     private boolean checkCameraPermission(){
 
         //check if camera permission is enabled or not

@@ -353,7 +353,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
             loadingBar.setTitle("Saving Information");
             loadingBar.setMessage("Please wait, while we are creating your new Account...");
             loadingBar.show();
-            loadingBar.setCanceledOnTouchOutside(true);
+            loadingBar.setCanceledOnTouchOutside(false);
 
             HashMap userMap = new HashMap();
             userMap.put("fullname", fullnameInput);

@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.shawn.researjour.Activity.AddNewPost;
+import com.shawn.researjour.Activity.PostDetailActivity;
 import com.shawn.researjour.Models.ModelClassPost;
 import com.shawn.researjour.R;
 import com.squareup.picasso.Picasso;
@@ -82,6 +83,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         String uEmail=postList.get(i).getuEmail();
         final String postid=postList.get(i).getPostid();
         String pLikes=postList.get(i).getpLikes();
+        String pComments=postList.get(i).getpComments();
         String uName=postList.get(i).getuName();
         String uDp=postList.get(i).getuDp();
         String pTitle=postList.get(i).getTitle();
@@ -100,7 +102,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         myHolder.pTitleTv.setText(pTitle);
         myHolder.pAbstractionTv.setText(pAbstraction);
         myHolder.pLikesTv.setText(pLikes+" upvotes");//e.g. 100 upvotes
+        myHolder.pCommentTv.setText(pComments+" Feedbacks");//e.g. 100 upvotes
 
+        Toast.makeText(context, "onBindCalled", Toast.LENGTH_SHORT).show();
         //set likes for each post
         setLikes(myHolder,postid);
 
@@ -116,9 +120,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         //set post picture
         //if there is no picture in the post
         if (pImage.equals("noImage")){
-            //hide imageview
+            //hide imageView
             myHolder.pImageIv.setVisibility(View.GONE);
-            //Picasso.get().load(uDp).placeholder(R.drawable.user_profile).into(myHolder.uPictureIv);
 
         }else {
             myHolder.pImageIv.setVisibility(View.VISIBLE);
@@ -181,8 +184,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         myHolder.feedbackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //will implement later
-                Toast.makeText(context, "feedback", Toast.LENGTH_SHORT).show();
+
+                    //start PostDetailActivity
+                    Intent intent=new Intent(context, PostDetailActivity.class);
+                    intent.putExtra("postId",postid);
+                    context.startActivity(intent);
             }
         });
 
@@ -213,6 +219,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             popupMenu.getMenu().add(Menu.NONE,1,0,"Edit Post");
             popupMenu.getMenu().add(Menu.NONE,0,0,"Delete Post");
         }
+        popupMenu.getMenu().add(Menu.NONE,2,0,"View Research Post");
         //menu item click listener
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -227,6 +234,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                     Intent intent=new Intent(context, AddNewPost.class);
                     intent.putExtra("key","editPost");
                     intent.putExtra("editPostId",postid);
+                    context.startActivity(intent);
+                }else if (id==2){
+                    Intent intent=new Intent(context, PostDetailActivity.class);
+                    intent.putExtra("postId",postid);
                     context.startActivity(intent);
                 }
 
@@ -353,9 +364,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     //view holder class
     class MyHolder extends RecyclerView.ViewHolder{
 
+
         //views from research_post_layout.xml
         ImageView uPictureIv, pImageIv;
-        TextView uNameTv, pTimeTv, pTitleTv,pAbstractionTv,pLikesTv;
+        TextView uNameTv, pTimeTv, pTitleTv,pAbstractionTv,pLikesTv,pCommentTv;
         ImageButton moreButton;
         Button admireButton, feedbackButton, bookmarkBtn;
 
@@ -370,6 +382,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             pTitleTv=itemView.findViewById(R.id.homePostTitleText_id);
             pAbstractionTv=itemView.findViewById(R.id.homePostDescText_id);
             pLikesTv=itemView.findViewById(R.id.likeCounterText_id);
+            pCommentTv=itemView.findViewById(R.id.CommentCounterText_id);
             moreButton=itemView.findViewById(R.id.moreButton_id);
             admireButton=itemView.findViewById(R.id.admire_btn_id);
             feedbackButton=itemView.findViewById(R.id.feedback_btn_id);
