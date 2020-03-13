@@ -191,43 +191,26 @@
                 android:textSize="18sp" />
 
             //google sign in button
-            <Button
-                android:id="@+id/googleIcon_id"
-                android:layout_width="128dp"
-                android:layout_height="46dp"
-                android:layout_below="@+id/login_with_id"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/imagebutton_bg"
-                android:drawableStart="@drawable/google"
-                android:paddingStart="34dp"
-                />
 
             //facebook sign in button
-            <Button
-                android:id="@+id/fbIcon_id"
-                android:layout_width="128dp"
-                android:layout_height="46dp"
-                android:layout_below="@+id/login_with_id"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_toEndOf="@+id/googleIcon_id"
-                android:layout_toRightOf="@+id/googleIcon_id"
-                android:background="@drawable/imagebutton_bg"
-                android:text="facebook"
-                android:textSize="18sp"
-                android:textColor="#3C5A9A"
-                android:fontFamily="@font/googlesans_regular"
-                android:textAllCaps="false"
-                />
 
             //text view for sign up
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/login_googleIcon_id"
+                android:layout_width="128dp"
+                android:layout_height="46dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/login_with_id"
+                android:layout_marginTop="24dp"
+                />
+
+
             <TextView
                 android:id="@+id/sign_up_text_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/googleIcon_id"
+                android:layout_below="@id/login_googleIcon_id"
                 android:layout_alignEnd="@+id/login_button_id"
                 android:layout_alignBottom="@+id/new_user_text_id"
                 android:layout_marginStart="4dp"
@@ -247,7 +230,7 @@
                 android:id="@+id/new_user_text_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/googleIcon_id"
+                android:layout_below="@+id/login_googleIcon_id"
                 android:layout_alignStart="@+id/login_button_id"
                 android:layout_marginStart="22dp"
                 android:layout_marginLeft="137dp"

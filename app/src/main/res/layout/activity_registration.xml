@@ -256,35 +256,14 @@
         android:textSize="18sp" />
 
     //google sign up button
-    <Button
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/googleIcon_id"
         android:layout_width="128dp"
         android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/register_with_id"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/imagebutton_bg"
-        android:drawableStart="@drawable/google"
-        android:paddingStart="34dp"
-        />
-
-    //facebook sign up button
-    <Button
-        android:id="@+id/fbIcon_id"
-        android:layout_width="128dp"
-        android:layout_height="46dp"
-        android:layout_below="@+id/register_with_id"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_toEndOf="@+id/googleIcon_id"
-        android:layout_toRightOf="@+id/googleIcon_id"
-        android:background="@drawable/imagebutton_bg"
-        android:text="facebook"
-        android:textSize="18sp"
-        android:textColor="#3C5A9A"
-        android:fontFamily="@font/googlesans_regular"
-        android:textAllCaps="false"
+        android:layout_marginTop="24dp"
+        android:paddingStart="4dp"
         />
 
     //text view for login
@@ -300,7 +279,6 @@
         android:layout_toEndOf="@+id/new_user_text_id"
         android:clickable="true"
         android:focusableInTouchMode="true"
-
         android:fontFamily="@font/googlesans_regular"
         android:lineHeight="20sp"
         android:text="Login"

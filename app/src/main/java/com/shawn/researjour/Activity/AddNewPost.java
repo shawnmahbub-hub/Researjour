@@ -349,6 +349,7 @@ public class AddNewPost extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         progressDialog.dismiss();
                         Toast.makeText(AddNewPost.this, "Research Post Updated..", Toast.LENGTH_SHORT).show();
+                        sendUserToHomeActivity();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -407,6 +408,7 @@ public class AddNewPost extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     progressDialog.dismiss();
+                                    sendUserToHomeActivity();
                                     Toast.makeText(AddNewPost.this, "Research Post Updated..", Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -488,6 +490,7 @@ public class AddNewPost extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             progressDialog.dismiss();
+                                            sendUserToHomeActivity();
                                             Toast.makeText(AddNewPost.this, "Research Post Updated..", Toast.LENGTH_SHORT).show();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
@@ -615,7 +618,6 @@ public class AddNewPost extends AppCompatActivity {
                     String downloadUri=uriTask.getResult().toString();
                     String pLikes= String.valueOf(0);
                     String pComments= String.valueOf(0);
-
 
                     if (uriTask.isSuccessful()){
                         //uri is received upload post to firebase database

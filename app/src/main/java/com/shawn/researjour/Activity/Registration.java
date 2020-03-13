@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,12 +20,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shawn.researjour.R;
@@ -36,9 +46,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Registration extends AppCompatActivity {
 
+    private static final String TAG = Login.class.getSimpleName();
+    public static final int LOGIN_REQUEST_CODE = 10001;
+    private static final int RC_SIGN_IN = 9001;
+
     /*declaring variables for the components inside the registration activity*/
     ImageView passMatched,passNotMatched;
-    ImageButton google,fb,passVisibility;
+    ImageButton passVisibility;
     EditText reg_email, password, confirmPassword;
     Button registration;
     TextView login,terms;
@@ -49,6 +63,9 @@ public class Registration extends AppCompatActivity {
 
     //firebase
     FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
+    CallbackManager callbackManager;
+    private static final String EMAIL = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +87,31 @@ public class Registration extends AppCompatActivity {
         login=findViewById(R.id.logintext_id);
         checkBox=findViewById(R.id.checkbox_id);
         registration=findViewById(R.id.reg_button_id);
+        SignInButton google=findViewById(R.id.googleIcon_id);
+        google.setSize(SignInButton.SIZE_STANDARD);
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(Registration.this, gso);
+
+        //google sign in
+        google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.googleIcon_id:
+                        signIn();
+                        break;
+                    // ...
+                }            }
+        });
 
         //login intent
         login.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +167,66 @@ public class Registration extends AppCompatActivity {
                 flag = false;
             }
         });
+    }
+
+    private void signIn(){
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
+    }
+
+    private void updateUI(GoogleSignInAccount account) {
+        //showing the progress loading bar
+        loadingBar.setTitle("Creating New Account");
+        loadingBar.setMessage("Wait for a moment while we are connecting with you");
+        loadingBar.show();
+        loadingBar.setCanceledOnTouchOutside(true);
+
+        //check if the account is null
+        if (account != null) {
+            AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(Registration.this, "Successful", Toast.LENGTH_SHORT).show();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        SendUserToViewPagerActivity();
+                    } else {
+                        Toast.makeText(Registration.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+        else{
+            Toast.makeText(Registration.this, "acc failed", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //method for sending the user to terms and conditions activity
@@ -304,9 +406,6 @@ public class Registration extends AppCompatActivity {
                 passNotMatched.setVisibility(View.VISIBLE);
 
             }
-
-
-
         }
 
         @Override

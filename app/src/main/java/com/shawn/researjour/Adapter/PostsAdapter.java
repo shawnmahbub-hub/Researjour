@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.shawn.researjour.Activity.AddNewPost;
 import com.shawn.researjour.Activity.PostDetailActivity;
+import com.shawn.researjour.Activity.ThereProfileActivity;
 import com.shawn.researjour.Models.ModelClassPost;
 import com.shawn.researjour.R;
 import com.squareup.picasso.Picasso;
@@ -135,6 +137,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         }
 
         isSaved(post.getPostid(),myHolder.bookmarkBtn);
+
+        myHolder.profileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*click to go to specific user profile activity with the uid, this uid is of the clicked user
+                * which will be used to show user specific data/posts*/
+                Intent intent= new Intent(context, ThereProfileActivity.class);
+                intent.putExtra("uid",uid);
+                context.startActivity(intent);
+            }
+        });
 
         //handle button clicks
         myHolder.moreButton.setOnClickListener(new View.OnClickListener() {
@@ -370,11 +383,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         TextView uNameTv, pTimeTv, pTitleTv,pAbstractionTv,pLikesTv,pCommentTv;
         ImageButton moreButton;
         Button admireButton, feedbackButton, bookmarkBtn;
+        RelativeLayout profileLayout;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             //init views
+            profileLayout=itemView.findViewById(R.id.researcherProfileLayout);
             uPictureIv=itemView.findViewById(R.id.homeProfileImage_id);
             pImageIv=itemView.findViewById(R.id.researchPostImage_id);
             uNameTv=itemView.findViewById(R.id.homeResearcherName_id);

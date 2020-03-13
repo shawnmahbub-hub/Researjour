@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
@@ -16,10 +17,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.shawn.researjour.R;
 
 import androidx.annotation.NonNull;
@@ -27,13 +37,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
 
+    private static final int RC_SIGN_IN = 9001;
+    private static final String TAG = Login.class.getSimpleName();
+
     private EditText email, password;
     private ImageButton loginPassVisibility;
     private TextView forgot_pass, sign_up;
-    private Button loginbtn;
+    private Button loginBtn;
     private ProgressDialog loadingBar;
-    private FirebaseAuth mAuth;
     private boolean isShowPassword;
+
+    private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +59,12 @@ public class Login extends AppCompatActivity {
         /*finding the id of the declared variables */
         forgot_pass=findViewById(R.id.forgot_pass_id);
         sign_up=findViewById(R.id.sign_up_text_id);
-        loginbtn=findViewById(R.id.login_button_id);
+        loginBtn =findViewById(R.id.login_button_id);
         email=findViewById(R.id.email_editText_id);
         password=findViewById(R.id.password_editText_id);
+        SignInButton google=findViewById(R.id.login_googleIcon_id);
+        google.setSize(SignInButton.SIZE_STANDARD);
+
 
         //show and hide password toggle
         loginPassVisibility=findViewById(R.id.login_passVisibility_id);
@@ -58,6 +77,29 @@ public class Login extends AppCompatActivity {
 
         //init firebase authentication
         mAuth=FirebaseAuth.getInstance();
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        //google sign in
+        google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.login_googleIcon_id:
+                        signIn();
+                        break;
+                    // ...
+                }            }
+        });
 
         //loading bar
         loadingBar=new ProgressDialog(this);
@@ -82,12 +124,72 @@ public class Login extends AppCompatActivity {
         });
 
 
-        loginbtn.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 validateInputs();
             }
         });
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
+    }
+
+    private void updateUI(GoogleSignInAccount account) {
+        //loading bar
+        loadingBar.setTitle("Logging in");
+        loadingBar.setMessage("wait for a moment, while you logged in");
+        loadingBar.show();
+        loadingBar.setCanceledOnTouchOutside(false);
+
+        //check if the account is null
+        if (account != null) {
+            AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        loadingBar.dismiss();
+                        Toast.makeText(Login.this, "Successful", Toast.LENGTH_SHORT).show();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        sendUserToHomeActivity();
+                    } else {
+                        loadingBar.dismiss();
+                        Toast.makeText(Login.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     //method for validating the inputs of the user
@@ -195,7 +297,7 @@ public class Login extends AppCompatActivity {
             }
 
             //setting the button enabled if the edit text field is not empty
-            loginbtn.setEnabled(!userNameInput.isEmpty() && !passwordInput.isEmpty());
+            loginBtn.setEnabled(!userNameInput.isEmpty() && !passwordInput.isEmpty());
         }
 
         @Override

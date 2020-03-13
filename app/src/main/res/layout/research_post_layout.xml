@@ -17,64 +17,71 @@
         android:layout_height="match_parent"
         >
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/homeProfileImage_id"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/user_profile" />
+        <RelativeLayout
+            android:id="@+id/researcherProfileLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/homeResearcherName_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_toEndOf="@+id/homeProfileImage_id"
-            android:fontFamily="@font/googlesans_medium"
-            android:text="Researcher Name"
-            android:textSize="16sp"
-            android:textColor="#333" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/homeProfileImage_id"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/user_profile" />
 
-        <TextView
-            android:id="@+id/homePostTime_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/homeResearcherName_id"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/homeProfileImage_id"
-            android:fontFamily="@font/googlesans_regular"
-            android:text="12:00"
-            android:textSize="12sp"
-            android:textColor="#333" />
+            <TextView
+                android:id="@+id/homeResearcherName_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/homeProfileImage_id"
+                android:fontFamily="@font/googlesans_medium"
+                android:text="Researcher Name"
+                android:textSize="16sp"
+                android:textColor="#333" />
 
-        <ImageButton
-            android:id="@+id/moreButton_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="280dp"
-            android:layout_marginTop="16dp"
-            android:layout_toEndOf="@+id/homeProfileImage_id"
-            android:background="#fff"
-            android:src="@drawable/ic_more" />
+            <TextView
+                android:id="@+id/homePostTime_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/homeResearcherName_id"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/homeProfileImage_id"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="12:00"
+                android:textSize="12sp"
+                android:textColor="#333" />
+
+            <ImageButton
+                android:id="@+id/moreButton_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="280dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/homeProfileImage_id"
+                android:background="#fff"
+                android:src="@drawable/ic_more" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/homePostTitleText_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/homeProfileImage_id"
+            android:layout_below="@+id/researcherProfileLayout"
             android:textSize="16sp"
             android:text="Research Title"
             android:textColor="#333"
             android:fontFamily="@font/googlesans_medium"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:autoLink="all"
             />
 
@@ -204,7 +211,6 @@
 
 
         </LinearLayout>
+
     </RelativeLayout>
-
-
 </androidx.cardview.widget.CardView>
