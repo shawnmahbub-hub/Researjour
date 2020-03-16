@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:id="@+id/categoryImageNonSelected"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/cat_1"
+            android:scaleType="fitXY"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:id="@+id/categoryImageSelected"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/cat_1" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/categoryText"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/googlesans_regular"
+        android:text="Health and Care"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="14sp" />
+
+</LinearLayout>

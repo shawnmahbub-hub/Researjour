@@ -18,9 +18,13 @@
         >
 
         <RelativeLayout
-            android:id="@+id/researcherProfileLayout"
+            android:id="@+id/researcherProfileLayout_id"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/homeProfileImage_id"
@@ -76,7 +80,7 @@
             android:id="@+id/homePostTitleText_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/researcherProfileLayout"
+            android:layout_below="@+id/researcherProfileLayout_id"
             android:textSize="16sp"
             android:text="Research Title"
             android:textColor="#333"
@@ -144,23 +148,16 @@
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/divider_id"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/likeCommentTv_id"
-            android:background="#b7b7b7"
-            android:layout_marginTop="8dp"
-            />
-
         <LinearLayout
             android:id="@+id/like_comment_save_buttonLayout_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_below="@id/divider_id"
+            android:layout_below="@id/likeCommentTv_id"
             android:layout_marginTop="8dp"
+            android:background="@drawable/post_buttons_layoutbg"
+            android:padding="2dp"
             >
 
             <Button

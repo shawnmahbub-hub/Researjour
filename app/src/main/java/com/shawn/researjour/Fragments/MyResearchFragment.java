@@ -49,25 +49,21 @@ public class MyResearchFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view=inflater.inflate(R.layout.fragment_my_research,container,false);
         myResearchRecyclerView=view.findViewById(R.id.portfolioRecyclerView_id);
+        firebaseAuth=FirebaseAuth.getInstance();
 
         postList=new ArrayList<>();
-
 
         checkUserStatus();
 
         loadMyPosts();
 
-
         return view;
-
-
     }
 
     private void loadMyPosts() {
@@ -78,6 +74,7 @@ public class MyResearchFragment extends Fragment {
         layoutManager.setReverseLayout(true);
         //set this layout to recyclerview
         myResearchRecyclerView.setLayoutManager(layoutManager);
+
 
         //init posts list
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Posts");
@@ -118,12 +115,11 @@ public class MyResearchFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         mTopToolbar=getActivity().findViewById(R.id.toolbar);
-        mTopToolbar.setVisibility(View.VISIBLE);
+        mTopToolbar.setVisibility(View.GONE);
         super.onCreate(savedInstanceState);
     }
 

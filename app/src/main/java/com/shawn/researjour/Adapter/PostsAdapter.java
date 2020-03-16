@@ -389,7 +389,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             super(itemView);
 
             //init views
-            profileLayout=itemView.findViewById(R.id.researcherProfileLayout);
+            profileLayout=itemView.findViewById(R.id.researcherProfileLayout_id);
             uPictureIv=itemView.findViewById(R.id.homeProfileImage_id);
             pImageIv=itemView.findViewById(R.id.researchPostImage_id);
             uNameTv=itemView.findViewById(R.id.homeResearcherName_id);

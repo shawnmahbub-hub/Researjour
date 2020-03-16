@@ -1,11 +1,11 @@
 package com.shawn.researjour.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shawn.researjour.Fragments.BookmarksFragment;
@@ -49,6 +49,13 @@ public class Home extends AppCompatActivity {
         bookmarksFragment=new BookmarksFragment();
         profileFragment=new ProfileFragment();
 
+        // when this activity is about to be launch we need to check if its opened before or not
+        if (restorePrefData()) {
+            Intent mainActivity = new Intent(getApplicationContext(), Home.class );
+            startActivity(mainActivity);
+            finish();
+        }
+
         //default fragment
         setFragment(homeFragment);
 
@@ -82,6 +89,23 @@ public class Home extends AppCompatActivity {
         });
     }
 
+    private boolean restorePrefData() {
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
+        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend",false);
+        return  isIntroActivityOpnendBefore;
+    }
+
+    private void savePrefsData() {
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("isIntroOpnend",true);
+        editor.commit();
+
+
+    }
+
     private void setFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction2=getSupportFragmentManager().beginTransaction();
@@ -102,8 +126,8 @@ public class Home extends AppCompatActivity {
         int id=item.getItemId();
         if (id==R.id.action_addPost){
             startActivity(new Intent(this, AddNewPost.class));
-        }if (id==R.id.action_notification){
-            Toast.makeText(this, "notification", Toast.LENGTH_SHORT).show();        }
+        }/*if (id==R.id.action_notification){
+            Toast.makeText(this, "notification", Toast.LENGTH_SHORT).show();}*/
         return super.onOptionsItemSelected(item);
     }
 }

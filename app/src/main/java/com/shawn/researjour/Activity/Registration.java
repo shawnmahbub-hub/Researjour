@@ -327,6 +327,7 @@ public class Registration extends AppCompatActivity {
                     //put info in hashMap
                     hashMap.put("email",email);
                     hashMap.put("uid",uid);
+                    hashMap.put("cover","");//will be added later
                     //firebase database instance
                     FirebaseDatabase database=FirebaseDatabase.getInstance();
                     //database reference path

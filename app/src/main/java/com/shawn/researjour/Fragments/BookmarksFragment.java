@@ -37,7 +37,7 @@ public class BookmarksFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         mTopToolbar=getActivity().findViewById(R.id.toolbar);
-        mTopToolbar.setVisibility(View.VISIBLE);
+        mTopToolbar.setVisibility(View.GONE);
         super.onCreate(savedInstanceState);
     }
 

@@ -56,14 +56,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddNewPost extends AppCompatActivity {
 
+    private static final int PICK_VIDEO_REQ_CODE =1 ;
+
     //components part
     Toolbar newPostToolbar;
     private CircleImageView postProfilePicture;
-    private TextView postUserName, postTime,postButton,pdfName;
+    private TextView postUserName, postTime,postButton,pdfName,videoName;
     private EditText researchTitle,abstraction;
     private ImageView showImageArea;
     private ImageButton addPostImage,addPdf,addVideo;
-    private Uri imageURI,pdfUri;
+    private Uri imageURI,pdfUri,videoUri;
 
     //Permissions constants
     private static final int CAMERA_REQUEST_CODE=100;
@@ -103,6 +105,7 @@ public class AddNewPost extends AppCompatActivity {
         addPostImage=(ImageButton)findViewById(R.id.addPostImage_id);
         addPdf=(ImageButton)findViewById(R.id.addPdf_id);
         pdfName=findViewById(R.id.pdfTextView_id);
+        videoName=findViewById(R.id.videoTextView_id);
         addVideo=(ImageButton)findViewById(R.id.addPostVideo_id);
         postButton=(TextView) findViewById(R.id.post_button_id);
         showImageArea=(ImageView)findViewById(R.id.showImageArea_id);
@@ -205,8 +208,22 @@ public class AddNewPost extends AppCompatActivity {
         addPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addPostImage.setBackground(getResources().getDrawable(R.drawable.ontouch_bg));
                 showImagePickDialog();
+            }
+        });
+
+        //add video
+        addVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission
+                        (AddNewPost.this,Manifest.permission.READ_EXTERNAL_STORAGE)
+                        ==PackageManager.PERMISSION_GRANTED)
+                {
+                    pickVideoFromGallery();
+                }else {
+                    ActivityCompat.requestPermissions(AddNewPost.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
+                }
             }
         });
 
@@ -233,6 +250,14 @@ public class AddNewPost extends AppCompatActivity {
                 validatePostInputs();
             }
         });
+    }
+
+    private void pickVideoFromGallery() {
+
+        Intent intent=new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select a Video"),PICK_VIDEO_REQ_CODE);
     }
 
     private void loadPostData(String editPostId) {
@@ -301,11 +326,225 @@ public class AddNewPost extends AppCompatActivity {
             beginUpdate(researchTitleInput,abstractionInput,editPostId);
         }else {
             //pdf file
-            if (pdfUri!=null){
+            if (pdfUri!=null || videoUri!=null ){
                 uploadFile(pdfUri);
+                uploadVideo(videoUri);
             }
             uploadData(researchTitleInput,abstractionInput);
         }
+    }
+
+    private void uploadVideo(Uri videoUri) {
+        final String videoTimeStamp=String.valueOf(System.currentTimeMillis());
+
+        final String fileName=videoTimeStamp;
+        StorageReference storageReference=storage.getReference();
+
+        storageReference.child("videoUploads").child(fileName).putFile(videoUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        String url=taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                        DatabaseReference databaseReference=database.getReference();
+
+                        databaseReference.child("Video").child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Toast.makeText(AddNewPost.this, "your research video uploaded successfully", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(AddNewPost.this, "your research videoa not uploaded successfully", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AddNewPost.this, "your research pdf not uploaded successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //pdf upload file
+    private void uploadFile(Uri pdfUri) {
+
+        final String pdftimeStamp=String.valueOf(System.currentTimeMillis());
+
+        final String fileName="pdf_"+pdftimeStamp;
+        StorageReference storageReference=storage.getReference();
+
+        storageReference.child("pdfUploads").child(fileName).putFile(pdfUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        String url=taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                        DatabaseReference databaseReference=database.getReference();
+
+                        databaseReference.child("pdf").child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Toast.makeText(AddNewPost.this, "your research pdf uploaded successfully", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(AddNewPost.this, "your research pdf not uploaded successfully", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AddNewPost.this, "your research pdf not uploaded successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    //upload data to fireBase Method
+    private void uploadData(final String researchTitleInput, final String abstractionInput) {
+        //progress dialog
+        final ProgressDialog progressDialog=new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Uploading Research Paper..");
+        progressDialog.setProgress(0);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        //for post-image name, post-id, post-publish time
+        final String timeStamp=String.valueOf(System.currentTimeMillis());
+
+        //setting a unique name for the post
+        String filePathAndName="Posts/"+"Post_"+timeStamp;
+
+        if (showImageArea.getDrawable()!=null){
+
+            //get image from show image area
+            Bitmap bitmap=((BitmapDrawable)showImageArea.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+
+            //image compress
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+            byte[] data=baos.toByteArray();
+            //post with image
+            StorageReference reference=FirebaseStorage.getInstance().getReference().child(filePathAndName);
+            reference.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isSuccessful());
+                    String downloadUri=uriTask.getResult().toString();
+                    String pLikes= String.valueOf(0);
+                    String pComments= String.valueOf(0);
+
+                    if (uriTask.isSuccessful()){
+                        //uri is received upload post to firebase database
+                        HashMap<String, Object> hashMap=new HashMap<>();
+                        //put post info
+                        hashMap.put("uid", uid);
+                        hashMap.put("uName",name);
+                        hashMap.put("uDp",dp);
+                        hashMap.put("postid",timeStamp);
+                        hashMap.put("pLikes",pLikes);
+                        hashMap.put("pComments",pComments);
+                        hashMap.put("uEmail",email);
+                        hashMap.put("title", researchTitleInput);
+                        hashMap.put("abstraction", abstractionInput);
+                        hashMap.put("postimage", downloadUri);
+                        hashMap.put("pTime",timeStamp);
+
+                        //path to store post data
+                        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts");
+
+                        //put data in this database reference
+                        databaseReference.child(timeStamp).setValue(hashMap).
+                                addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        //added in database
+                                        Toast.makeText(AddNewPost.this, "Post Published", Toast.LENGTH_SHORT).show();
+
+                                        //reset views
+                                        researchTitle.setText("");
+                                        abstraction.setText("");
+                                        showImageArea.setImageURI(null);
+                                        imageURI=null;
+
+                                        //sending the user to home activity
+                                        sendUserToHomeActivity();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                    //track the progress of our pdf upload
+                    int currentProgress=(int)(100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                    progressDialog.setProgress(currentProgress);
+                }
+            });
+
+        }else {
+            //post without image
+            //uri is received upload post to firebase database
+            HashMap<Object,String> hashMap=new HashMap<>();
+            String pLikes= String.valueOf(0);
+            //put post info
+            hashMap.put("uid", uid);
+            hashMap.put("uName",name);
+            hashMap.put("uDp",dp);
+            hashMap.put("postid",timeStamp);
+            hashMap.put("pLikes",pLikes);
+            hashMap.put("uEmail",email);
+            hashMap.put("title", researchTitleInput);
+            hashMap.put("abstraction", abstractionInput);
+            hashMap.put("postimage", "noImage");
+            hashMap.put("pTime",timeStamp);
+
+            //path to store post data
+            DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts");
+
+            //put data in this database reference
+            databaseReference.child(timeStamp).setValue(hashMap).
+                    addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            //added in database
+                            Toast.makeText(AddNewPost.this, "Post Published", Toast.LENGTH_SHORT).show();
+                            //reset views
+                            researchTitle.setText("");
+                            abstraction.setText("");
+                            showImageArea.setImageURI(null);
+                            imageURI=null;
+
+                            //sending the user to home activity
+                            sendUserToHomeActivity();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
     }
 
     //beginning the update
@@ -528,43 +767,6 @@ public class AddNewPost extends AppCompatActivity {
         
     }
 
-    //pdf upload file
-    private void uploadFile(Uri pdfUri) {
-
-        final String pdftimeStamp=String.valueOf(System.currentTimeMillis());
-
-        final String fileName="pdf_"+pdftimeStamp;
-        StorageReference storageReference=storage.getReference();
-
-        storageReference.child("pdfUploads").child(fileName).putFile(pdfUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        String url=taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                        DatabaseReference databaseReference=database.getReference();
-
-                        databaseReference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Toast.makeText(AddNewPost.this, "your research pdf uploaded successfully", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Toast.makeText(AddNewPost.this, "your research pdf not uploaded successfully", Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddNewPost.this, "your research pdf not uploaded successfully", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
     //user status method
     private void checkUserStatus() {
 
@@ -580,148 +782,6 @@ public class AddNewPost extends AppCompatActivity {
             startActivity(new Intent(this,Home.class));
             finish();
         }
-    }
-
-    //upload data to fireBase Method
-    private void uploadData(final String researchTitleInput, final String abstractionInput) {
-        //progress dialog
-        final ProgressDialog progressDialog=new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Uploading Research Paper..");
-        progressDialog.setProgress(0);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-
-        //for post-image name, post-id, post-publish time
-        final String timeStamp=String.valueOf(System.currentTimeMillis());
-
-        //setting a unique name for the post
-        String filePathAndName="Posts/"+"Post_"+timeStamp;
-
-        if (showImageArea.getDrawable()!=null){
-
-            //get image from show image area
-            Bitmap bitmap=((BitmapDrawable)showImageArea.getDrawable()).getBitmap();
-            ByteArrayOutputStream baos=new ByteArrayOutputStream();
-
-            //image compress
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
-            byte[] data=baos.toByteArray();
-            //post with image
-            StorageReference reference=FirebaseStorage.getInstance().getReference().child(filePathAndName);
-            reference.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isSuccessful());
-                    String downloadUri=uriTask.getResult().toString();
-                    String pLikes= String.valueOf(0);
-                    String pComments= String.valueOf(0);
-
-                    if (uriTask.isSuccessful()){
-                        //uri is received upload post to firebase database
-                        HashMap<String, Object> hashMap=new HashMap<>();
-                        //put post info
-                        hashMap.put("uid", uid);
-                        hashMap.put("uName",name);
-                        hashMap.put("uDp",dp);
-                        hashMap.put("postid",timeStamp);
-                        hashMap.put("pLikes",pLikes);
-                        hashMap.put("pComments",pComments);
-                        hashMap.put("uEmail",email);
-                        hashMap.put("title", researchTitleInput);
-                        hashMap.put("abstraction", abstractionInput);
-                        hashMap.put("postimage", downloadUri);
-                        hashMap.put("pTime",timeStamp);
-
-                        //path to store post data
-                        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts");
-
-                        //put data in this database reference
-                        databaseReference.child(timeStamp).setValue(hashMap).
-                                addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        //added in database
-                                        Toast.makeText(AddNewPost.this, "Post Published", Toast.LENGTH_SHORT).show();
-
-                                        //reset views
-                                        researchTitle.setText("");
-                                        abstraction.setText("");
-                                        showImageArea.setImageURI(null);
-                                        imageURI=null;
-
-                                        //sending the user to home activity
-                                        sendUserToHomeActivity();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                    //track the progress of our pdf upload
-                    int currentProgress=(int)(100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                    progressDialog.setProgress(currentProgress);
-                }
-            });
-
-        }else {
-            //post without image
-            //uri is received upload post to firebase database
-            HashMap<Object,String> hashMap=new HashMap<>();
-            String pLikes= String.valueOf(0);
-            //put post info
-            hashMap.put("uid", uid);
-            hashMap.put("uName",name);
-            hashMap.put("uDp",dp);
-            hashMap.put("postid",timeStamp);
-            hashMap.put("pLikes",pLikes);
-            hashMap.put("uEmail",email);
-            hashMap.put("title", researchTitleInput);
-            hashMap.put("abstraction", abstractionInput);
-            hashMap.put("postimage", "noImage");
-            hashMap.put("pTime",timeStamp);
-
-            //path to store post data
-            DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts");
-
-            //put data in this database reference
-            databaseReference.child(timeStamp).setValue(hashMap).
-                    addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            //added in database
-                            Toast.makeText(AddNewPost.this, "Post Published", Toast.LENGTH_SHORT).show();
-                            //reset views
-                            researchTitle.setText("");
-                            abstraction.setText("");
-                            showImageArea.setImageURI(null);
-                            imageURI=null;
-
-                            //sending the user to home activity
-                            sendUserToHomeActivity();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(AddNewPost.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
-
     }
 
     //method for showing the alert dialog
@@ -780,6 +840,41 @@ public class AddNewPost extends AppCompatActivity {
         Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
+    }
+
+    //saving the selected image to the show image area
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        //check whether user has selected a pdf file or not
+        if (requestCode==86 && resultCode==RESULT_OK && data!=null)
+        {
+            pdfUri=data.getData();
+            pdfName.setText("file: "+data.getData().getLastPathSegment());
+        }
+
+        if (requestCode==PICK_VIDEO_REQ_CODE && resultCode==RESULT_OK && data!=null){
+            videoUri=data.getData();
+            videoName.setText("file: "+data.getData().getLastPathSegment());
+        }
+
+        if (resultCode==RESULT_OK){
+
+            if (requestCode==IMAGE_PICK_GALLERY_CODE){
+
+                //image is picked form gallery, get uri of image
+                imageURI=data.getData();
+
+                //set to image view area
+                showImageArea.setImageURI(imageURI);
+
+            }
+            if (requestCode==IMAGE_PICK_CAMERA_CODE){
+                //image is picked from camera, get uri of image
+                showImageArea.setImageURI(imageURI);
+            }
+        }
     }
 
     //4 Methods for camera and gallery storage permission
@@ -857,36 +952,6 @@ public class AddNewPost extends AppCompatActivity {
                 }
             }
             break;
-        }
-    }
-
-    //saving the selected image to the show image area
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        //check whether user has selected a pdf file or not
-        if (requestCode==86 && resultCode==RESULT_OK && data!=null)
-        {
-            pdfUri=data.getData();
-            pdfName.setText("file: "+data.getData().getLastPathSegment());
-        }
-
-        if (resultCode==RESULT_OK){
-
-            if (requestCode==IMAGE_PICK_GALLERY_CODE){
-
-                //image is picked form gallery, get uri of imamge
-                imageURI=data.getData();
-
-                //set to image view area
-                showImageArea.setImageURI(imageURI);
-
-            }
-            if (requestCode==IMAGE_PICK_CAMERA_CODE){
-                //image is picked from camera, get uri of image
-                showImageArea.setImageURI(imageURI);
-            }
         }
     }
 

@@ -1,17 +1,22 @@
 package com.shawn.researjour.Activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -63,6 +68,20 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
     private StorageReference UserProfileImageRef;
     private String currentUserID;
 
+    //Permissions constants
+    private static final int CAMERA_REQUEST_CODE=100;
+    private static final int STORAGE_REQUEST_CODE=200;
+
+    //image pick constants
+    private static final int IMAGE_PICK_CAMERA_CODE=300;
+    private static final int IMAGE_PICK_GALLERY_CODE=400;
+
+    //permission array
+    String[] cameraPermissions;
+    String[] storagePermissions;
+
+    private Uri imageURI;
+
     //constants for image pick
     private int PReqCode=1;
     final static int Gallery_Pick = 1;
@@ -76,6 +95,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         currentUserID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
+
 
         //finding id
         profileImage=findViewById(R.id.profile_image);
@@ -109,9 +129,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= 22) {
-                    checkAndRequestForPermission();
-                }
+                showImagePickDialog();
             }
         });
 
@@ -168,10 +186,117 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view)
             {
-                SaveAccountSetupInformation();
+                validateProfileInputs();
             }
         });
 
+    }
+
+    private void validateProfileInputs() {
+        //get data of research title and abstraction from edit text
+        String fullNameInput=fullName.getText().toString().trim();
+        String universityInput=university.getText().toString().trim();
+
+
+        if (TextUtils.isEmpty(fullNameInput)){
+            Animation animShake = AnimationUtils.loadAnimation(ProfileSetup.this, R.anim.shake);
+            fullName.startAnimation(animShake);
+            Toast.makeText(ProfileSetup.this, "Enter Title..", Toast.LENGTH_SHORT).show();
+            return;
+        }else if (TextUtils.isEmpty(universityInput)){
+            Animation animShake = AnimationUtils.loadAnimation(ProfileSetup.this, R.anim.shake);
+            university.startAnimation(animShake);
+            Toast.makeText(ProfileSetup.this, "Write abstraction..", Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            SaveAccountSetupInformation();
+        }
+
+    }
+
+    private void showImagePickDialog() {
+        String[] options={"Camera", "Gallery"};
+
+        //dialog
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setTitle("Choose Image From");
+
+        //setting options to dialog
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //handler for item click
+                if (which==0){
+                    //camera clicked
+                    if (!checkCameraPermission()){
+                        requestCameraPermission();
+                    }else {
+                        pickFromCamera();
+                    }
+                }
+                if (which==1){
+                    //gallery clicked
+                    if (!checkStoragePermission()){
+                        requestStoragePermission();
+                    }else {
+                        pickFromGallery();
+                    }
+                }
+            }
+        });
+        //create and show dialog
+        builder.create().show();
+    }
+
+    private void pickFromGallery() {
+
+        Intent intent=new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent,IMAGE_PICK_GALLERY_CODE);
+    }
+    private void pickFromCamera() {
+
+        //intent to pick image from camera
+
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(MediaStore.Images.Media.TITLE,"Temp Pick");
+        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Temp Description");
+        imageURI=getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+
+
+        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
+        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
+    }
+
+    private void requestStoragePermission(){
+        //request runtime storage permission
+        ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
+    }
+    private boolean checkStoragePermission(){
+
+        //check if storage permission is enabled or not
+        //return true if enabled
+        //return false if not enabled
+        boolean result= ContextCompat.checkSelfPermission(this,Manifest.permission
+                .WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+    private void requestCameraPermission(){
+        //request runtime storage permission
+        ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
+    }
+    private boolean checkCameraPermission(){
+
+        //check if camera permission is enabled or not
+        //return true if enabled
+        //return false if not enabled
+        boolean result= ContextCompat.checkSelfPermission(this,Manifest.permission
+                .CAMERA)==(PackageManager.PERMISSION_GRANTED);
+
+        boolean result1= ContextCompat.checkSelfPermission(this,Manifest.permission
+                .WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
+        return result && result1 ;
     }
 
     private void updateLabel() {
@@ -180,31 +305,76 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
             dob_picker.setText(sdf.format(myCalendar.getTime()));
     }
 
+    //handle permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        /*this method is called when user press Allow
+         * or Deny from permission request dialog and here
+         * we will handle permission cases is allowed or denied*/
+
+        switch (requestCode){
+
+            case CAMERA_REQUEST_CODE:{
+                if (grantResults.length>0){
+                    boolean cameraAccepted=grantResults[0]==PackageManager.PERMISSION_GRANTED;
+                    boolean storageAccepted=grantResults[1]==PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted && storageAccepted){
+                        pickFromCamera();
+
+                    }else {
+                        Toast.makeText(this, "Camera permissions are necessary", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            break;
+
+            case STORAGE_REQUEST_CODE:{
+                if (grantResults.length>0){
+                    boolean writeStorageAccepted=grantResults[0]==PackageManager.PERMISSION_GRANTED;
+                    if (writeStorageAccepted){
+
+                        //storage permission are granted
+                        pickFromGallery();
+
+                    }else {
+
+                        Toast.makeText(this, "Storage permission necessary", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+            break;
+        }
+    }
+
     //on activity result method
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==Gallery_Pick && resultCode==RESULT_OK && data!=null)
-        {
-            Uri imageUri = data.getData();
+            if (requestCode==IMAGE_PICK_GALLERY_CODE && resultCode==RESULT_OK && data!=null){
 
-            //init crop image activity
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1, 1)
-                    .start(this);
-        }
+                imageURI=data.getData();
 
-        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-        {
+                //image is picked form gallery, get uri of image
+                startCrop(imageURI);
+
+            }
+            if (requestCode==IMAGE_PICK_CAMERA_CODE){
+                //image is picked from camera, get uri of image
+
+                startCrop(imageURI);
+            }
+            if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+            {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
             if(resultCode == RESULT_OK)
             {
                 loadingBar.setTitle("Profile Image");
-                loadingBar.setMessage("Please wait, while we updating your profile image...");
+                loadingBar.setMessage("Please wait, while we are updating your profile image...");
                 loadingBar.show();
                 loadingBar.setCanceledOnTouchOutside(true);
 
@@ -220,8 +390,8 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
                                 result.addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        String downloadUrl = uri.toString();
-                                        UsersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>()
+                                        String downloadUri = uri.toString();
+                                        UsersRef.child("profileimage").setValue(downloadUri).addOnCompleteListener(new OnCompleteListener<Void>()
                                         {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task)
@@ -256,6 +426,13 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
                 loadingBar.dismiss();
             }
         }
+    }
+
+    private void startCrop(Uri imageURI) {
+        CropImage.activity(imageURI)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(1, 1)
+                .start(this);
     }
 
     //spinner item selected listener
@@ -297,7 +474,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    //check permission method
+    /*//check permission method
     private void checkAndRequestForPermission() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -317,9 +494,9 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         }else {
             openGallery();
         }
-    }
+    }*/
 
-    //open gallery method
+    /*//open gallery method
     private void openGallery() {
 
         //TODO: open gallery intent and wait for user to pick an image !
@@ -327,7 +504,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent,Gallery_Pick);
-    }
+    }*/
 
     //saving account info to fireBase
     private void SaveAccountSetupInformation() {
@@ -336,49 +513,34 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         String fullnameInput = fullName.getText().toString();
         String dobInput = dob_picker.getText().toString();
 
-        if(TextUtils.isEmpty(fullnameInput))
-        {
-            Toast.makeText(this, "Please write your username...", Toast.LENGTH_SHORT).show();
-        }
-        if(TextUtils.isEmpty(universtiyInput))
-        {
-            Toast.makeText(this, "Please write your full name...", Toast.LENGTH_SHORT).show();
-        }
-        if(TextUtils.isEmpty(dobInput))
-        {
-            Toast.makeText(this, "Please write your country...", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            loadingBar.setTitle("Saving Information");
-            loadingBar.setMessage("Please wait, while we are creating your new Account...");
-            loadingBar.show();
-            loadingBar.setCanceledOnTouchOutside(false);
+        loadingBar.setTitle("Saving Information");
+        loadingBar.setMessage("Please wait, while we are creating your new Account...");
+        loadingBar.show();
+        loadingBar.setCanceledOnTouchOutside(false);
 
-            HashMap userMap = new HashMap();
-            userMap.put("fullname", fullnameInput);
-            userMap.put("university", universtiyInput);
-            userMap.put("date of birth", dobInput);
+        HashMap userMap = new HashMap();
+        userMap.put("fullname", fullnameInput);
+        userMap.put("university", universtiyInput);
+        userMap.put("date of birth", dobInput);
 
-            UsersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task)
+        UsersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task)
+            {
+                if(task.isSuccessful())
                 {
-                    if(task.isSuccessful())
-                    {
-                        SendUserToCategorySelection();
-                        Toast.makeText(ProfileSetup.this, "your Account is created Successfully.", Toast.LENGTH_LONG).show();
-                        loadingBar.dismiss();
-                    }
-                    else
-                    {
-                        String message =  task.getException().getMessage();
-                        Toast.makeText(ProfileSetup.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
-                        loadingBar.dismiss();
-                    }
+                    SendUserToCategorySelection();
+                    Toast.makeText(ProfileSetup.this, "your Account is created Successfully.", Toast.LENGTH_LONG).show();
+                    loadingBar.dismiss();
                 }
-            });
-        }
+                else
+                {
+                    String message =  task.getException().getMessage();
+                    Toast.makeText(ProfileSetup.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+                    loadingBar.dismiss();
+                }
+            }
+        });
     }
 
     /*method for login text watcher*/

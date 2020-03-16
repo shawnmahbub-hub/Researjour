@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="2dp"
+    app:contentPadding="8dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="#000"
+    >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <RelativeLayout
+            android:id="@+id/researcherProfileLayout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/homeProfileImage_id"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/user_profile" />
+
+            <TextView
+                android:id="@+id/homeResearcherName_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/homeProfileImage_id"
+                android:fontFamily="@font/googlesans_medium"
+                android:text="Researcher Name"
+                android:textSize="16sp"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/homePostTime_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/homeResearcherName_id"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/homeProfileImage_id"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="12:00"
+                android:textSize="12sp"
+                android:textColor="#99FFFFFF" />
+
+            <ImageButton
+                android:id="@+id/moreButton_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="280dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/homeProfileImage_id"
+                android:background="#000"
+                android:src="@drawable/ic_more" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/homePostTitleText_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/researcherProfileLayout_id"
+            android:textSize="16sp"
+            android:text="Research Title"
+            android:textColor="#fff"
+            android:fontFamily="@font/googlesans_medium"
+            android:layout_marginTop="12dp"
+            android:autoLink="all"
+            />
+
+        <TextView
+            android:id="@+id/homePostDescText_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:text="Research Description"
+            android:fontFamily="@font/googlesans_regular"
+            android:layout_below="@id/homePostTitleText_id"
+            android:textColor="#fff"
+            android:autoLink="all"
+            />
+
+        <ImageView
+            android:id="@+id/researchPostImage_id"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/homePostDescText_id"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/blank_photo_bg"
+            android:scaleType="centerCrop"
+            />
+
+        <LinearLayout
+            android:id="@+id/likeCommentTv_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/researchPostImage_id"
+            >
+            <TextView
+                android:id="@+id/likeCounterText_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/postDetailResearchPostImage_id"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="105 likes"
+                android:textColor="#ff6c7c"
+                android:layout_weight="1"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/CommentCounterText_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/postDetailResearchPostImage_id"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="3 Feedbacks"
+                android:textAlignment="textEnd"
+                android:layout_weight="1"
+                android:textColor="#ff6c7c"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/like_comment_save_buttonLayout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_below="@id/likeCommentTv_id"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/post_buttons_layoutbg_night"
+            android:padding="2dp"
+            >
+
+            <Button
+                android:id="@+id/admire_btn_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#000"
+                android:text="upvote"
+                android:textSize="16sp"
+                android:textColor="#fff"
+                android:fontFamily="@font/googlesans_regular"
+                android:textAllCaps="false"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:drawableLeft="@drawable/ic_like_night"
+                />
+
+            <Button
+                android:id="@+id/feedback_btn_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#000"
+                android:text="comment"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:fontFamily="@font/googlesans_regular"
+                android:textAllCaps="false"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:drawableLeft="@drawable/ic_comment_night"
+                />
+
+            <Button
+                android:id="@+id/bookmark_btn_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#000"
+                android:text="save"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:fontFamily="@font/googlesans_regular"
+                android:textAllCaps="false"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:drawableLeft="@drawable/ic_bookmark_night"
+                />
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:text="Research Portfolio"
         android:textSize="24sp"
-        android:layout_marginTop="16sp"
-        android:layout_marginStart="16sp"
-        android:textColor="#333"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/colorAccent2"
         android:fontFamily="@font/googlesans_medium"
         />
 
@@ -25,8 +25,8 @@
         android:layout_below="@+id/portfolioText_id"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp" />
 
 </RelativeLayout>

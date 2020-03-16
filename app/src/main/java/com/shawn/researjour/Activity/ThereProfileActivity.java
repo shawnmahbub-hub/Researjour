@@ -3,7 +3,6 @@ package com.shawn.researjour.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +17,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.shawn.researjour.Adapter.PostsAdapter;
 import com.shawn.researjour.Models.ModelClassPost;
 import com.shawn.researjour.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ThereProfileActivity extends AppCompatActivity {
 
@@ -42,10 +39,9 @@ public class ThereProfileActivity extends AppCompatActivity {
 
     //fireBase
     FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
 
     //views from xml
-    ImageView coverIv;
-    CircleImageView profileImageView;
     TextView userName,uEmail,ResearcherRole,Useruniversity,gender;
 
 
@@ -62,8 +58,6 @@ public class ThereProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("User Profile");
 
         //init views from xml components
-        coverIv=findViewById(R.id.coverIv_id);
-        profileImageView=findViewById(R.id.profileFragment_Picture_id);
         userName=findViewById(R.id.profileFragment_username_id);
         uEmail=findViewById(R.id.emailTv_id);
         Useruniversity=findViewById(R.id.profileUniversityText_id);
@@ -89,8 +83,6 @@ public class ThereProfileActivity extends AppCompatActivity {
                     String university=""+ds.child("university").getValue();
                     String researcherRole=""+ds.child("researcherRole").getValue();
                     String uGender=""+ds.child("gender").getValue();
-                    String image=""+ds.child("profileimage");
-                    String cover=""+ds.child("cover").getValue();
 
                     //set data
                     userName.setText(name);
@@ -98,23 +90,6 @@ public class ThereProfileActivity extends AppCompatActivity {
                     Useruniversity.setText(university);
                     ResearcherRole.setText(researcherRole);
                     gender.setText(uGender);
-
-
-                    try{
-                        //if image is received then set
-                        Picasso.get().load(image).into(profileImageView);
-                    }catch (Exception e){
-                        Picasso.get().load(R.drawable.profile_image).into(profileImageView);
-                    }
-
-                    try{
-                        //if image is recieved then set
-                        Picasso.get().load(cover).into(coverIv);
-                    }catch (Exception e){
-                        Picasso.get().load(R.color.coverbg).into(profileImageView);
-                    }
-
-
                 }
             }
 
@@ -172,7 +147,6 @@ public class ThereProfileActivity extends AppCompatActivity {
         //get current user
         FirebaseUser user=firebaseAuth.getCurrentUser();
         if (user!=null){
-            uid=user.getUid();
         }else {
             startActivity(new Intent(this,Welcome_Screen.class));
             finish();

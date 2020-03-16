@@ -1,7 +1,10 @@
 package com.shawn.researjour.Activity;
 
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -47,6 +50,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
+
 public class PostDetailActivity extends AppCompatActivity {
 
     //to get details of user
@@ -71,6 +76,9 @@ public class PostDetailActivity extends AppCompatActivity {
     EditText commentEt;
     ImageButton sendBtn;
     ImageView cAvatarIv;
+
+    FirebaseStorage firebaseStorage;
+    StorageReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,8 +138,58 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
+        watchVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserToVideoPlayerActivity();
+            }
+        });
+
+        downloadPdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadpdf();
+
+            }
+        });
+
         loadComments();
 
+    }
+
+    private void downloadpdf() {
+
+        final String fileName="pdf_"+postId;
+
+        StorageReference storageReference=firebaseStorage.getInstance().getReference();
+        ref=storageReference.child("pdfUploads");
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String url=uri.toString();
+                downloadFile(PostDetailActivity.this,fileName,".pdf",DIRECTORY_DOWNLOADS,url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+    public long downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
+
+
+        DownloadManager downloadmanager = (DownloadManager) context.
+                getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
+
+        return downloadmanager.enqueue(request);
     }
 
     private void loadComments(){
@@ -462,6 +520,12 @@ public class PostDetailActivity extends AppCompatActivity {
             sendUserToHomeActivity();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendUserToVideoPlayerActivity() {
+        Intent intent=new Intent(this,WatchVideo.class);
+        intent.putExtra("postId",postId);
+        startActivity(intent);
     }
 
     //intent for sending the user to the home activity when click the back button

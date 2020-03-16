@@ -254,7 +254,6 @@
         android:layout_alignParentBottom="true"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:background="#0DFFA3B2"
         >
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -284,11 +283,12 @@
 
         <ImageButton
             android:id="@+id/sendComment_id"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:paddingStart="8dp"
+            android:scaleType="centerInside"
+            android:paddingStart="10dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/send_comment_bg"
             android:src="@drawable/send_comment"

@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.shawn.researjour.Activity.AboutUS;
@@ -65,6 +66,8 @@ public class ProfileFragment extends Fragment {
     StorageReference storageReference;
     //path where images of user profile and cover will be stored
     String storagePath="UsersProfileCoverImages/";
+    private StorageReference UserProfileImageRef;
+    private String currentUserID;
 
     //views from xml
     ImageView coverIv;
@@ -110,6 +113,8 @@ public class ProfileFragment extends Fragment {
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
         storageReference= getInstance().getReference();
+        UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
+
 
         //init views from xml components
         coverIv=view.findViewById(R.id.coverIv_id);
@@ -149,48 +154,71 @@ public class ProfileFragment extends Fragment {
 
         //retrieving data from fireBase
         String currentUserID = firebaseAuth.getCurrentUser().getUid();
-        /*fetching the user profile image and user name from fireBase*/
+        //fetching the user profile image and user name from fireBase
         databaseReference.child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
                 if(dataSnapshot.exists())
                 {
-                    if(dataSnapshot.hasChild("fullname"))
-                    {
-                        String fullname = dataSnapshot.child("fullname").getValue().toString();
-                        userName.setText(fullname);
-
-                    }
-                    if (dataSnapshot.hasChild("email")){
-                        String email=dataSnapshot.child("email").getValue().toString();
-                        uEmail.setText(email);
-                    }
                     if(dataSnapshot.hasChild("profileimage"))
                     {
                         String image = dataSnapshot.child("profileimage").getValue().toString();
                         Picasso.get().load(image).placeholder(R.drawable.profile_image).into(profileImageView);
-                    }
-                    if (dataSnapshot.hasChild("university")){
-                        String universityName = dataSnapshot.child("university").getValue().toString();
-                        university.setText(universityName);
-                    }if (dataSnapshot.hasChild("researcherRole")){
-                    String researcherRoleInput = dataSnapshot.child("researcherRole").getValue().toString();
-                    researcherRole.setText(researcherRoleInput);
-                    }
-                    if (dataSnapshot.hasChild("gender")){
-                        String genderInput = dataSnapshot.child("gender").getValue().toString();
-                        gender.setText(genderInput);
-                    }
-                    else
-                    {
-                        Toast.makeText(getActivity(), "Profile name do not exists...", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Query query=FirebaseDatabase.getInstance().getReference("Users").orderByChild("email").equalTo(firebaseUser.getEmail());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //check until required data get
+                for (DataSnapshot ds:dataSnapshot.getChildren()){
+                    //get data
+                    String name=""+ds.child("fullname").getValue();
+                    String email=""+ds.child("email").getValue();
+                    String userUniversity=""+ds.child("university").getValue();
+                    String researcher_Role=""+ds.child("researcherRole").getValue();
+                    String uGender=""+ds.child("gender").getValue();
+                    String image=""+ds.child("profileimage");
+                    String cover=""+ds.child("cover").getValue();
+
+                    //set data
+                    userName.setText(name);
+                    uEmail.setText(email);
+                    university.setText(userUniversity);
+                    researcherRole.setText(researcher_Role);
+                    gender.setText(uGender);
+
+                    /*//profile image
+                    try{
+                        //if image is received then set
+                        Picasso.get().load(image).placeholder(R.drawable.profile_image).into(profileImageView);
+                    }catch (Exception e){
+                        Picasso.get().load(R.drawable.profile_image).into(profileImageView);
+                    }*/
+
+                    //cover image
+                    try{
+                        //if image is received then set
+                        Picasso.get().load(cover).into(coverIv);
+                    }catch (Exception e){
+                        Picasso.get().load(R.drawable.no_cover).into(coverIv);
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -220,7 +248,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showEditProfileDialog() {
-        String options[]={"Profile Image","Cover Image","Researcher Name"};
+        String options[]={"Profile Image","Cover Image","Researcher Name","University Name"};
         //alert dialog
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         //set title
@@ -232,7 +260,7 @@ public class ProfileFragment extends Fragment {
                 if (which==0){
                     //profile image
                     pd.setMessage("Updating Profile Image");
-                    profileOrCoverImage="profile";
+                    profileOrCoverImage="profileimage";
                     showImagePickerDialog();
                 }else if (which==1){
                     //cover image
@@ -242,7 +270,11 @@ public class ProfileFragment extends Fragment {
                 }else if (which==2){
                     //researcher name
                     pd.setMessage("Updating Name");
-                    showNameRoleUpdateDialog("Name");
+                    showNameRoleUpdateDialog("fullname");
+                }else if (which==3){
+                    //researcher name
+                    pd.setMessage("Updating University");
+                    showNameRoleUpdateDialog("university");
                 }
             }
         });
@@ -253,18 +285,18 @@ public class ProfileFragment extends Fragment {
     private void showNameRoleUpdateDialog(final String key) {
         //custom alert dialog
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        builder.setTitle("Update"+key);
+        builder.setTitle("Update");
         //set layout of dialog
         LinearLayout linearLayout=new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setPadding(10,10,10,10);
         //add edit text
         final EditText editText=new EditText(getActivity());
-        editText.setHint("Enter"+key);
+        editText.setHint(key);
         linearLayout.addView(editText);
 
         builder.setView(linearLayout);
-        //add buttonsin dialog
+        //add buttons in dialog
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -471,7 +503,6 @@ public class ProfileFragment extends Fragment {
 
                 //image is picked form gallery, get uri of image
                 imageURI=data.getData();
-
                 uploadProfileCoverPhoto(imageURI);
 
             }
@@ -485,9 +516,9 @@ public class ProfileFragment extends Fragment {
     private void uploadProfileCoverPhoto(Uri uri) {
         pd.show();
 
-        String filePathAndName=storagePath+""+profileOrCoverImage+"_"+firebaseUser.getUid();
-        StorageReference storageReference1=storageReference.child(filePathAndName);
-        storageReference1.putFile(uri)
+        StorageReference filePath = UserProfileImageRef.child(currentUserID + ".jpg");
+        //StorageReference storageReference1=storageReference.child(filePath);
+        filePath.putFile(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -556,7 +587,6 @@ public class ProfileFragment extends Fragment {
         Intent intent=new Intent(getActivity(), AboutUS.class);
         startActivity(intent);
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

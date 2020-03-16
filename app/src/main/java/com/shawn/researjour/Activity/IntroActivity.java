@@ -40,13 +40,6 @@ public class IntroActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        // when this activity is about to be launch we need to check if its opened before or not
-        /*if (restorePrefData()) {
-            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class );
-            startActivity(mainActivity);
-            finish();
-        }*/
-
 
         // ini views
         btnNext = findViewById(R.id.btn_next);
@@ -92,15 +85,12 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         // tab layout add change listener
-
         tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
                 if (tab.getPosition() == mList.size()-1) {
-
                     loadLastScreen();
-
                 }else {
                     btnNext.setVisibility(View.VISIBLE);
                     btnGetStarted.setVisibility(View.INVISIBLE);
@@ -125,8 +115,8 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //open main activity
-                Intent mainActivity = new Intent(getApplicationContext(), ProfileSetup.class);
-                startActivity(mainActivity);
+                Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
+                startActivity(intent);
                 // also we need to save a boolean value to storage so next time when the user run the app
                 // we could know that he is already checked the intro screen activity
                 // i'm going to use shared preferences to that process
@@ -145,22 +135,6 @@ public class IntroActivity extends AppCompatActivity {
 
     }
 
-    /*private boolean restorePrefData() {
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend",false);
-        return  isIntroActivityOpnendBefore;
-    }
-
-    private void savePrefsData() {
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("isIntroOpnend",true);
-        editor.commit();
-
-
-    }*/
 
     // show the GET STARTED Button and hide the indicator and the next button
     private void loadLastScreen() {
