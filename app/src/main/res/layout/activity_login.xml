@@ -158,8 +158,6 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="70dp"
                 android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@+id/register_with_id"
-                android:layout_toLeftOf="@+id/reg_button_id"
                 android:background="#e7e7e7" />
 
             //divider #2
@@ -172,8 +170,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="70dp"
                 android:layout_marginEnd="24dp"
-                android:layout_toEndOf="@+id/register_with_id"
-                android:layout_toRightOf="@+id/reg_button_id"
                 android:background="#e7e7e7" />
 
             //login with text view

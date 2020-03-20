@@ -279,7 +279,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/googleIcon_id"
-                android:layout_alignEnd="@+id/login_button_id"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_toEndOf="@+id/new_user_text_id"
