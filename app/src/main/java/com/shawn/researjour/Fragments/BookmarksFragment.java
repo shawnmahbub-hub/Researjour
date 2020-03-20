@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +33,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.shawn.researjour.Activity.Home;
 import com.shawn.researjour.R;
 import com.squareup.picasso.Picasso;
 
@@ -180,11 +178,7 @@ public class BookmarksFragment extends Fragment {
             }
         });
 
-        checkUserStatus();
-
-
         return view;
-
     }
 
     //registration inputs validation inputs
@@ -319,21 +313,6 @@ public class BookmarksFragment extends Fragment {
                 loadingBar.dismiss();
             }
         });
-    }
-
-    private void checkUserStatus() {
-
-        //get current user
-        FirebaseUser user=mAuth.getCurrentUser();
-        if (user!=null){
-            //user is signed in stay here
-            email=user.getEmail();
-            uid=user.getUid();
-
-        }else {
-            //user not signed in, go to main activity
-            startActivity(new Intent(getActivity(), Home.class));
-        }
     }
 
     @Override
