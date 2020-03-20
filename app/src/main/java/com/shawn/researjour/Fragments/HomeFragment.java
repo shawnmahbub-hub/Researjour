@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment {
 
         //recycler view and its properties
         recyclerView=view.findViewById(R.id.postRecyclerView_id);
+        recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         //show newest post first, for this load from last
         layoutManager.setStackFromEnd(true);

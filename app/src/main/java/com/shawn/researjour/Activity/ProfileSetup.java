@@ -29,10 +29,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -64,6 +66,7 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
 
     //fireBase
     private FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
     private DatabaseReference UsersRef;
     private StorageReference UserProfileImageRef;
     private String currentUserID;
@@ -81,10 +84,8 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
     String[] storagePermissions;
 
     private Uri imageURI;
+    private String uid,email;
 
-    //constants for image pick
-    private int PReqCode=1;
-    final static int Gallery_Pick = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +93,10 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
 
         //init fireBase
         mAuth = FirebaseAuth.getInstance();
+        firebaseUser=mAuth.getCurrentUser();
         currentUserID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
-
 
         //finding id
         profileImage=findViewById(R.id.profile_image);
@@ -106,6 +107,12 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         dob_picker=findViewById(R.id.dobText_id);
         nextBtn= findViewById(R.id.profile_next_button_id);
         loadingBar = new ProgressDialog(this);
+
+        //init permissions arrays
+        cameraPermissions=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        checkUserStatus();
 
         //array adapter for spinner items
         ArrayAdapter<CharSequence> researcherRoleAdapter = ArrayAdapter.createFromResource(this,
@@ -130,6 +137,32 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
                 showImagePickDialog();
+            }
+        });
+
+        Query query=FirebaseDatabase.getInstance().getReference("Users").orderByChild("email").equalTo(firebaseUser.getEmail());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //check until required data get
+                for (DataSnapshot ds:dataSnapshot.getChildren()){
+
+                    String image=""+ds.child("profileimage").getValue();
+
+                    //profile image
+                    try{
+                        //if image is received then set
+                        Picasso.get().load(image).placeholder(R.drawable.profile_image).into(profileImage);
+                    }catch (Exception e){
+                        Picasso.get().load(R.drawable.profile_image).into(profileImage);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
@@ -191,6 +224,22 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         });
 
     }
+    //user status method
+    private void checkUserStatus() {
+
+        //get current user
+        FirebaseUser user=mAuth.getCurrentUser();
+        if (user!=null){
+            //user is signed in stay here
+            email=user.getEmail();
+            uid=user.getUid();
+
+        }else {
+            //user not signed in, go to main activity
+            startActivity(new Intent(this,Home.class));
+            finish();
+        }
+    }
 
     private void validateProfileInputs() {
         //get data of research title and abstraction from edit text
@@ -248,27 +297,6 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         builder.create().show();
     }
 
-    private void pickFromGallery() {
-
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,IMAGE_PICK_GALLERY_CODE);
-    }
-    private void pickFromCamera() {
-
-        //intent to pick image from camera
-
-        ContentValues contentValues=new ContentValues();
-        contentValues.put(MediaStore.Images.Media.TITLE,"Temp Pick");
-        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Temp Description");
-        imageURI=getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-
-
-        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
-        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
-    }
-
     private void requestStoragePermission(){
         //request runtime storage permission
         ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
@@ -299,10 +327,33 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         return result && result1 ;
     }
 
+    private void pickFromGallery() {
+
+        Intent intent=new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent,IMAGE_PICK_GALLERY_CODE);
+    }
+    private void pickFromCamera() {
+
+        //intent to pick image from camera
+
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(MediaStore.Images.Media.TITLE,"Temp Pick");
+        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Temp Description");
+        imageURI=getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+
+
+        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
+        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
+    }
+
+
+
     private void updateLabel() {
-            String myFormat = "MM/dd/yy"; //In which you need put here
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-            dob_picker.setText(sdf.format(myCalendar.getTime()));
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        dob_picker.setText(sdf.format(myCalendar.getTime()));
     }
 
     //handle permission result
@@ -355,21 +406,21 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode==IMAGE_PICK_GALLERY_CODE && resultCode==RESULT_OK && data!=null){
+        if (requestCode==IMAGE_PICK_GALLERY_CODE && resultCode==RESULT_OK && data!=null){
 
-                imageURI=data.getData();
+            imageURI=data.getData();
 
-                //image is picked form gallery, get uri of image
-                startCrop(imageURI);
+            //image is picked form gallery, get uri of image
+            startCrop(imageURI);
 
-            }
-            if (requestCode==IMAGE_PICK_CAMERA_CODE){
-                //image is picked from camera, get uri of image
+        }
+        if (requestCode==IMAGE_PICK_CAMERA_CODE){
+            //image is picked from camera, get uri of image
 
-                startCrop(imageURI);
-            }
-            if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-            {
+            startCrop(imageURI);
+        }
+        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if(resultCode == RESULT_OK)
             {
@@ -473,38 +524,6 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-    /*//check permission method
-    private void checkAndRequestForPermission() {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                Toast.makeText(this,"Please accept for required permission",Toast.LENGTH_SHORT).show();
-            }
-
-            else
-            {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        PReqCode);
-            }
-
-        }else {
-            openGallery();
-        }
-    }*/
-
-    /*//open gallery method
-    private void openGallery() {
-
-        //TODO: open gallery intent and wait for user to pick an image !
-
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent,Gallery_Pick);
-    }*/
 
     //saving account info to fireBase
     private void SaveAccountSetupInformation() {

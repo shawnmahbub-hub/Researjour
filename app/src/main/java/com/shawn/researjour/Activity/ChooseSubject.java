@@ -43,6 +43,7 @@ public class ChooseSubject extends AppCompatActivity {
         setContentView(R.layout.activity_choose_subject);
 
         buttonNextFeed = findViewById(R.id.sub_finish_button_id);
+        pd=new ProgressDialog(this);
 
         Bundle bundle = getIntent().getExtras();
         String rcv = bundle.getString("msg");

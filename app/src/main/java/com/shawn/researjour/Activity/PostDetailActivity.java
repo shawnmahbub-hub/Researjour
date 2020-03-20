@@ -1,10 +1,7 @@
 package com.shawn.researjour.Activity;
 
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -12,7 +9,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -50,8 +46,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
-
 public class PostDetailActivity extends AppCompatActivity {
 
     //to get details of user
@@ -63,9 +57,8 @@ public class PostDetailActivity extends AppCompatActivity {
     //views
     Toolbar newPostToolbar;
     ImageView uPictureIv,pImageIv;
-    TextView uNameTv,pTimeTiv,pTitleTv,pAbstractionTv,pLikesTv,pCommentsTv;
+    TextView uNameTv,pTimeTiv,pTitleTv,pAbstractionTv,pVideoLinkTv,pVideoLinkText;
     ImageButton moreBtn;
-    Button watchVideo,downloadPdf;
     LinearLayout profileLayout;
     RecyclerView recyclerView;
 
@@ -105,11 +98,9 @@ public class PostDetailActivity extends AppCompatActivity {
         pTimeTiv=findViewById(R.id.postDetailHomePostTime_id);
         pTitleTv=findViewById(R.id.postDetailHomePostTitleText_id);
         pAbstractionTv=findViewById(R.id.postDetailHomePostDescText_id);
-        pLikesTv=findViewById(R.id.postDetailLikeCounterText_id);
-        pCommentsTv=findViewById(R.id.postDetailCommentCounterText_id);
+        pVideoLinkTv=findViewById(R.id.postDetailVideoLink_id);
+        pVideoLinkText=findViewById(R.id.postDetailVideoLinkText_id);
         moreBtn=findViewById(R.id.postDetailMoreButton_id);
-        watchVideo=findViewById(R.id.watchVideoBtn_id);
-        downloadPdf=findViewById(R.id.downloadPdfBtn_id);
         profileLayout=findViewById(R.id.profileLayout);
         recyclerView=findViewById(R.id.recyclerView_id);
 
@@ -138,58 +129,9 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
-        watchVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendUserToVideoPlayerActivity();
-            }
-        });
-
-        downloadPdf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadpdf();
-
-            }
-        });
 
         loadComments();
 
-    }
-
-    private void downloadpdf() {
-
-        final String fileName="pdf_"+postId;
-
-        StorageReference storageReference=firebaseStorage.getInstance().getReference();
-        ref=storageReference.child("pdfUploads");
-        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                String url=uri.toString();
-                downloadFile(PostDetailActivity.this,fileName,".pdf",DIRECTORY_DOWNLOADS,url);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-    }
-
-    public long downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
-
-
-        DownloadManager downloadmanager = (DownloadManager) context.
-                getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
-
-        return downloadmanager.enqueue(request);
     }
 
     private void loadComments(){
@@ -444,7 +386,8 @@ public class PostDetailActivity extends AppCompatActivity {
                 for (DataSnapshot ds:dataSnapshot.getChildren()){
                     //get Data
                     String pTitle=""+ds.child("title").getValue();
-                    String pDescr=""+ds.child("abstraction").getValue();
+                    String pAbs=""+ds.child("abstraction").getValue();
+                    String pVideo=""+ds.child("videoLink").getValue();
                     pLikes=""+ds.child("pLikes").getValue();
                     String pTimeStamp=""+ds.child("pTime").getValue();
                     String pImage=""+ds.child("postimage").getValue();
@@ -461,9 +404,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
                     //set data
                     pTitleTv.setText(pTitle);
-                    pAbstractionTv.setText(pDescr);
-                    pLikesTv.setText(pLikes+" upvotes");
-                    pCommentsTv.setText(commentCount+" Feedbacks");
+                    pAbstractionTv.setText(pAbs);
+                    pVideoLinkTv.setText(pVideo);
                     pTimeTiv.setText(pTime);
                     uNameTv.setText(hisName);
 
@@ -520,12 +462,6 @@ public class PostDetailActivity extends AppCompatActivity {
             sendUserToHomeActivity();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void sendUserToVideoPlayerActivity() {
-        Intent intent=new Intent(this,WatchVideo.class);
-        intent.putExtra("postId",postId);
-        startActivity(intent);
     }
 
     //intent for sending the user to the home activity when click the back button

@@ -3,6 +3,9 @@ package com.shawn.researjour.Adapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,11 +40,14 @@ import com.shawn.researjour.Models.ModelClassPost;
 import com.shawn.researjour.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
@@ -51,10 +57,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
     String myUid;
 
-    private DatabaseReference likesRef;
-    private DatabaseReference postsRef;
+    private DatabaseReference likesRef,postsRef;
 
     boolean mProcessLike=false;
+    private int countLikes;
 
     public PostsAdapter(Context context, List<ModelClassPost> postList) {
         this.context = context;
@@ -88,8 +94,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         String pComments=postList.get(i).getpComments();
         String uName=postList.get(i).getuName();
         String uDp=postList.get(i).getuDp();
-        String pTitle=postList.get(i).getTitle();
-        String pAbstraction=postList.get(i).getAbstraction();
+        final String pTitle=postList.get(i).getTitle();
+        final String pAbstraction=postList.get(i).getAbstraction();
+        final String pVideo=postList.get(i).getVideoLink();
         final String pImage=postList.get(i).getPostimage();
         String pTime=postList.get(i).getpTime();
 
@@ -103,21 +110,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         myHolder.pTimeTv.setText(pTimeFormat);
         myHolder.pTitleTv.setText(pTitle);
         myHolder.pAbstractionTv.setText(pAbstraction);
+        myHolder.pVideoLink.setText(pVideo);
         myHolder.pLikesTv.setText(pLikes+" upvotes");//e.g. 100 upvotes
         myHolder.pCommentTv.setText(pComments+" Feedbacks");//e.g. 100 upvotes
 
-        Toast.makeText(context, "onBindCalled", Toast.LENGTH_SHORT).show();
         //set likes for each post
         setLikes(myHolder,postid);
 
-        //set user profile picture
-        try{
+        Picasso.get().load(uDp).placeholder(R.drawable.user_profile).into(myHolder.uPictureIv);
 
-            Picasso.get().load(uDp).placeholder(R.drawable.user_profile).into(myHolder.uPictureIv);
-
-        }catch (Exception e){
-
-        }
 
         //set post picture
         //if there is no picture in the post
@@ -136,7 +137,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             }
         }
 
-        isSaved(post.getPostid(),myHolder.bookmarkBtn);
+        //isSaved(post.getPostid(),myHolder.bookmarkBtn);
 
         myHolder.profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,8 +164,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                 /*get total number of likes for the post, whose like button clicked
                  * if currently signed in user has not liked it before
                  * increase value by 1, otherwise decrease value by 1*/
-                final int pLikes=Integer.parseInt(postList.get(i).getpLikes());
                 mProcessLike=true;
+                final int pLikes=Integer.parseInt(postList.get(i).getpLikes());
+
                 //get the id of the post clicked
                 final String postIde=postList.get(i).getPostid();
 
@@ -174,13 +176,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                         if (mProcessLike){
                             if (dataSnapshot.child(postIde).hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                                 //already liked, so remove like
-                                postsRef.child(postIde).child("pLikes").setValue(""+(pLikes-1));
                                 likesRef.child(postIde).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                                /*postsRef.child(postIde).child("pLikes").setValue(""+(pLikes-1));
+                                notifyDataSetChanged();*/
                                 mProcessLike=false;
                             }else {
                                 //not liked, like it
-                                postsRef.child(postIde).child("pLikes").setValue(""+(pLikes+1));
                                 likesRef.child(postIde).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("upvoted");
+                               /* postsRef.child(postIde).child("pLikes").setValue(""+(pLikes+1));
+                                notifyDataSetChanged();*/
                                 mProcessLike=false;
                             }
                         }
@@ -205,20 +209,67 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             }
         });
 
-        myHolder.bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+        myHolder.shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*//will implement later
-                if (myHolder.bookmarkBtn.getTag().equals("bookmarkBtn")){
-                    FirebaseDatabase.getInstance().getReference().child("Bookmarks")
-                            .child(firebaseUser.getUid()).child(post.getPostid()).setValue(true);
+
+                //get image from imageview
+                BitmapDrawable bitmapDrawable=(BitmapDrawable)myHolder.pImageIv.getDrawable();
+                if (bitmapDrawable == null){
+                    //post without image
+                    shareTextOnly(pTitle,pAbstraction);
                 }else {
-                    FirebaseDatabase.getInstance().getReference().child("Bookmarks")
-                            .child(firebaseUser.getUid()).child(post.getPostid()).removeValue();
-                }*/
+                    //post with image
+                    Bitmap bitmap=bitmapDrawable.getBitmap();
+                    shareImageAndText(pTitle,pAbstraction,bitmap);
+
+                }
 
             }
         });
+    }
+
+    private void shareTextOnly(String pTitle, String pAbstraction) {
+        String shareBody=pTitle+"\n"+pAbstraction;
+
+        Intent sIntent=new Intent(Intent.ACTION_SEND);
+        sIntent.setType("text/plain");
+        sIntent.putExtra(Intent.EXTRA_SUBJECT,"Subject Here");
+        sIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
+        context.startActivity(Intent.createChooser(sIntent,"Share Via"));
+    }
+
+    private void shareImageAndText(String pTitle, String pAbstraction, Bitmap bitmap) {
+        String shareBody=pTitle+"\n"+pAbstraction;
+
+        Uri uri=saveImageToShare(bitmap);
+
+        //share intent
+        Intent sIntent=new Intent(Intent.ACTION_SEND);
+        sIntent.putExtra(Intent.EXTRA_STREAM,uri);
+        sIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
+        sIntent.putExtra(Intent.EXTRA_SUBJECT,"Subject Here");
+        sIntent.setType("image/png");
+        context.startActivity(Intent.createChooser(sIntent,"Share Via"));
+    }
+
+    private Uri saveImageToShare(Bitmap bitmap) {
+        File imageFolder=new File(context.getCacheDir(),"images");
+        Uri uri=null;
+        try {
+            imageFolder.mkdirs();
+            File file=new File(imageFolder,"shared_image.png");
+
+            FileOutputStream stream=new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG,90,stream);
+            stream.flush();
+            stream.close();
+            uri= FileProvider.getUriForFile(context,"com.shawn.researjour.fileprovider",file);
+            
+        }catch (Exception e){
+            Toast.makeText(context, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return uri;
     }
 
     private void showMoreOptions(ImageButton moreButton, String uid, String myUid, final String postid, final String pImage) {
@@ -349,15 +400,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                     /*to indicate that the post is liked by this signed in user
                  * change drawable left icon of like button
                  * change text of like button from "upvote" to "upvoted"*/
+                    countLikes=(int)dataSnapshot.child(postid).getChildrenCount();
                     holder.admireButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.liked,0,0,0);
+                    holder.pLikesTv.setText(Integer.toString(countLikes)+" upvotes");
                     holder.admireButton.setText("upvoted");
+
                 }else {
                     //user liked this post
                     /*to indicate that the post is liked by this signed in user
                  * change drawable left icon of like button
                  * change text of like button from "upvoted" to "upvote"*/
+                    countLikes=(int)dataSnapshot.child(postid).getChildrenCount();
+                    holder.pLikesTv.setText(Integer.toString(countLikes)+" upvotes");
                     holder.admireButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like,0,0,0);
                     holder.admireButton.setText("upvote");
+
                 }
             }
 
@@ -380,9 +437,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
         //views from research_post_layout.xml
         ImageView uPictureIv, pImageIv;
-        TextView uNameTv, pTimeTv, pTitleTv,pAbstractionTv,pLikesTv,pCommentTv;
+        TextView uNameTv, pTimeTv, pTitleTv,pAbstractionTv,pVideoLink,pVideoLinkText,pLikesTv,pCommentTv;
         ImageButton moreButton;
-        Button admireButton, feedbackButton, bookmarkBtn;
+        Button admireButton, feedbackButton, shareBtn;
         RelativeLayout profileLayout;
 
         public MyHolder(@NonNull View itemView) {
@@ -396,38 +453,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             pTimeTv=itemView.findViewById(R.id.homePostTime_id);
             pTitleTv=itemView.findViewById(R.id.homePostTitleText_id);
             pAbstractionTv=itemView.findViewById(R.id.homePostDescText_id);
+            pVideoLinkText=itemView.findViewById(R.id.postVideoLinkText_id);
+            pVideoLink=itemView.findViewById(R.id.postVideoLink_id);
             pLikesTv=itemView.findViewById(R.id.likeCounterText_id);
             pCommentTv=itemView.findViewById(R.id.CommentCounterText_id);
             moreButton=itemView.findViewById(R.id.moreButton_id);
             admireButton=itemView.findViewById(R.id.admire_btn_id);
             feedbackButton=itemView.findViewById(R.id.feedback_btn_id);
-            bookmarkBtn=itemView.findViewById(R.id.bookmark_btn_id);
+            shareBtn=itemView.findViewById(R.id.shareBtn_id);
         }
     }
 
-    private void isSaved(final String postid,final Button bookmarkBtn){
-        FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-
-        DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("Bookmarks")
-                .child(firebaseUser.getUid());
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-if (dataSnapshot.child(postid).exists()){
-                    bookmarkBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bookmarked,0,0,0);
-                    bookmarkBtn.setText("bookmarked");
-                }else {
-                    bookmarkBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bookmark,0,0,0);
-                    bookmarkBtn.setText("bookmark");
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

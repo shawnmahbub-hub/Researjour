@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -64,7 +63,6 @@ public class Registration extends AppCompatActivity {
     //firebase
     FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    CallbackManager callbackManager;
     private static final String EMAIL = "email";
 
     @Override
@@ -318,6 +316,19 @@ public class Registration extends AppCompatActivity {
                 if (task.isSuccessful()){
                     loadingBar.dismiss();
                     FirebaseUser user=mAuth.getCurrentUser();
+                    //sending verification email
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(Registration.this, "Email verification sent", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Registration.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
                     //get user email and uid from auth
                     String email=user.getEmail();
                     String uid=user.getUid();
@@ -335,8 +346,9 @@ public class Registration extends AppCompatActivity {
                     //put data within hashMap in database
                     reference.child(uid).setValue(hashMap);
 
-                    //sending verification email
-                    sendVerificationEmail();
+                    SendUserToViewPagerActivity();
+
+
                     finish();
                 }else {
                     String message=task.getException().getMessage();
@@ -353,25 +365,6 @@ public class Registration extends AppCompatActivity {
         });
     }
 
-    private void sendVerificationEmail() {
-        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user!=null){
-            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(Registration.this, "Email verification sent", Toast.LENGTH_SHORT).show();
-                    SendUserToViewPagerActivity();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(Registration.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        }
-    }
 
     //method for sending the user to the login activity
     private void sendUserToLoginActivity() {

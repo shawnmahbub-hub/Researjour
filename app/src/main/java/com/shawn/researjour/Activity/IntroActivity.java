@@ -45,19 +45,19 @@ public class IntroActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnGetStarted = findViewById(R.id.btn_get_started);
         tabIndicator = findViewById(R.id.tab_indicator);
-        btnAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.button_animation);
+        btnAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_animation);
         tvSkip = findViewById(R.id.tv_skip);
 
         // fill list screen
 
         final List<ScreenItem> mList = new ArrayList<>();
-        mList.add(new ScreenItem("Research Community","Enter the verfication code that we sent in your mobile number",R.drawable.illustration_4));
-        mList.add(new ScreenItem("Research Portfolio  ","Enter the verfication code that we sent in your mobile number",R.drawable.illustration_5));
-        mList.add(new ScreenItem("Project Showcasing  ","Enter the verfication code that we sent in your mobile number",R.drawable.illustration_6));
+        mList.add(new ScreenItem("Research Community", "Research communities are not only arbiters of research quality, determining who gets funding and what research gets published", R.drawable.illustration_4));
+        mList.add(new ScreenItem("Research Portfolio  ", "A Research Portfolio is a document intended to record your research outputs and achievements for self-assessment and interpretation by your manager.", R.drawable.illustration_5));
+        mList.add(new ScreenItem("Project Showcasing  ", "The Project Showcase allows undergraduate students, as individuals or teams, to demonstrate what they have learned or worked on throughout their undergraduate career.", R.drawable.illustration_6));
 
         // setup viewpager
-        screenPager =findViewById(R.id.screen_viewpager);
-        introViewPagerAdapter = new IntroViewPagerAdapter(this,mList);
+        screenPager = findViewById(R.id.screen_viewpager);
+        introViewPagerAdapter = new IntroViewPagerAdapter(this, mList);
         screenPager.setAdapter(introViewPagerAdapter);
 
         // setup tab layout with viewpager
@@ -76,7 +76,7 @@ public class IntroActivity extends AppCompatActivity {
                     screenPager.setCurrentItem(position);
                 }
 
-                if (position == mList.size()-1) { // when we reach to the last screen
+                if (position == mList.size() - 1) { // when we reach to the last screen
 
                     // TODO : show the GETSTARTED Button and hide the indicator and the next button
                     loadLastScreen();
@@ -89,9 +89,9 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                if (tab.getPosition() == mList.size()-1) {
+                if (tab.getPosition() == mList.size() - 1) {
                     loadLastScreen();
-                }else {
+                } else {
                     btnNext.setVisibility(View.VISIBLE);
                     btnGetStarted.setVisibility(View.INVISIBLE);
                     tvSkip.setVisibility(View.VISIBLE);
@@ -120,7 +120,6 @@ public class IntroActivity extends AppCompatActivity {
                 // also we need to save a boolean value to storage so next time when the user run the app
                 // we could know that he is already checked the intro screen activity
                 // i'm going to use shared preferences to that process
-                /*savePrefsData();*/
                 finish();
             }
         });
@@ -132,12 +131,12 @@ public class IntroActivity extends AppCompatActivity {
                 screenPager.setCurrentItem(mList.size());
             }
         });
-
     }
 
 
+
     // show the GET STARTED Button and hide the indicator and the next button
-    private void loadLastScreen() {
+    private void loadLastScreen(){
         btnNext.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);
         tvSkip.setVisibility(View.INVISIBLE);

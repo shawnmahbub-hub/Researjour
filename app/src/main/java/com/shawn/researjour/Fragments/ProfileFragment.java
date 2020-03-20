@@ -135,11 +135,11 @@ public class ProfileFragment extends Fragment {
 
         //init progress dialog
         pd=new ProgressDialog(getActivity());
-        checkUserStatus();
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //showing the progress loading bar
                 firebaseAuth.signOut();
                 startActivity(new Intent(getActivity(), Welcome_Screen.class));
             }
@@ -149,29 +149,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sendUserToAboutUSActivity();
-            }
-        });
-
-        //retrieving data from fireBase
-        String currentUserID = firebaseAuth.getCurrentUser().getUid();
-        //fetching the user profile image and user name from fireBase
-        databaseReference.child(currentUserID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if(dataSnapshot.exists())
-                {
-                    if(dataSnapshot.hasChild("profileimage"))
-                    {
-                        String image = dataSnapshot.child("profileimage").getValue().toString();
-                        Picasso.get().load(image).placeholder(R.drawable.profile_image).into(profileImageView);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
@@ -187,7 +164,7 @@ public class ProfileFragment extends Fragment {
                     String userUniversity=""+ds.child("university").getValue();
                     String researcher_Role=""+ds.child("researcherRole").getValue();
                     String uGender=""+ds.child("gender").getValue();
-                    String image=""+ds.child("profileimage");
+                    String image=""+ds.child("profileimage").getValue();
                     String cover=""+ds.child("cover").getValue();
 
                     //set data
@@ -197,13 +174,13 @@ public class ProfileFragment extends Fragment {
                     researcherRole.setText(researcher_Role);
                     gender.setText(uGender);
 
-                    /*//profile image
-                    try{
+                    //profile image
+                    if (image!=null){
                         //if image is received then set
                         Picasso.get().load(image).placeholder(R.drawable.profile_image).into(profileImageView);
-                    }catch (Exception e){
+                    }else {
                         Picasso.get().load(R.drawable.profile_image).into(profileImageView);
-                    }*/
+                    }
 
                     //cover image
                     try{
@@ -233,22 +210,8 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void checkUserStatus() {
-
-            //get current user
-            FirebaseUser user=firebaseAuth.getCurrentUser();
-            if (user!=null){
-                uid=user.getUid();
-            }else {
-                startActivity(new Intent(getActivity(), Welcome_Screen.class));
-                getActivity().finish();
-            }
-
-
-    }
-
     private void showEditProfileDialog() {
-        String options[]={"Profile Image","Cover Image","Researcher Name","University Name"};
+        String options[]={"Cover Image","Researcher Name","University Name"};
         //alert dialog
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         //set title
@@ -258,20 +221,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which==0){
-                    //profile image
-                    pd.setMessage("Updating Profile Image");
-                    profileOrCoverImage="profileimage";
-                    showImagePickerDialog();
-                }else if (which==1){
                     //cover image
                     pd.setMessage("Updating Cover Image");
                     profileOrCoverImage="cover";
                     showImagePickerDialog();
-                }else if (which==2){
+                }else if (which==1){
                     //researcher name
                     pd.setMessage("Updating Name");
                     showNameRoleUpdateDialog("fullname");
-                }else if (which==3){
+                }else if (which==2){
                     //researcher name
                     pd.setMessage("Updating University");
                     showNameRoleUpdateDialog("university");
@@ -547,25 +505,6 @@ public class ProfileFragment extends Fragment {
 
                                 }
                             });
-                            //if user edit his name, also change it from his posts
-                            if (profileOrCoverImage.equals("image")) {
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-                                Query query = ref.orderByChild("uid").equalTo(uid);
-                                query.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                            String child = ds.getKey();
-                                            dataSnapshot.getRef().child(child).child("uDp").setValue(downloadUri.toString());
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
                         }else {
                             //error
                             pd.dismiss();

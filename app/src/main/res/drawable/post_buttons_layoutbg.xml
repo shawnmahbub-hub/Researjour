@@ -4,10 +4,10 @@
     >
 
     <solid
-        android:color="#fff"
+        android:color="#F2F4F4"
         />
 
-    <stroke android:color="#e7e7e7"
+    <stroke android:color="#B0B5B6"
         android:width="1dp"
         />
 

@@ -56,16 +56,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddNewPost extends AppCompatActivity {
 
-    private static final int PICK_VIDEO_REQ_CODE =1 ;
-
     //components part
     Toolbar newPostToolbar;
     private CircleImageView postProfilePicture;
-    private TextView postUserName, postTime,postButton,pdfName,videoName;
-    private EditText researchTitle,abstraction;
+    private TextView postUserName, postTime,postButton,pdfName;
+    private EditText researchTitle,abstraction,videoLink;
     private ImageView showImageArea;
-    private ImageButton addPostImage,addPdf,addVideo;
-    private Uri imageURI,pdfUri,videoUri;
+    private ImageButton addPostImage,addPdf;
+    private Uri imageURI,pdfUri;
 
     //Permissions constants
     private static final int CAMERA_REQUEST_CODE=100;
@@ -102,11 +100,10 @@ public class AddNewPost extends AppCompatActivity {
         postTime=(TextView)findViewById(R.id.postTimeText_id);
         researchTitle=(EditText) findViewById(R.id.postTitleText_id);
         abstraction=(EditText)findViewById(R.id.postabstractionText_id);
+        videoLink=(EditText)findViewById(R.id.videoLinkET_id);
         addPostImage=(ImageButton)findViewById(R.id.addPostImage_id);
         addPdf=(ImageButton)findViewById(R.id.addPdf_id);
         pdfName=findViewById(R.id.pdfTextView_id);
-        videoName=findViewById(R.id.videoTextView_id);
-        addVideo=(ImageButton)findViewById(R.id.addPostVideo_id);
         postButton=(TextView) findViewById(R.id.post_button_id);
         showImageArea=(ImageView)findViewById(R.id.showImageArea_id);
 
@@ -212,20 +209,6 @@ public class AddNewPost extends AppCompatActivity {
             }
         });
 
-        //add video
-        addVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission
-                        (AddNewPost.this,Manifest.permission.READ_EXTERNAL_STORAGE)
-                        ==PackageManager.PERMISSION_GRANTED)
-                {
-                    pickVideoFromGallery();
-                }else {
-                    ActivityCompat.requestPermissions(AddNewPost.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
-                }
-            }
-        });
 
         //open file storage when user wanted to post pdf file
         addPdf.setOnClickListener(new View.OnClickListener() {
@@ -252,13 +235,6 @@ public class AddNewPost extends AppCompatActivity {
         });
     }
 
-    private void pickVideoFromGallery() {
-
-        Intent intent=new Intent();
-        intent.setType("video/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Select a Video"),PICK_VIDEO_REQ_CODE);
-    }
 
     private void loadPostData(String editPostId) {
         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Posts");
@@ -307,6 +283,7 @@ public class AddNewPost extends AppCompatActivity {
         //get data of research title and abstraction from edit text
         String researchTitleInput=researchTitle.getText().toString().trim();
         String abstractionInput=abstraction.getText().toString().trim();
+        String VideoLinkInput=videoLink.getText().toString().trim();
         Intent intent=getIntent();
         String isUpdateKey=""+intent.getStringExtra("key");
         String editPostId=""+intent.getStringExtra("editPostId");
@@ -321,51 +298,21 @@ public class AddNewPost extends AppCompatActivity {
             abstraction.startAnimation(animShake);
             Toast.makeText(AddNewPost.this, "Write abstraction..", Toast.LENGTH_SHORT).show();
             return;
+        }else if (TextUtils.isEmpty(VideoLinkInput)){
+            Animation animShake = AnimationUtils.loadAnimation(AddNewPost.this, R.anim.shake);
+            videoLink.startAnimation(animShake);
+            Toast.makeText(AddNewPost.this, "Please upload your project video to YouTube First, then paste the link here", Toast.LENGTH_SHORT).show();
+            return;
         }
         if (isUpdateKey.equals("editPost")){
-            beginUpdate(researchTitleInput,abstractionInput,editPostId);
+            beginUpdate(researchTitleInput,abstractionInput,VideoLinkInput,editPostId);
         }else {
             //pdf file
-            if (pdfUri!=null || videoUri!=null ){
+            if (pdfUri!=null){
                 uploadFile(pdfUri);
-                uploadVideo(videoUri);
             }
-            uploadData(researchTitleInput,abstractionInput);
+            uploadData(researchTitleInput,abstractionInput,VideoLinkInput);
         }
-    }
-
-    private void uploadVideo(Uri videoUri) {
-        final String videoTimeStamp=String.valueOf(System.currentTimeMillis());
-
-        final String fileName=videoTimeStamp;
-        StorageReference storageReference=storage.getReference();
-
-        storageReference.child("videoUploads").child(fileName).putFile(videoUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        String url=taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                        DatabaseReference databaseReference=database.getReference();
-
-                        databaseReference.child("Video").child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Toast.makeText(AddNewPost.this, "your research video uploaded successfully", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Toast.makeText(AddNewPost.this, "your research videoa not uploaded successfully", Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddNewPost.this, "your research pdf not uploaded successfully", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     //pdf upload file
@@ -406,7 +353,7 @@ public class AddNewPost extends AppCompatActivity {
     }
 
     //upload data to fireBase Method
-    private void uploadData(final String researchTitleInput, final String abstractionInput) {
+    private void uploadData(final String researchTitleInput, final String abstractionInput,final String VideoLinkInput) {
         //progress dialog
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -455,6 +402,7 @@ public class AddNewPost extends AppCompatActivity {
                         hashMap.put("uEmail",email);
                         hashMap.put("title", researchTitleInput);
                         hashMap.put("abstraction", abstractionInput);
+                        hashMap.put("videoLink", VideoLinkInput);
                         hashMap.put("postimage", downloadUri);
                         hashMap.put("pTime",timeStamp);
 
@@ -505,15 +453,19 @@ public class AddNewPost extends AppCompatActivity {
             //uri is received upload post to firebase database
             HashMap<Object,String> hashMap=new HashMap<>();
             String pLikes= String.valueOf(0);
+            String pComments= String.valueOf(0);
+
             //put post info
             hashMap.put("uid", uid);
             hashMap.put("uName",name);
             hashMap.put("uDp",dp);
             hashMap.put("postid",timeStamp);
             hashMap.put("pLikes",pLikes);
+            hashMap.put("pComments",pComments);
             hashMap.put("uEmail",email);
             hashMap.put("title", researchTitleInput);
             hashMap.put("abstraction", abstractionInput);
+            hashMap.put("videoLink", VideoLinkInput);
             hashMap.put("postimage", "noImage");
             hashMap.put("pTime",timeStamp);
 
@@ -548,20 +500,20 @@ public class AddNewPost extends AppCompatActivity {
     }
 
     //beginning the update
-    private void beginUpdate(String researchTitleInput, String abstractionInput, String editPostId) {
+    private void beginUpdate(String researchTitleInput, String abstractionInput, String VideoLinkInput,String editPostId) {
         if (!editImage.equals("noImage")){
             //with Image
-            updateWasWithImage(researchTitleInput,abstractionInput,editPostId);
+            updateWasWithImage(researchTitleInput,abstractionInput,VideoLinkInput,editPostId);
         }else if (showImageArea.getDrawable() !=null){
             //without image
-            updateWithNowImage(researchTitleInput,abstractionInput,editPostId);
+            updateWithNowImage(researchTitleInput,abstractionInput,VideoLinkInput,editPostId);
         }else {
             //without image
-            updateWithoutImage(researchTitleInput,abstractionInput,editPostId);
+            updateWithoutImage(researchTitleInput,abstractionInput,VideoLinkInput,editPostId);
         }
     }
 
-    private void updateWithoutImage(String researchTitleInput, String abstractionInput, String editPostId) {
+    private void updateWithoutImage(String researchTitleInput, String abstractionInput,String VideoLinkInput, String editPostId) {
         //progress dialog
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -578,6 +530,7 @@ public class AddNewPost extends AppCompatActivity {
         uphashMap.put("uDp",dp);
         uphashMap.put("title", researchTitleInput);
         uphashMap.put("abstraction", abstractionInput);
+        uphashMap.put("videoLink", VideoLinkInput);
         uphashMap.put("postimage", "noImage");
 
         //path to store post data
@@ -599,7 +552,7 @@ public class AddNewPost extends AppCompatActivity {
         });
     }
 
-    private void updateWithNowImage(final String researchTitleInput, final String abstractionInput, final String editPostId) {
+    private void updateWithNowImage(final String researchTitleInput, final String abstractionInput, final String VideoLinkInput,final String editPostId) {
         //progress dialog
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -638,6 +591,7 @@ public class AddNewPost extends AppCompatActivity {
                     uphashMap.put("uDp",dp);
                     uphashMap.put("title", researchTitleInput);
                     uphashMap.put("abstraction", abstractionInput);
+                    uphashMap.put("videoLink", VideoLinkInput);
                     uphashMap.put("postimage", downloadUri);
 
                     //path to store post data
@@ -675,7 +629,7 @@ public class AddNewPost extends AppCompatActivity {
         });
     }
 
-    private void updateWasWithImage(final String researchTitleInput, final String abstractionInput, final String editPostId) {
+    private void updateWasWithImage(final String researchTitleInput, final String abstractionInput,final String VideoLinkInput, final String editPostId) {
         //progress dialog
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -720,6 +674,7 @@ public class AddNewPost extends AppCompatActivity {
                             uphashMap.put("uDp",dp);
                             uphashMap.put("title", researchTitleInput);
                             uphashMap.put("abstraction", abstractionInput);
+                            uphashMap.put("videoLink", VideoLinkInput);
                             uphashMap.put("postimage", downloadUri);
 
                             //path to store post data
@@ -852,11 +807,6 @@ public class AddNewPost extends AppCompatActivity {
         {
             pdfUri=data.getData();
             pdfName.setText("file: "+data.getData().getLastPathSegment());
-        }
-
-        if (requestCode==PICK_VIDEO_REQ_CODE && resultCode==RESULT_OK && data!=null){
-            videoUri=data.getData();
-            videoName.setText("file: "+data.getData().getLastPathSegment());
         }
 
         if (resultCode==RESULT_OK){

@@ -1,7 +1,6 @@
 package com.shawn.researjour.Activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,13 +48,6 @@ public class Home extends AppCompatActivity {
         bookmarksFragment=new BookmarksFragment();
         profileFragment=new ProfileFragment();
 
-        // when this activity is about to be launch we need to check if its opened before or not
-        if (restorePrefData()) {
-            Intent mainActivity = new Intent(getApplicationContext(), Home.class );
-            startActivity(mainActivity);
-            finish();
-        }
-
         //default fragment
         setFragment(homeFragment);
 
@@ -89,22 +81,6 @@ public class Home extends AppCompatActivity {
         });
     }
 
-    private boolean restorePrefData() {
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend",false);
-        return  isIntroActivityOpnendBefore;
-    }
-
-    private void savePrefsData() {
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("isIntroOpnend",true);
-        editor.commit();
-
-
-    }
 
     private void setFragment(Fragment fragment) {
 

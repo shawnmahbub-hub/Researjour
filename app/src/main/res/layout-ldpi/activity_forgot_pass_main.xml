@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    android:paddingTop="34dp"
+    tools:context=".Activity.Forgot_pass_main">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:lineHeight="33sp"
+        android:text="Forgot Password"
+        android:textColor="@color/colorAccent2"
+        android:textSize="20sp"
+        android:fontFamily="@font/anton_regular" />
+
+    <ImageView
+        android:id="@+id/illustration_1_id"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/illustration_1"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="12sp"
+        />
+
+    <TextView
+        android:id="@+id/title_id"
+        android:layout_width="351dp"
+        android:layout_height="24dp"
+        android:layout_below="@+id/illustration_1_id"
+        android:layout_alignStart="@+id/editText2"
+        android:layout_alignEnd="@+id/editText2"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/googlesans_medium"
+        android:text="Please enter your registered email ID"
+        android:textAlignment="center"
+        android:textColor="#333"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/desc_id"
+        android:layout_width="351dp"
+        android:layout_height="42dp"
+        android:layout_below="@+id/title_id"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/googlesans_regular"
+        android:text="We’ll send a verification code to your registered email ID"
+        android:textAlignment="center"
+        android:textColor="#b4b4b4"
+        android:textSize="10sp" />
+
+
+    <EditText
+        android:id="@+id/emai_editText_id"
+        android:layout_width="381dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/desc_id"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/edit_text_bg"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="8dp"
+        android:hint="email"
+        android:textSize="12sp"
+        android:inputType="textEmailAddress"
+        android:paddingStart="12dp"
+        />
+
+    <Button
+        android:id="@+id/next_btn_id"
+        android:layout_width="148dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/emai_editText_id"
+        android:layout_marginTop="32dp"
+        android:layout_centerHorizontal="true"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:background="@drawable/btn_bg"
+        android:textColor="#fff"
+        android:fontFamily="@font/googlesans_medium"
+        android:textSize="14sp"
+        android:enabled="false"
+        />
+
+
+</RelativeLayout>

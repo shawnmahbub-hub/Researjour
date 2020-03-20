@@ -3,12 +3,12 @@ package com.shawn.researjour.Models;
 public class ModelClassPost {
 
     //use same name as we given while uploading post
-    String uName,uid,uEmail,postid,pLikes,pComments,uDp,pTime,postimage,title,abstraction;
+    String uName,uid,uEmail,postid,pLikes,pComments,uDp,pTime,postimage,title,abstraction,videoLink;
 
     public ModelClassPost() {
     }
 
-    public ModelClassPost(String uName, String uid, String uEmail,String postid,String pLikes,String pComments,String uDp, String pTime, String postimage, String title, String abstraction) {
+    public ModelClassPost(String uName, String uid, String uEmail,String postid,String pLikes,String pComments,String uDp, String pTime, String postimage, String title, String abstraction,String videoLink) {
         this.uName = uName;
         this.uDp=uDp;
         this.uid = uid;
@@ -20,6 +20,8 @@ public class ModelClassPost {
         this.postimage = postimage;
         this.title = title;
         this.abstraction = abstraction;
+        this.videoLink = videoLink;
+
     }
 
     public String getuName() {
@@ -108,5 +110,13 @@ public class ModelClassPost {
 
     public void setAbstraction(String abstraction) {
         this.abstraction = abstraction;
+    }
+
+    public String getVideoLink() {
+        return videoLink;
+    }
+
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
     }
 }
