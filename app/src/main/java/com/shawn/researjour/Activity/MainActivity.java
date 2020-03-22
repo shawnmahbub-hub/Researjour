@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private String myUid;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +23,24 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        user= FirebaseAuth.getInstance().getCurrentUser();
+
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent=new Intent(MainActivity.this, Welcome_Screen.class);
-                MainActivity.this.startActivity(intent);
-                MainActivity.this.finish();
+                if (user==null){
+                    Intent intent=new Intent(MainActivity.this, Welcome_Screen.class);
+                    MainActivity.this.startActivity(intent);
+                    MainActivity.this.finish();
+                }else if (user!=null){
+                    Intent intent=new Intent(MainActivity.this, Home.class);
+                    MainActivity.this.startActivity(intent);
+                    MainActivity.this.finish();
+                }
+
             }
         },5000);
     }
@@ -49,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
             myUid=user.getUid();
             sendUserToHomeActivity();
         }else {
-            //user not signed in, go to login activity
-            startActivity(new Intent(this,Login.class));
-            finish();
         }
     }
 

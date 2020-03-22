@@ -45,6 +45,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -68,7 +69,7 @@ public class PostDetailActivity extends AppCompatActivity {
     //add comment views
     EditText commentEt;
     ImageButton sendBtn;
-    ImageView cAvatarIv;
+    CircleImageView cAvatarIv;
 
     FirebaseStorage firebaseStorage;
     StorageReference ref;
@@ -109,10 +110,10 @@ public class PostDetailActivity extends AppCompatActivity {
         commentEt=findViewById(R.id.commentEditText_id);
         sendBtn=findViewById(R.id.sendComment_id);
 
+        checkUserStatus();
+
         loadPostInfo();
         loadUserInfo();
-
-        checkUserStatus();
 
         //sendBtn set on click listener
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -446,6 +447,8 @@ public class PostDetailActivity extends AppCompatActivity {
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         if (user!=null){
             //user is signed in
+            myEmail=user.getEmail();
+            myUid=user.getUid();
         }else {
             //user not signed in, go to login activity
             startActivity(new Intent(this,Login.class));

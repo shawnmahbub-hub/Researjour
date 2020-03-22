@@ -92,7 +92,6 @@ public class Home extends AppCompatActivity {
             String myUid = user.getUid();
         }else {
             //user not signed in, go to login activity
-            startActivity(new Intent(this,Login.class));
             finish();}
     }
 
