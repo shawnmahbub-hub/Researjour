@@ -37,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.shawn.researjour.Activity.AboutUS;
+import com.shawn.researjour.Activity.Login;
 import com.shawn.researjour.Activity.Welcome_Screen;
 import com.shawn.researjour.R;
 import com.squareup.picasso.Picasso;
@@ -132,9 +133,10 @@ public class ProfileFragment extends Fragment {
         cameraPermissions=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-
         //init progress dialog
         pd=new ProgressDialog(getActivity());
+
+        checkUserStatus();
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,6 +210,17 @@ public class ProfileFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void checkUserStatus() {
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        if (user!=null){
+            //user is signed in
+            uid=user.getUid();
+        }else {
+            //user not signed in, go to login activity
+            startActivity(new Intent(getActivity(), Login.class));
+            }
     }
 
     private void showEditProfileDialog() {

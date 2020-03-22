@@ -112,8 +112,6 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
         cameraPermissions=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        checkUserStatus();
-
         //array adapter for spinner items
         ArrayAdapter<CharSequence> researcherRoleAdapter = ArrayAdapter.createFromResource(this,
                 R.array.role_spinnerItems, android.R.layout.simple_spinner_item);
@@ -223,22 +221,6 @@ public class ProfileSetup extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-    }
-    //user status method
-    private void checkUserStatus() {
-
-        //get current user
-        FirebaseUser user=mAuth.getCurrentUser();
-        if (user!=null){
-            //user is signed in stay here
-            email=user.getEmail();
-            uid=user.getUid();
-
-        }else {
-            //user not signed in, go to main activity
-            startActivity(new Intent(this,Home.class));
-            finish();
-        }
     }
 
     private void validateProfileInputs() {

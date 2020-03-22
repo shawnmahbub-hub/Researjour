@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -109,6 +111,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
         loadPostInfo();
         loadUserInfo();
+
+        checkUserStatus();
 
         //sendBtn set on click listener
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -436,6 +440,17 @@ public class PostDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void checkUserStatus(){
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        if (user!=null){
+            //user is signed in
+        }else {
+            //user not signed in, go to login activity
+            startActivity(new Intent(this,Login.class));
+            finish();
+        }
     }
 
     @Override

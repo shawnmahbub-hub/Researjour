@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRestart() {
-        super.onRestart();
+    public void onResume() {
+        super.onResume();
         checkUserStatus();
 
     }

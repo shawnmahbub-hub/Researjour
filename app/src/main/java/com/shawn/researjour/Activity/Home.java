@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.shawn.researjour.Fragments.BookmarksFragment;
 import com.shawn.researjour.Fragments.HomeFragment;
 import com.shawn.researjour.Fragments.MyResearchFragment;
@@ -35,6 +37,8 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        checkUserStatus();
 
         mTopToolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mTopToolbar);
@@ -79,6 +83,17 @@ public class Home extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void checkUserStatus() {
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        if (user!=null){
+            //user is signed in
+            String myUid = user.getUid();
+        }else {
+            //user not signed in, go to login activity
+            startActivity(new Intent(this,Login.class));
+            finish();}
     }
 
 

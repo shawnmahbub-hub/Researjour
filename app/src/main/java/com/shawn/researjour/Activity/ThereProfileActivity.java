@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -100,7 +101,7 @@ public class ThereProfileActivity extends AppCompatActivity {
 
         postList=new ArrayList<>();
         loadHisPosts();
-
+        checkUserStatus();
     }
 
     private void loadHisPosts() {
@@ -138,6 +139,16 @@ public class ThereProfileActivity extends AppCompatActivity {
                 Toast.makeText(ThereProfileActivity.this, "Error: "+ databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void checkUserStatus(){
+        //get current user
+        FirebaseUser user=firebaseAuth.getCurrentUser();
+        if (user!=null){
+        }else {
+            startActivity(new Intent(this,Login.class));
+            finish();
+        }
     }
 
     @Override

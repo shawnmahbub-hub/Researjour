@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fundTitleText_id"
-        android:layout_marginStart="140dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
         android:layout_toEndOf="@+id/postProfileName_id"
         android:background="#00FFFFFF"
