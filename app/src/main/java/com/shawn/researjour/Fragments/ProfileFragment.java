@@ -184,13 +184,13 @@ public class ProfileFragment extends Fragment {
                         Picasso.get().load(R.drawable.profile_image).into(profileImageView);
                     }
 
-                    if (cover==null){
+                    if (cover==""){
                         Picasso.get().load(R.drawable.no_cover).into(coverIv);
-                    }else if (cover!=null){
+                    }else {
                         Picasso.get().load(cover).into(coverIv);
                     }
-/*
-                    //cover image
+
+                    /*//cover image
                     try{
                         //if image is received then set
                         Picasso.get().load(cover).into(coverIv);
