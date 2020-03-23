@@ -42,7 +42,7 @@
                 android:layout_below="@+id/profileFragment_Picture_id"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/googlesans_regular"
+                android:fontFamily="@font/googlesans_medium"
                 android:text="User Name"
                 android:textAlignment="center"
                 android:textColor="#333"

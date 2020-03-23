@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="203dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,13 +33,13 @@
         android:layout_below="@id/researjour_logo_id"
         android:layout_alignStart="@+id/login_button_id"
         android:layout_alignEnd="@+id/login_button_id"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/googlesans_medium"
         android:lineHeight="23sp"
         android:text="Welcome to Researjour "
         android:textAlignment="center"
         android:textColor="#333"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     //description text
@@ -50,15 +50,13 @@
         android:layout_below="@id/Title_text_id"
         android:layout_alignStart="@+id/reg_button_id"
         android:layout_alignEnd="@+id/reg_button_id"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/googlesans_regular"
         android:lineHeight="21sp"
         android:text="Explore the research community from all over the country to build a better future"
         android:textAlignment="center"
         android:textColor="#B4B4B4"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:typeface="sans" />
 
     //login button

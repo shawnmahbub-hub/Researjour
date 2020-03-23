@@ -87,6 +87,7 @@
             android:fontFamily="@font/googlesans_medium"
             android:layout_marginTop="12dp"
             android:autoLink="all"
+            android:textIsSelectable="true"
             />
 
         <TextView
@@ -100,6 +101,7 @@
             android:layout_below="@id/homePostTitleText_id"
             android:textColor="#333"
             android:autoLink="all"
+            android:textIsSelectable="true"
             />
 
         <TextView
@@ -127,6 +129,7 @@
             android:text="No YouTube Link"
             android:textColor="#D32F2F"
             android:textSize="14sp"
+            android:textIsSelectable="true"
             />
 
         <ImageView

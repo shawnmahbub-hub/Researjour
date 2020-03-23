@@ -59,7 +59,7 @@ public class BookmarksFragment extends Fragment {
     //components part
     Toolbar newPostToolbar;
     private CircleImageView postProfilePicture;
-    private TextView postUserName, postTime,pdfName;
+    private TextView postUserName, postTime,pdfName,attachFile;
     private EditText researchTitle,abstraction,videoLink;
     private ImageButton addPdf;
     private Button postButton;
@@ -85,7 +85,7 @@ public class BookmarksFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view=inflater.inflate(R.layout.fragment_bookmarks,container,false);
 
-        //finding the id of the widgets in the add post activity
+        //finding the id of the widgets in the fund fragment activity
         postProfilePicture=(CircleImageView)view.findViewById(R.id.postProfileImage_id);
         postUserName=(TextView)view.findViewById(R.id.postProfileName_id);
         postTime=(TextView)view.findViewById(R.id.postTimeText_id);
@@ -94,6 +94,7 @@ public class BookmarksFragment extends Fragment {
         videoLink=(EditText)view.findViewById(R.id.videoLinkET_id);
         addPdf=(ImageButton)view.findViewById(R.id.addPdf_id);
         pdfName=view.findViewById(R.id.pdfTextView_id);
+        attachFile=view.findViewById(R.id.attachFile_id);
         postButton=view.findViewById(R.id.post_button_id);
 
         //firebase part
@@ -171,6 +172,23 @@ public class BookmarksFragment extends Fragment {
                 }
             }
         });
+
+        //open file storage when user wanted to post pdf file
+        attachFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (ContextCompat.checkSelfPermission
+                        (getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED)
+                {
+                    selectPdf();
+                }else {
+                    ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
+                }
+            }
+        });
+
 
         //button for posting the new research information to the fireBase
         postButton.setOnClickListener(new View.OnClickListener() {

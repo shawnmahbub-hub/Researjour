@@ -11,18 +11,15 @@
     //layout for the top view
     <RelativeLayout
         android:id="@+id/topView_id"
-        android:layout_width="wrap_content"
-        android:layout_height="240dp"
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
         android:background="@drawable/topview_bg"
         android:orientation="vertical"
         android:paddingStart="24dp"
-        android:paddingEnd="24dp">
+        >
 
         <ImageView
             android:id="@+id/researjour_logo_id"
@@ -31,7 +28,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="88dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="158dp"
             android:contentDescription="app_logo"
             android:paddingEnd="24dp"
@@ -47,13 +44,11 @@
             android:layout_below="@+id/researjour_logo_id"
             android:layout_alignStart="@+id/researjour_logo_id"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:fontFamily="@font/googlesans_regular"
             android:text="Explore the Researjour world globally"
             android:textColor="#fff"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <ScrollView
@@ -67,10 +62,11 @@
             //email edit text
             <EditText
                 android:id="@+id/email_editText_id"
-                android:layout_width="363dp"
+                android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="24dp"
                 android:hint="email"
                 android:textColorHint="#40000000"
                 android:fontFamily="@font/googlesans_regular"
@@ -85,11 +81,12 @@
             //password edit text
             <EditText
                 android:id="@+id/password_editText_id"
-                android:layout_width="363dp"
+                android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_below="@id/email_editText_id"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
+                android:layout_marginStart="24dp"
                 android:hint="password"
                 android:textColorHint="#40000000"
                 android:fontFamily="@font/googlesans_regular"
@@ -122,7 +119,7 @@
                 android:layout_height="24dp"
                 android:layout_below="@+id/password_editText_id"
                 android:layout_alignStart="@+id/password_editText_id"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:fontFamily="@font/googlesans_regular"
                 android:text="Forgot Password?"
@@ -138,7 +135,7 @@
                 android:text="Login"
                 android:textAllCaps="false"
                 android:layout_below="@+id/password_editText_id"
-                android:layout_marginTop="72dp"
+                android:layout_marginTop="56dp"
                 android:background="@drawable/btn_bg"
                 android:fontFamily="@font/googlesans_medium"
                 android:layout_centerHorizontal="true"
@@ -149,6 +146,7 @@
                 />
 
             //divider #1
+
             <View
                 android:id="@+id/divider1"
                 android:layout_width="109dp"
@@ -156,11 +154,13 @@
                 android:layout_below="@+id/login_button_id"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="46dp"
                 android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/login_with_id"
                 android:background="#e7e7e7" />
 
             //divider #2
+
             <View
                 android:id="@+id/divider2"
                 android:layout_width="109dp"
@@ -168,8 +168,9 @@
                 android:layout_below="@+id/login_button_id"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="46dp"
                 android:layout_marginEnd="24dp"
+                android:layout_toEndOf="@+id/login_with_id"
                 android:background="#e7e7e7" />
 
             //login with text view
@@ -179,17 +180,11 @@
                 android:layout_height="24dp"
                 android:layout_below="@+id/login_button_id"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="32dp"
                 android:fontFamily="@font/googlesans_regular"
                 android:text="or Login with"
                 android:textColor="#333"
                 android:textSize="18sp" />
-
-            //google sign in button
-
-            //facebook sign in button
-
-            //text view for sign up
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/login_googleIcon_id"
@@ -208,7 +203,7 @@
                 android:layout_below="@id/login_googleIcon_id"
                 android:layout_alignEnd="@+id/login_button_id"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_toEndOf="@+id/new_user_text_id"
                 android:layout_toRightOf="@+id/new_user_text_id"
@@ -229,7 +224,7 @@
                 android:layout_alignStart="@+id/login_button_id"
                 android:layout_marginStart="22dp"
                 android:layout_marginLeft="137dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/googlesans_regular"
                 android:lineHeight="20sp"
                 android:text="New User?"
