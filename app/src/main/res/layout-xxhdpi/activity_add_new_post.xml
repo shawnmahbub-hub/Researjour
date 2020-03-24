@@ -30,7 +30,6 @@
                 android:id="@+id/postProfileImage_id"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_below="@+id/addNewPostPageToolbar"
                 android:layout_alignStart="@+id/researchTitleText_id"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/user_profile" />
@@ -39,7 +38,6 @@
                 android:id="@+id/postProfileName_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/addNewPostPageToolbar"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="8dp"
                 android:layout_alignTop="@+id/postProfileImage_id"
