@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
 
-
+    private RelativeLayout topView;
     private EditText email, password;
     private ImageButton loginPassVisibility;
     private TextView forgot_pass, sign_up;
@@ -44,12 +45,12 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         /*finding the id of the declared variables */
+        topView=findViewById(R.id.topView_id);
         forgot_pass=findViewById(R.id.forgot_pass_id);
         sign_up=findViewById(R.id.sign_up_text_id);
         loginBtn =findViewById(R.id.login_button_id);
         email=findViewById(R.id.email_editText_id);
         password=findViewById(R.id.password_editText_id);
-
 
         //show and hide password toggle
         loginPassVisibility=findViewById(R.id.login_passVisibility_id);

@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/topView_id"
         android:layout_width="wrap_content"
-        android:layout_height="240dp"
+        android:layout_height="148dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -31,7 +31,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="88dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="158dp"
             android:contentDescription="app_logo"
             android:paddingEnd="24dp"
@@ -69,8 +69,9 @@
                 android:id="@+id/email_editText_id"
                 android:layout_width="363dp"
                 android:layout_height="46dp"
+                android:layout_marginStart="16dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="24dp"
                 android:hint="email"
                 android:textColorHint="#40000000"
                 android:fontFamily="@font/googlesans_regular"
@@ -87,6 +88,7 @@
                 android:id="@+id/password_editText_id"
                 android:layout_width="363dp"
                 android:layout_height="46dp"
+                android:layout_marginStart="16dp"
                 android:layout_below="@id/email_editText_id"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
@@ -148,64 +150,11 @@
                 android:enabled="false"
                 />
 
-            //divider #1
-            <View
-                android:id="@+id/divider1"
-                android:layout_width="109dp"
-                android:layout_height="2dp"
-                android:layout_below="@+id/login_button_id"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="70dp"
-                android:layout_marginEnd="8dp"
-                android:background="#e7e7e7" />
-
-            //divider #2
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="109dp"
-                android:layout_height="2dp"
-                android:layout_below="@+id/login_button_id"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="70dp"
-                android:layout_marginEnd="24dp"
-                android:background="#e7e7e7" />
-
-            //login with text view
-            <TextView
-                android:id="@+id/login_with_id"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_below="@+id/login_button_id"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="56dp"
-                android:fontFamily="@font/googlesans_regular"
-                android:text="or Login with"
-                android:textColor="#333"
-                android:textSize="18sp" />
-
-            //google sign in button
-
-            //facebook sign in button
-
-            //text view for sign up
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/login_googleIcon_id"
-                android:layout_width="128dp"
-                android:layout_height="46dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/login_with_id"
-                android:layout_marginTop="24dp"
-                />
-
-
             <TextView
                 android:id="@+id/sign_up_text_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/login_googleIcon_id"
+                android:layout_below="@id/login_button_id"
                 android:layout_alignEnd="@+id/login_button_id"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
@@ -225,7 +174,7 @@
                 android:id="@+id/new_user_text_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/login_googleIcon_id"
+                android:layout_below="@+id/login_button_id"
                 android:layout_alignStart="@+id/login_button_id"
                 android:layout_marginStart="22dp"
                 android:layout_marginLeft="137dp"

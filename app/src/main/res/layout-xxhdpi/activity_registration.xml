@@ -8,8 +8,8 @@
     android:background="#fff"
     tools:context=".Activity.Registration"
     android:focusableInTouchMode="true"
+    android:layout_alignParentBottom="true"
     >
-
     //layout for top view
     <RelativeLayout
         android:id="@+id/topView_id"
@@ -215,11 +215,10 @@
         android:id="@+id/logintext_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/new_user_text_id"
+        android:layout_below="@+id/reg_button_id"
         android:layout_alignBottom="@+id/new_user_text_id"
-        android:layout_alignParentBottom="true"
         android:layout_marginStart="4dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
         android:layout_toEndOf="@+id/new_user_text_id"
         android:layout_toRightOf="@+id/new_user_text_id"
         android:clickable="true"
@@ -229,14 +228,15 @@
         android:textColor="#E2284E"
         android:textSize="16sp" />
     //existing user text view
+
     <TextView
         android:id="@+id/new_user_text_id"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/reg_button_id"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/reg_button_id"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="131dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/googlesans_regular"
         android:lineHeight="20sp"
         android:text="Existing User?"

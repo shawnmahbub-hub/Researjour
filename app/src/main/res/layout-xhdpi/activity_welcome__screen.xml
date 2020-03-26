@@ -31,8 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_below="@id/researjour_logo_id"
-        android:layout_alignStart="@+id/login_button_id"
-        android:layout_alignEnd="@+id/login_button_id"
+
         android:layout_marginTop="24dp"
         android:fontFamily="@font/googlesans_medium"
         android:lineHeight="23sp"
@@ -40,7 +39,9 @@
         android:textAlignment="center"
         android:textColor="#333"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        />
 
     //description text
     <TextView
@@ -48,8 +49,6 @@
         android:layout_width="366dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/Title_text_id"
-        android:layout_alignStart="@+id/reg_button_id"
-        android:layout_alignEnd="@+id/reg_button_id"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/googlesans_regular"
         android:lineHeight="21sp"
@@ -57,7 +56,9 @@
         android:textAlignment="center"
         android:textColor="#B4B4B4"
         android:textSize="14sp"
-        android:typeface="sans" />
+        android:typeface="sans"
+        android:layout_centerHorizontal="true"
+        />
 
     //login button
     <Button
@@ -73,6 +74,7 @@
         android:textColor="#fff"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_centerHorizontal="true"
     />
 
     //registration button
@@ -89,6 +91,7 @@
         android:textColor="#fff"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_centerHorizontal="true"
         />
 
 </RelativeLayout>

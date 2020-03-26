@@ -5,20 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context=".Activity.ProfileSetup">
-
+    tools:context=".Activity.ProfileSetup"
+    android:layout_alignParentBottom="true"
+    >
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="16dp"
         android:layout_above="@+id/profile_next_button_id"
-        >
+        android:layout_marginBottom="16dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             //top view
+
             <RelativeLayout
                 android:id="@+id/topView_id"
                 android:layout_width="match_parent"
@@ -38,10 +40,10 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="48dp"
                     android:contentDescription="app_logo"
-                    android:layout_centerHorizontal="true"
                     android:paddingEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +55,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/researjour_logo_id"
-                    android:layout_marginTop="8dp"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/googlesans_regular"
                     android:text="Setup your profile"
                     android:textColor="#fff"
@@ -62,18 +64,19 @@
             </RelativeLayout>
 
             //profile image
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/profile_image"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="160dp"
+                android:src="@drawable/profile_image"
                 app:civ_border_color="@color/colorAccent2"
-                app:civ_border_width="3dp"
-                />
+                app:civ_border_width="3dp" />
 
             //full name
+
             <EditText
                 android:id="@+id/full_name_id"
                 android:layout_width="363dp"
@@ -84,11 +87,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:drawablePadding="8dp"
                 android:background="@drawable/edit_text"
                 android:drawableLeft="@drawable/ic_name"
-                android:hint="full name"
+                android:drawablePadding="8dp"
                 android:fontFamily="@font/googlesans_regular"
+                android:hint="full name"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
                 android:textColorHint="#40000000" />
@@ -162,20 +165,21 @@
 
     </ScrollView>
 
-    //next button
-    <Button
-        android:id="@+id/profile_next_button_id"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_bg"
-        android:contentDescription="next button for category selection"
-        android:fontFamily="@font/googlesans_medium"
-        android:text="Next"
-        android:textAlignment="center"
-        android:textColor="#fff"
-        android:textSize="14sp" />
+        //next button
+
+        <Button
+            android:id="@+id/profile_next_button_id"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/btn_bg"
+            android:contentDescription="next button for category selection"
+            android:fontFamily="@font/googlesans_medium"
+            android:text="Next"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="14sp" />
 
 </RelativeLayout>

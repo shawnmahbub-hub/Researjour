@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,22 +9,26 @@
     tools:context=".Fragments.ProfileFragment"
     >
 
-    <!-- TODO: Update blank fragment layout -->
-
-        <ImageView
-            android:id="@+id/coverIv_id"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:scaleType="centerCrop"
-            android:background="#E3DDDD"
-            android:src="@drawable/blank_photo_bg"
-            android:orientation="vertical"
-            />
+            android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+            <!-- TODO: Update blank fragment layout -->
+
+            <ImageView
+                android:id="@+id/coverIv_id"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:scaleType="centerCrop"
+                android:background="#E3DDDD"
+                android:src="@drawable/blank_photo_bg"
+                android:orientation="vertical"
+                />
+
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileFragment_Picture_id"
                 android:layout_width="148dp"
                 android:layout_height="148dp"
@@ -35,7 +39,7 @@
                 app:civ_border_color="@color/colorAccent2"
                 app:civ_border_width="3dp" />
 
-    <TextView
+            <TextView
                 android:id="@+id/profileFragment_username_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +52,7 @@
                 android:textColor="#333"
                 android:textSize="24sp" />
 
-    <TextView
+            <TextView
                 android:id="@+id/emailTv_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +64,7 @@
                 android:textColor="#80333333"
                 android:textSize="16sp" />
 
-    <RelativeLayout
+            <RelativeLayout
                 android:id="@+id/infoLayout_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,112 +147,112 @@
 
             </RelativeLayout>
 
-    <TextView
-        android:id="@+id/userZoneText_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/infoLayout_id"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/googlesans_regular"
-        android:text="User Zone"
-        android:textColor="#333"
-        android:textSize="16sp" />
+            <TextView
+                android:id="@+id/userZoneText_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/infoLayout_id"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="48dp"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="User Zone"
+                android:textColor="#333"
+                android:textSize="16sp" />
 
-    <View
-        android:id="@+id/profile_divider"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_alignStart="@+id/userZoneText_id"
-        android:layout_alignEnd="@+id/userZoneText_id"
-        android:layout_below="@+id/userZoneText_id"
-        android:background="@color/colorAccent2"
-        android:layout_marginTop="8dp"
-        />
+            <View
+                android:id="@+id/profile_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_alignStart="@+id/userZoneText_id"
+                android:layout_alignEnd="@+id/userZoneText_id"
+                android:layout_below="@+id/userZoneText_id"
+                android:background="@color/colorAccent2"
+                android:layout_marginTop="8dp"
+                />
 
-    <RelativeLayout
-        android:id="@+id/logout_button"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/profile_divider"
-        android:layout_alignStart="@+id/userZoneText_id"
-        android:layout_alignEnd="@+id/userZoneText_id"
-        android:layout_marginTop="16dp"
-        >
+            <RelativeLayout
+                android:id="@+id/logout_button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/profile_divider"
+                android:layout_alignStart="@+id/userZoneText_id"
+                android:layout_alignEnd="@+id/userZoneText_id"
+                android:layout_marginTop="16dp"
+                >
 
-        <ImageView
-            android:id="@+id/logoutImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_logout"
-            android:layout_marginStart="16dp"
-            />
+                <ImageView
+                    android:id="@+id/logoutImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_logout"
+                    android:layout_marginStart="16dp"
+                    />
 
-        <TextView
-            android:id="@+id/logout_button_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:textColor="#333"
-            android:textSize="16sp"
-            android:fontFamily="@font/googlesans_regular"
-            android:layout_toRightOf="@+id/logoutImageView"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:clickable="true"
-            />
+                <TextView
+                    android:id="@+id/logout_button_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:textColor="#333"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:layout_toRightOf="@+id/logoutImageView"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    />
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/logout_button"
-        android:layout_alignStart="@+id/userZoneText_id"
-        android:layout_alignEnd="@+id/userZoneText_id"
-        >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/logout_button"
+                android:layout_alignStart="@+id/userZoneText_id"
+                android:layout_alignEnd="@+id/userZoneText_id"
+                >
 
-        <ImageView
-            android:id="@+id/aboutImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_about"
-            android:layout_marginStart="16dp"
-            />
+                <ImageView
+                    android:id="@+id/aboutImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_about"
+                    android:layout_marginStart="16dp"
+                    />
 
-        <TextView
-            android:id="@+id/about_button_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="About App"
-            android:textColor="#333"
-            android:textSize="16sp"
-            android:fontFamily="@font/googlesans_regular"
-            android:layout_toRightOf="@+id/aboutImageView"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:clickable="true"
-            />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/about_button_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="About App"
+                    android:textColor="#333"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:layout_toRightOf="@+id/aboutImageView"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    />
+            </RelativeLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_edit_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@color/colorAccent2"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_edit"
-        />
-
-</RelativeLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_edit_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/colorAccent2"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_edit"
+                />
+        </RelativeLayout>
+</ScrollView>

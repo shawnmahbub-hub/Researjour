@@ -30,8 +30,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/postProfileImage_id"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_below="@+id/fundTitleText_id"
             android:layout_alignStart="@+id/researchTitleText_id"
             android:layout_marginTop="16dp"
@@ -48,7 +48,7 @@
             android:fontFamily="@font/googlesans_medium"
             android:text="User Name"
             android:textColor="#333"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <ImageButton
             android:id="@+id/addPdf_id"
@@ -88,7 +88,7 @@
             android:fontFamily="@font/googlesans_regular"
             android:text="00:00"
             android:textColor="#a7a7a7"
-            android:textSize="14sp" />
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/researchTitleText_id"
@@ -101,13 +101,13 @@
             android:fontFamily="@font/googlesans_regular"
             android:text="Research Title"
             android:textColor="#333"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         //title edit text
         <EditText
             android:id="@+id/postTitleText_id"
             android:layout_width="363dp"
-            android:layout_height="46dp"
+            android:layout_height="40dp"
             android:layout_below="@+id/researchTitleText_id"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
@@ -121,7 +121,8 @@
             android:fontFamily="@font/googlesans_regular"
             android:inputType="textMultiLine"
             android:paddingStart="12dp"
-            android:textColorHint="#25000000" />
+            android:textColorHint="#25000000"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/abstractionText_id"
@@ -133,13 +134,13 @@
             android:fontFamily="@font/googlesans_regular"
             android:text="Abstraction"
             android:textColor="#333"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         //abstraction edit text
         <EditText
             android:id="@+id/postabstractionText_id"
             android:layout_width="363dp"
-            android:layout_height="144dp"
+            android:layout_height="104dp"
             android:layout_below="@+id/abstractionText_id"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
@@ -153,7 +154,9 @@
             android:fontFamily="@font/googlesans_regular"
             android:inputType="textMultiLine"
             android:paddingStart="12dp"
-            android:textColorHint="#25000000" />
+            android:textColorHint="#25000000"
+            android:textSize="12sp"
+            />
 
         <TextView
             android:id="@+id/videoLinkText_id"
@@ -166,13 +169,13 @@
             android:fontFamily="@font/googlesans_regular"
             android:text="Project Video Link"
             android:textColor="#333"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         //title edit text
         <EditText
             android:id="@+id/videoLinkET_id"
             android:layout_width="363dp"
-            android:layout_height="46dp"
+            android:layout_height="40dp"
             android:layout_below="@+id/videoLinkText_id"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
