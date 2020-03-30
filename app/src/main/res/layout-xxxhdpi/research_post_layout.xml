@@ -227,7 +227,7 @@
                 android:layout_weight="1"
                 android:background="#fff"
                 android:text="share"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:fontFamily="@font/googlesans_regular"
                 android:textAllCaps="false"
                 android:gravity="center"

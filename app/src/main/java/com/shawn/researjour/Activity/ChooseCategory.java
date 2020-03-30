@@ -59,7 +59,7 @@ public class ChooseCategory extends AppCompatActivity {
             public void onClick(View v) {
                 if (categoryAdapter.getSelected() !=null){
                     String passText = categoryAdapter.getSelected().textPosition;
-                    Intent intent = new Intent(ChooseCategory.this,ChooseSubject.class);
+                    Intent intent = new Intent(ChooseCategory.this,Home.class);
                     intent.putExtra("msg",passText);
                     startActivity(intent);
                 }

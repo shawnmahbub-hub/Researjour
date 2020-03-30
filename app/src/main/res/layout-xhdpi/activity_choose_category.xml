@@ -71,7 +71,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/btn_bg"
         android:fontFamily="@font/googlesans_medium"
-        android:text="Next"
+        android:text="Finish"
         android:textAlignment="center"
         android:textColor="#fff"
         android:textSize="20sp" />

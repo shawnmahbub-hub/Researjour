@@ -28,9 +28,6 @@
         <activity android:name=".Activity.AboutUS"
             android:screenOrientation="locked"
             />
-        <activity android:name=".Activity.ChooseSubject"
-            android:screenOrientation="locked"
-            />
         <activity android:name=".Activity.ChooseCategory"
             android:screenOrientation="locked"
             />

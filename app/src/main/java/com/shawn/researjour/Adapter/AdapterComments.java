@@ -52,11 +52,12 @@ public class AdapterComments extends RecyclerView.Adapter<AdapterComments.MyHold
         //get the data
         final String uid=commentList.get(i).getUid();
         String name=commentList.get(i).getuName();
-        String email=commentList.get(i).getuEmail();
+        String email=commentList.get(i).getuEmail().toString();
         String image=commentList.get(i).getuDp();
         final String cid=commentList.get(i).getcId();
         String comment=commentList.get(i).getComment();
         String timestamp=commentList.get(i).getTimestamp();
+        String isExpert=commentList.get(i).getIsExpert();
 
         //convert timestamp to dd/mm/yyyy hh:mm am/pm
         Calendar calendar=Calendar.getInstance(Locale.getDefault());
@@ -67,6 +68,11 @@ public class AdapterComments extends RecyclerView.Adapter<AdapterComments.MyHold
         myHolder.nameTv.setText(name);
         myHolder.timeStampTv.setText(pTimeFormat);
         myHolder.commentTv.setText(comment);
+
+        if (isExpert=="yes"){
+            myHolder.expertIcon.setVisibility(View.VISIBLE);
+        }
+
         //set user picture
         try {
             Picasso.get().load(image).placeholder(R.drawable.user_profile).into(myHolder.avatarIv);
@@ -136,7 +142,7 @@ public class AdapterComments extends RecyclerView.Adapter<AdapterComments.MyHold
 
 
         //views from research_post_layout.xml
-        ImageView avatarIv;
+        ImageView avatarIv,expertIcon;
         TextView nameTv,commentTv,timeStampTv;
 
         public MyHolder(@NonNull View itemView) {
@@ -144,6 +150,7 @@ public class AdapterComments extends RecyclerView.Adapter<AdapterComments.MyHold
 
             //init views
             avatarIv=itemView.findViewById(R.id.uImage_id);
+            expertIcon=itemView.findViewById(R.id.expert_id);
             nameTv=itemView.findViewById(R.id.uNameTv_id);
             commentTv=itemView.findViewById(R.id.commentTv_id);
             timeStampTv=itemView.findViewById(R.id.timeStamp_id);

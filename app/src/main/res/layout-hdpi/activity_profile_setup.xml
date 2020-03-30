@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context=".Activity.ProfileSetup">
+    tools:context=".Activity.ProfileSetup"
+    android:layout_alignParentBottom="true"
+    >
+
 
     //top view
     <RelativeLayout
         android:id="@+id/topView_id"
-        android:layout_width="wrap_content"
-        android:layout_height="230dp"
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -23,14 +26,14 @@
         <ImageView
             android:id="@+id/researjour_logo_id"
             android:layout_width="wrap_content"
-            android:layout_height="64dp"
+            android:layout_height="48dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="48dp"
-            android:contentDescription="app_logo"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="16dp"
+            android:contentDescription="app_logo"
             android:paddingEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,8 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/researjour_logo_id"
-            android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/googlesans_regular"
             android:text="Setup your profile"
             android:textColor="#fff"
@@ -51,103 +54,111 @@
     </RelativeLayout>
 
     //profile image
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/profile_image"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="112dp"
+        android:src="@drawable/profile_image"
         app:civ_border_color="@color/colorAccent2"
-        app:civ_border_width="3dp"
-        />
+        app:civ_border_width="3dp" />
 
     //full name
+
     <EditText
         android:id="@+id/full_name_id"
         android:layout_width="363dp"
-        android:layout_height="46dp"
+        android:layout_height="40dp"
         android:layout_below="@id/profile_image"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="24dp"
-        android:drawablePadding="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/edit_text"
         android:drawableLeft="@drawable/ic_name"
-        android:hint="full name"
+        android:drawablePadding="8dp"
         android:fontFamily="@font/googlesans_regular"
+        android:hint="full name"
         android:inputType="textEmailAddress"
         android:paddingStart="16dp"
-        android:textColorHint="#40000000" />
+        android:textColorHint="#40000000"
+        android:textSize="12sp"
+        />
 
     //university
+
     <EditText
         android:id="@+id/universityText_id"
         android:layout_width="363dp"
-        android:layout_height="46dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/full_name_id"
-        android:layout_marginStart="24dp"
-        android:background="@drawable/edit_text"
+        android:layout_alignStart="@+id/full_name_id"
+        android:layout_alignEnd="@+id/full_name_id"
         android:layout_marginTop="16dp"
-        android:hint="university"
-        android:fontFamily="@font/googlesans_regular"
-        android:paddingStart="16dp"
+        android:background="@drawable/edit_text"
         android:drawableStart="@drawable/ic_university"
         android:drawablePadding="8dp"
-        android:textSize="16sp"
-        android:textColor="#333"
+        android:fontFamily="@font/googlesans_regular"
+        android:hint="university"
+        android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        />
+        android:textColor="#333"
+        android:textSize="12sp" />
 
     //role spinner
+
     <Spinner
-        style="@style/SpinnerTheme"
         android:id="@+id/roleSpinner_id"
+        style="@style/SpinnerTheme"
         android:layout_width="363dp"
-        android:layout_height="46dp"
+        android:layout_height="40dp"
         android:layout_below="@id/universityText_id"
-        android:layout_centerHorizontal="true"
+        android:layout_alignStart="@+id/universityText_id"
+        android:layout_alignEnd="@+id/universityText_id"
         android:layout_marginTop="16dp"
-        android:entries="@array/role_spinnerItems"
-        />
+        android:entries="@array/role_spinnerItems" />
 
     //gender spinner
+
     <Spinner
-        style="@style/SpinnerTheme"
         android:id="@+id/gender_spinner"
-        android:layout_width="172dp"
-        android:layout_height="46dp"
-        android:entries="@array/gender_spinnerItems"
+        style="@style/SpinnerTheme"
+        android:layout_width="128dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/roleSpinner_id"
+        android:layout_alignStart="@+id/roleSpinner_id"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="24dp" />
+        android:entries="@array/gender_spinnerItems" />
 
     //date of birth
+
     <EditText
         android:id="@+id/dobText_id"
         android:layout_width="172dp"
-        android:layout_height="46dp"
+        android:layout_height="40dp"
         android:layout_below="@id/roleSpinner_id"
+        android:layout_alignEnd="@+id/roleSpinner_id"
         android:layout_marginLeft="17dp"
         android:layout_marginTop="16dp"
         android:layout_toEndOf="@+id/gender_spinner"
         android:background="@drawable/edit_text"
-        android:hint="date of birth"
-        android:fontFamily="@font/googlesans_regular"
-        android:paddingStart="16dp"
-        android:textColorHint="#40000000"
-        android:paddingEnd="16dp"
         android:clickable="true"
         android:focusable="false"
-        />
+        android:fontFamily="@font/googlesans_regular"
+        android:hint="date of birth"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="#40000000" />
+
 
     //next button
     <Button
         android:id="@+id/profile_next_button_id"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
@@ -157,6 +168,6 @@
         android:text="Next"
         android:textAlignment="center"
         android:textColor="#fff"
-        android:textSize="20sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

@@ -71,9 +71,6 @@ public class PostDetailActivity extends AppCompatActivity {
     ImageButton sendBtn;
     CircleImageView cAvatarIv;
 
-    FirebaseStorage firebaseStorage;
-    StorageReference ref;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -304,6 +301,7 @@ public class PostDetailActivity extends AppCompatActivity {
         hashMap.put("uEmail",myEmail);
         hashMap.put("uDp",myDp);
         hashMap.put("uName",myName);
+        hashMap.put("isExpert","yes");
 
         //put this data in db
         ref.child(timeStamp).setValue(hashMap)

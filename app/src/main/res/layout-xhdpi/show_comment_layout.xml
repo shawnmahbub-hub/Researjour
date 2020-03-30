@@ -25,6 +25,7 @@
             android:layout_marginRight="8dp"
             />
 
+
         <RelativeLayout
             android:id="@+id/commentLayout_id"
             android:layout_width="match_parent"
@@ -43,17 +44,15 @@
                 android:id="@+id/uNameTv_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="4dp"
+                android:layout_alignParentTop="true"
                 android:layout_marginStart="4dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="4dp"
                 android:autoLink="all"
                 android:fontFamily="@font/googlesans_medium"
                 android:text="Researcher Name"
                 android:textColor="#333"
-                android:textSize="16sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/commentTv_id"
@@ -69,7 +68,18 @@
                 android:fontFamily="@font/googlesans_regular"
                 android:text="No comment"
                 android:textColor="#333"
-                android:textSize="14sp" />
+                android:textSize="10sp" />
+
+            <ImageView
+                android:id="@+id/expert_id"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignTop="@+id/uNameTv_id"
+                android:layout_marginStart="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_toEndOf="@+id/uNameTv_id"
+                android:src="@drawable/ic_verify"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
@@ -89,8 +99,7 @@
             android:text="00.00"
             android:textAlignment="viewStart"
             android:textColor="#E83350"
-            android:textSize="14sp" />
-
+            android:textSize="10sp" />
 
 
     </RelativeLayout>

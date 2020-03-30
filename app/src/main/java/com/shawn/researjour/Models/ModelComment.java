@@ -1,11 +1,11 @@
 package com.shawn.researjour.Models;
 
 public class ModelComment {
-    String cId,comment,timestamp,uid,uEmail,uDp,uName;
+    String cId,comment,timestamp,uid,uEmail,uDp,uName,isExpert;
 
     public ModelComment() { }
 
-    public ModelComment(String cId, String comment, String timestamp, String uid, String uEmail, String uDp, String uName) {
+    public ModelComment(String cId, String comment, String timestamp, String uid, String uEmail, String uDp, String uName, String isExpert) {
         this.cId = cId;
         this.comment = comment;
         this.timestamp = timestamp;
@@ -13,6 +13,7 @@ public class ModelComment {
         this.uEmail = uEmail;
         this.uDp = uDp;
         this.uName = uName;
+        this.isExpert=isExpert;
     }
 
     public String getcId() {
@@ -69,5 +70,13 @@ public class ModelComment {
 
     public void setuName(String uName) {
         this.uName = uName;
+    }
+
+    public String getIsExpert() {
+        return isExpert;
+    }
+
+    public void setIsExpert(String isExpert) {
+        this.isExpert = isExpert;
     }
 }
